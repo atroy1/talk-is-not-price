@@ -16,9 +16,9 @@ Your actions (I cannot do these for you):
 Prep work (can be done here, in this folder, before Friday):
 
 1. Read the six papers marked "read first" in `papers/README.md`. Two hours.
-2. Run the double-auction starter once end to end with cheap models and 5 rounds. Confirm cost per run. Fix model names.
-3. Build the analysis notebook on the **bundled 75 runs** in `vendor/llm-agent-collusion/data` (base, seller_comms, oversight, boss_pressure, and mixed-model conditions, each with per-agent transcripts, `collusion_metrics.json`, and an LLM-judge file). This is free, offline, and gives Figure 1 before the sprint starts. Disclose it as prior data in the report.
-4. Write the one-sentence claim and the positive control before writing any new code.
+2. Run the double-auction starter once end to end with a cheap model and 5 rounds, to confirm cost per run. The starter is already patched for current models (`patches/llm-agent-collusion.patch`; done 10/16), so this needs only an API key.
+3. **Plumbing only, no results.** The loader for the **bundled 75 runs** is built (`analysis/load_runs.py`; done 10/16): seven tables covering runs, orders, trades, public messages, each agent's private reasoning, per-round metrics and the LLM judge. Do not build the detector, the scores, the FPR calibration or any results figure before Friday. Those are the sprint's contribution. Anything built earlier counts as prior work, and the judges score what was new. Every pre-sprint item goes in `notes/PRIOR-WORK.md`.
+4. Draft the one-sentence claim and the positive control in words. Code waits for Friday.
 
 ## The weekend (Eastern time)
 
@@ -47,7 +47,9 @@ Prep work (can be done here, in this folder, before Friday):
 - Report a false-positive rate at a fixed threshold for any detector. The first-place AI Control report lost points for not having one.
 - Honest limitations are rewarded; the rubric says so. Say what the result does not establish.
 - Disclose prior work precisely: "the 75 runs are from Agrawal et al. 2025; the detector, the fusion and all analysis are new."
-- The report must be primarily your own writing. Use Claude for drafts, critique and checking; rewrite in your voice; state that in the LLM Usage Statement.
+- The submission form takes an abstract of **150 words or fewer** (the template says 150 to 250; the form wins).
+- Link a source for every factual claim (the sprint page asks for this).
+- A report that "reads as generated rather than written" is not scored. The report must be primarily your own writing. Use Claude for drafts, critique and checking; rewrite in your voice; state that in the LLM Usage Statement.
 - Four pages. The reader is an expert with 15 minutes. Cut.
 - At least one figure that makes the result obvious without the text (your strength; use it).
 - No em dashes.
