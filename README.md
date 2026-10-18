@@ -5,9 +5,10 @@ Prep workspace. Read in this order:
 1. `docs/BASELINE.md` the event, the schedule in Eastern time, the rubric, past-sprint numbers, what a winning report looks like, where this machine stands.
 2. `docs/PLAYBOOK.md` the pre-sprint checklist and the hour-by-hour weekend plan with scope-cut rules.
 3. `docs/TRACK-PICKS.md` the twelve questions ranked for fit, with a recommendation.
-4. `docs/MODELS-AND-TOOLS.md` API access, cost per run by model, starter-code fixes, efficiency tools.
-5. `papers/README.md` reading order; `papers/abstracts.md` every cited arXiv abstract.
-6. `notes/report-skeleton.md` paste into the template copy; `notes/log.md` the running log.
+4. `docs/RESEARCH-BRIEF.md` speakers, nearest studies and novelty check, past winners. `docs/END-PRODUCT.md` the 4-page PDF plan, creative options, and the five alternative framings with a recommendation (choice pending).
+5. `docs/MODELS-AND-TOOLS.md` API access, cost per run by model, starter-code fixes, efficiency tools.
+6. `papers/README.md` reading order; `papers/abstracts.md` every cited arXiv abstract.
+7. `notes/report-skeleton.md` paste into the template copy; `notes/log.md` the running log.
 
 Reference copies: `docs/apart-report-template.txt` (official template text), `docs/reference-winning-report-ai-control-2026.pdf` (first place, March 2026).
 
