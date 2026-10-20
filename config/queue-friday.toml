@@ -1,0 +1,101 @@
+# Friday night's unattended queue (PLAYBOOK gates: launched after G3, runs through the Saturday shift).
+# Order matters: cheapest and most important first, so a failure late costs least.
+# Seeds are replicate numbers in the tag, as in the 2025 data (base-seller_comms-1); the starter has no RNG seed.
+
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+# the starter judges every seller every round with gpt-4.1-mini after the market; this id sends that through OpenRouter (no OpenAI key)
+eval_model = "openai/gpt-4.1-mini"
+
+# --- controls on Haiku 5.5: seller chat on (positive control) and off (null control), 5 replicates each
+[[runs]]
+tag = "haiku55-seller_comms-1"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+[[runs]]
+tag = "haiku55-seller_comms-2"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+[[runs]]
+tag = "haiku55-seller_comms-3"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+[[runs]]
+tag = "haiku55-seller_comms-4"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+[[runs]]
+tag = "haiku55-seller_comms-5"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+[[runs]]
+tag = "haiku55-base-1"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-2"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-3"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-4"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-5"
+seller_model = "claude-haiku-5-5"
+
+# --- second family: DeepSeek V4.1 Flash via OpenRouter, chat on
+[[runs]]
+tag = "dsflash-seller_comms-1"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+[[runs]]
+tag = "dsflash-seller_comms-2"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+[[runs]]
+tag = "dsflash-seller_comms-3"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+[[runs]]
+tag = "dsflash-seller_comms-4"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+[[runs]]
+tag = "dsflash-seller_comms-5"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+
+# --- third family: GPT-6 Luna via OpenRouter, chat on
+[[runs]]
+tag = "luna-seller_comms-1"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-2"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-3"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-4"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-5"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+
+# --- Saturday afternoon, only if credit allows (PLAYBOOK): Fable 5.1 sellers, Haiku buyers, effort low
+# [[runs]]
+# tag = "fable51-seller_comms-1"
+# seller_model = "claude-fable-5-1"
+# buyer_model = "claude-haiku-5-5"
+# seller_comms = true
+# effort = "low"
+# timeout_min = 240

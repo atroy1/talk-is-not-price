@@ -1,0 +1,8 @@
+# Plumbing check: 2 rounds against the built-in fake server. No keys, no cost. Run with --fake.
+[defaults]
+rounds = 2
+timeout_min = 10
+[[runs]]
+tag = "fake-check"
+seller_model = "gpt-4.1-mini"
+seller_comms = true

@@ -1,0 +1,88 @@
+# Model routing for every LLM call outside the market simulator. Read by tools/llm.py.
+# The simulator (vendor/llm-agent-collusion) keeps its own wrappers; docs/MODEL-ROUTING.md says which model plays which agent.
+# Prices: USD per 1M tokens [input, output], list price as checked 2026-10-16/18. Recheck Thu Oct 22.
+
+[lanes.local]
+kind = "openai"
+base_url_env = "LMSTUDIO_BASE_URL"     # e.g. http://arthurs-mac-studio.local:1234/v1 (LM Studio, "serve on local network" on)
+key_env = "LMSTUDIO_API_KEY"           # LM Studio ignores it; any string
+default_model = "qwen3-30b-a3b"        # set to the exact id that GET /v1/models lists on setup day
+
+[lanes.claude]
+kind = "anthropic"
+key_env = "ANTHROPIC_API_KEY"
+default_model = "claude-haiku-5-5"
+
+[lanes.openrouter]
+kind = "openai"
+base_url = "https://openrouter.ai/api/v1"
+key_env = "OPENROUTER_API_KEY"
+default_model = "deepseek/deepseek-v4.1-flash"
+# provider fallbacks off: a silent substitution would log one model's behaviour under another's name
+extra_body = { provider = { allow_fallbacks = false } }
+
+[prices]
+"claude-haiku-5-5" = [0.10, 0.50]
+"claude-sonnet-5-5" = [2.0, 10.0]
+"claude-opus-5-5" = [4.0, 20.0]
+"claude-fable-5-1" = [10.0, 50.0]
+"deepseek/deepseek-v4.1-flash" = [0.036, 0.64]
+"openai/gpt-6-luna" = [0.10, 0.50]
+"google/gemini-2.5-flash-lite" = [0.10, 0.40]
+"typesafe/jev" = [0.042, 0.0]
+"gpt-4.1-mini" = [0.40, 1.60]              # the starter's per-run judge, OpenAI direct
+"openai/gpt-4.1-mini" = [0.40, 1.60]       # same judge via OpenRouter
+
+# ---- tasks: lane, model (else the lane default), limits, optional "lane:model" fallback ----
+
+[tasks.talk_notes]
+lane = "local"
+max_tokens = 1500
+temperature = 0.2
+purpose = "Claims, numbers and open problems with timestamps from one transcript chunk"
+
+[tasks.slide_ocr]
+lane = "local"
+model = "qwen3-vl-8b"
+max_tokens = 600
+temperature = 0.0
+fallback = "claude:claude-haiku-5-5"
+purpose = "Text and the one takeaway of a slide frame"
+
+[tasks.label_message]
+lane = "local"
+max_tokens = 12
+temperature = 0.0
+purpose = "First-pass label for every seller message: proposes_floor / agrees / neither"
+
+[tasks.label_jev]
+lane = "openrouter"
+model = "typesafe/jev"
+max_tokens = 12
+temperature = 0.0
+purpose = "Same label from Jev, as a cheap second labeller and a baseline"
+
+[tasks.judge_sample]
+lane = "claude"
+model = "claude-sonnet-5-5"
+max_tokens = 40
+purpose = "Reference label on the stratified validation sample (agreement with the local labels goes in Methods)"
+
+[tasks.critique]
+lane = "claude"
+model = "claude-opus-5-5"
+max_tokens = 2000
+purpose = "Rubric critique of a draft section; prefer doing this in Claude Code on the plan, which costs no credit"
+
+[tasks._ping]
+lane = "local"
+max_tokens = 5
+temperature = 0.0
+purpose = "Connectivity check"
+
+[tasks._selftest]
+lane = "local"
+model = "does-not-exist"
+max_tokens = 5
+fallback = "local:fake-model"
+purpose = "Exercises the fallback path against the fake server"
