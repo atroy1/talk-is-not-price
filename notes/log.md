@@ -16,3 +16,25 @@ One line per run or decision, with the time. Started 2026-10-15.
 - 2026-10-20 09:52 queue: fake-check attempt 1: ok, 0.0 min, runs/live/fake-check, est $0.00 (gpt-4.1-mini sellers, gpt-4.1-mini buyers, 2 rounds, judge gpt-4.1-mini)
 - 2026-10-20 09:52 queue: end config/queue-fake.toml
 - 2026-10-20 plumbing: tools/run_queue.py built and checked (queue-fake: 2 rounds, 10 agents, metrics written, logged above). Finding: the starter judges every seller every round with gpt-4.1-mini on the OpenAI API after each market; patched so CDA_EVAL_MODEL can point it at openai/gpt-4.1-mini on OpenRouter (queue-friday.toml sets this). Friday queue: 20 runs, about $6.10 with the judge included. `make queue` runs it under caffeinate.
+- 2026-10-20 readiness pass: tools/g0.sh (make g0) added; OpenRouter live list checked: deepseek/deepseek-v4.1-flash now $0.028/$0.12, openai/gpt-6-luna and openai/gpt-4.1-mini as listed, Jev's id is typesafe/jev-router (config fixed). Friday queue estimate $5.64. .env created empty: his two keys still to paste. Studio: ping and ssh down, LM Studio not serving. Templates added: notes/preregistration.md, notes/results-frozen.md.
+- 2026-10-20 patch: OpenRouterClient sends provider.allow_fallbacks=false (one host per run); patch file regenerated.
+- 2026-10-20 13:15 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-20 13:17 queue: dsflash-check attempt 1: failed (exit 1), no market output, 2.2 min, runs/live/dsflash-check, est $0.02 (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, judge openai/gpt-4.1-mini)
+- 2026-10-20 13:19 queue: dsflash-check attempt 2: failed (exit 1), no market output, 1.8 min, runs/live/dsflash-check, est $0.02 (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, judge openai/gpt-4.1-mini)
+- 2026-10-20 13:19 queue: dsflash-check skipped after 2 attempts
+- 2026-10-20 13:19 queue: end config/queue-check.toml
+- 2026-10-20 13:22 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-20 13:23 queue: dsflash-check attempt 1: ok, 1.7 min, runs/live/dsflash-check, spent $0.012 over 47 calls (0 empty, 0 reasoning tokens) (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-20 13:23 queue: end config/queue-check.toml
+- 2026-10-20 13:24 queue: start config/queue-check-claude.toml, 1 runs, est $0.03
+- 2026-10-20 13:24 queue: haiku55-or-check attempt 1: ok, 0.5 min, runs/live/haiku55-or-check, spent $0.026 over 45 calls (0 empty, 0 reasoning tokens) (anthropic/claude-haiku-5.5 sellers, anthropic/claude-haiku-5.5 buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-20 13:24 queue: end config/queue-check-claude.toml
+- 2026-10-20 13:30 real-API checks: keys in .env. OpenRouter OK ($50 added by him). Anthropic key is organisation-level (sk-ant-usr), every request needs anthropic-workspace-id; workspace listing refused (needs admin); his step: ANTHROPIC_WORKSPACE_ID from the Console or a workspace-scoped key. First DeepSeek check crashed twice: hidden reasoning ate the token budget and the reply came back empty. Harness controls added to the starter (CDA_REASONING, empty-reply retry, per-call usage log, workspace header, OpenRouter Claude ids). Reruns: dsflash-check 3 rounds $0.012 (47 calls, reasoning off, one host), haiku55-or-check 3 rounds $0.026. Friday queue's Haiku runs moved to anthropic/claude-haiku-5.5 via OpenRouter; reasoning off for all.
+- 2026-10-20 13:27 queue: start config/queue-check-direct.toml, 1 runs, est $0.03
+- 2026-10-20 13:29 queue: haiku55-direct-check attempt 1: ok, 2.1 min, runs/live/haiku55-direct-check, spent $0.036 over 45 calls (0 empty, 0 reasoning tokens) (claude-haiku-5-5 sellers, claude-haiku-5-5 buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-20 13:29 queue: end config/queue-check-direct.toml
+- 2026-10-20 13:30 queue: start config/queue-check-direct.toml, 1 runs, est $0.03
+- 2026-10-20 13:31 queue: haiku55-direct-check attempt 1: ok, 1.3 min, runs/live/haiku55-direct-check, spent $0.028 over 45 calls (0 empty, 0 reasoning tokens) (claude-haiku-5-5 sellers, claude-haiku-5-5 buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-20 13:31 queue: end config/queue-check-direct.toml
+- 2026-10-20 13:45 new standard Anthropic key (sk-ant-api03) works: Haiku 5.5 and Fable 5.1 answer directly. Found: direct Claude thinks by default (Haiku ~1,550 output tokens per reply vs ~870 via OpenRouter with reasoning off). Claude client now honours CDA_REASONING: off = thinking disabled (Haiku ~840, routes match); Fable 5.1 refuses disabled, runs at effort low, logged per call. haiku55-direct-check 3 rounds $0.028. Friday queue's Haiku controls moved back to the direct route; OpenRouter id is the fallback.
+- 2026-10-20 committed readiness work; Mac Studio setup moved to Wed Oct 21 (his word).

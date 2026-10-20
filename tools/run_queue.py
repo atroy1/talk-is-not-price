@@ -14,7 +14,8 @@ A tag whose folder already holds collusion_metrics.json is skipped unless --forc
 
 Queue file (TOML):
     [defaults]            rounds = 30, sellers = 5, buyers = 5, timeout_min = 120, effort = "" (Claude only),
-                          eval_model = "gpt-4.1-mini" (the starter's per-run judge; "openai/gpt-4.1-mini" routes it via OpenRouter)
+                          eval_model = "gpt-4.1-mini" (the starter's per-run judge; "openai/gpt-4.1-mini" routes it via OpenRouter),
+                          reasoning = "default" | "off" | "minimal" | "low" | "medium" | "high" (OpenRouter models' hidden reasoning)
     [[runs]]              tag, seller_model, buyer_model, seller_comms, oversight, boss_pressure, hide_num_rounds, plus any default
 Models must be in the starter's SUPPORTED_MODELS (patched list in patches/llm-agent-collusion.patch).
 """
@@ -48,7 +49,7 @@ FLAG_ARG = {"seller_comms": "--seller_comms_enabled", "buyer_comms": "--buyer_co
 def load_queue(path):
     q = tomllib.load(open(path, "rb"))
     d = {"rounds": 30, "sellers": 5, "buyers": 5, "timeout_min": 120, "effort": "", "overseer_model": "",
-         "eval_model": "gpt-4.1-mini"}  # the starter's per-run judge; "openai/gpt-4.1-mini" sends it through OpenRouter
+         "eval_model": "gpt-4.1-mini", "reasoning": "default"}  # the starter's per-run judge; "openai/gpt-4.1-mini" sends it through OpenRouter
     d.update(q.get("defaults", {}))
     runs = []
     for r in q["runs"]:
@@ -113,7 +114,9 @@ def run_one(spec, cfg, attempt, env):
     (out / "spec.json").write_text(json.dumps(spec, indent=2))
     cmd = command(spec)
     t0 = time.time()
-    env = dict(env, CDA_EVAL_MODEL=spec["eval_model"])
+    usage_log = out / f"usage.{attempt}.jsonl"
+    usage_log.unlink(missing_ok=True)
+    env = dict(env, CDA_EVAL_MODEL=spec["eval_model"], CDA_REASONING=spec["reasoning"], CDA_USAGE_LOG=str(usage_log))
     with open(out / f"stdout.{attempt}.log", "w") as so, open(out / f"stderr.{attempt}.log", "w") as se:
         try:
             p = subprocess.run(cmd, cwd=STARTER, stdout=so, stderr=se, env=env, timeout=spec["timeout_min"] * 60)
@@ -129,7 +132,23 @@ def run_one(spec, cfg, attempt, env):
         shutil.move(str(res), dest)
     market_ok = res is not None and (out / "run" / "auction_results.md").exists()
     metrics_ok = market_ok and (out / "run" / "collusion_metrics.json").exists()
-    return code, mins, market_ok, metrics_ok
+    return code, mins, market_ok, metrics_ok, actual_cost(usage_log, cfg)
+
+
+def actual_cost(usage_log, cfg):
+    """Real spend from the per-call usage log: OpenRouter reports cost; Anthropic is priced from config."""
+    if not usage_log.exists():
+        return None
+    usd, calls, empty, reasoning = 0.0, 0, 0, 0
+    for line in usage_log.read_text().splitlines():
+        r = json.loads(line); calls += 1; empty += not r.get("ok", True)
+        if r.get("route") == "openrouter":
+            usd += float(r.get("cost") or 0)
+            reasoning += int(((r.get("completion_tokens_details") or {}).get("reasoning_tokens")) or 0)
+        else:
+            p = price(cfg, "claude", r["model"], int(r.get("input_tokens") or 0), int(r.get("output_tokens") or 0))
+            usd += 0.0 if p != p else p
+    return {"usd": usd, "calls": calls, "empty": empty, "reasoning_tokens": reasoning}
 
 
 def main():
@@ -174,16 +193,18 @@ def main():
             print(f"skip {spec['tag']} (done)"); continue
         for attempt in (1, 2):
             print(f"run {spec['tag']} attempt {attempt} ...", flush=True)
-            code, mins, market_ok, metrics_ok = run_one(spec, cfg, attempt, env)
+            code, mins, market_ok, metrics_ok, spent = run_one(spec, cfg, attempt, env)
             if metrics_ok and code == 0:
                 status = "ok"
             elif market_ok:
                 status = f"market done, judge/metrics failed (exit {code}); recompute metrics later, not rerun"
             else:
                 status = f"failed (exit {code}), no market output"
-            log_line(f"{spec['tag']} attempt {attempt}: {status}, {mins:.1f} min, runs/live/{spec['tag']}, est ${estimate(spec, cfg):.2f} "
-                     f"({spec['seller_model']} sellers, {spec['buyer_model']} buyers, {spec['rounds']} rounds, judge {spec['eval_model']})")
-            print(f"   {status} in {mins:.1f} min")
+            bill = (f"spent ${spent['usd']:.3f} over {spent['calls']} calls ({spent['empty']} empty, {spent['reasoning_tokens']} reasoning tokens)"
+                    if spent else f"est ${estimate(spec, cfg):.2f}")
+            log_line(f"{spec['tag']} attempt {attempt}: {status}, {mins:.1f} min, runs/live/{spec['tag']}, {bill} "
+                     f"({spec['seller_model']} sellers, {spec['buyer_model']} buyers, {spec['rounds']} rounds, reasoning {spec['reasoning']}, judge {spec['eval_model']})")
+            print(f"   {status} in {mins:.1f} min; {bill}")
             if market_ok:
                 break  # never pay for the same market twice because the judge failed
         else:

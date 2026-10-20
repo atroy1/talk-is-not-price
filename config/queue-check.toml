@@ -1,0 +1,11 @@
+# Real-API plumbing check: one short market on DeepSeek Flash via OpenRouter, judge via OpenRouter. About 3 cents.
+[defaults]
+rounds = 3
+timeout_min = 20
+eval_model = "openai/gpt-4.1-mini"
+# hidden reasoning off for OpenRouter models: the 2025 GPT-4.1 runs had none, and DeepSeek Flash otherwise spends ~1,500 tokens per reply
+reasoning = "off"
+[[runs]]
+tag = "dsflash-check"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true

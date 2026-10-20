@@ -1,0 +1,10 @@
+# Real-API check: Haiku 5.5 on the direct Anthropic route.
+[defaults]
+rounds = 3
+timeout_min = 20
+eval_model = "openai/gpt-4.1-mini"
+reasoning = "off"
+[[runs]]
+tag = "haiku55-direct-check"
+seller_model = "claude-haiku-5-5"
+seller_comms = true

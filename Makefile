@@ -21,6 +21,8 @@ queue:       ## run the Friday queue unattended (caffeinate keeps the Mac awake)
 	caffeinate -is $(PY) -m tools.run_queue config/queue-friday.toml
 queue-fake:  ## 2-round plumbing check against the built-in fake server, no keys
 	$(PY) -m tools.run_queue config/queue-fake.toml --fake
+g0:          ## gate G0 readiness check, one line per item
+	tools/g0.sh
 help:
 	@grep -E '^[a-z-]+:.*##' Makefile | sed 's/:.*##/  /'
-.PHONY: ping self-test ledger talk notes figs mock queue queue-dry queue-fake help
+.PHONY: g0 ping self-test ledger talk notes figs mock queue queue-dry queue-fake help

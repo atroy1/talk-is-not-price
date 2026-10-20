@@ -1,6 +1,6 @@
 # Model routing for every LLM call outside the market simulator. Read by tools/llm.py.
 # The simulator (vendor/llm-agent-collusion) keeps its own wrappers; docs/MODEL-ROUTING.md says which model plays which agent.
-# Prices: USD per 1M tokens [input, output], list price as checked 2026-10-16/18. Recheck Thu Oct 22.
+# Prices: USD per 1M tokens [input, output]. OpenRouter ids and prices checked against its live list 2026-10-20; Anthropic list prices 10/16. Recheck Thu Oct 22.
 
 [lanes.local]
 kind = "openai"
@@ -19,17 +19,19 @@ base_url = "https://openrouter.ai/api/v1"
 key_env = "OPENROUTER_API_KEY"
 default_model = "deepseek/deepseek-v4.1-flash"
 # provider fallbacks off: a silent substitution would log one model's behaviour under another's name
-extra_body = { provider = { allow_fallbacks = false } }
+extra_body = { provider = { allow_fallbacks = false }, reasoning = { enabled = false } }  # reasoning off: see docs/MODEL-ROUTING.md 5b
 
 [prices]
 "claude-haiku-5-5" = [0.10, 0.50]
 "claude-sonnet-5-5" = [2.0, 10.0]
 "claude-opus-5-5" = [4.0, 20.0]
 "claude-fable-5-1" = [10.0, 50.0]
-"deepseek/deepseek-v4.1-flash" = [0.036, 0.64]
+"deepseek/deepseek-v4.1-flash" = [0.028, 0.12]   # OpenRouter listing 2026-10-20
 "openai/gpt-6-luna" = [0.10, 0.50]
 "google/gemini-2.5-flash-lite" = [0.10, 0.40]
-"typesafe/jev" = [0.042, 0.0]
+"anthropic/claude-haiku-5.5" = [0.10, 0.50]   # OpenRouter route to Claude, same list price
+"anthropic/claude-sonnet-5.5" = [2.0, 10.0]
+"typesafe/jev-router" = [0.042, 0.0]        # OpenRouter id checked 2026-10-20 (there is no plain typesafe/jev)
 "gpt-4.1-mini" = [0.40, 1.60]              # the starter's per-run judge, OpenAI direct
 "openai/gpt-4.1-mini" = [0.40, 1.60]       # same judge via OpenRouter
 
@@ -57,7 +59,7 @@ purpose = "First-pass label for every seller message: proposes_floor / agrees / 
 
 [tasks.label_jev]
 lane = "openrouter"
-model = "typesafe/jev"
+model = "typesafe/jev-router"
 max_tokens = 12
 temperature = 0.0
 purpose = "Same label from Jev, as a cheap second labeller and a baseline"

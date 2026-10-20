@@ -118,7 +118,9 @@ def _call_openai(lc, model, system, user, max_tokens, temperature):
 
 def _call_anthropic(lc, model, system, user, max_tokens, temperature):
     import anthropic
-    client = anthropic.Anthropic(api_key=lane_key(lc), max_retries=2, timeout=120)
+    ws = os.environ.get("ANTHROPIC_WORKSPACE_ID")  # needed when the key is organisation-level, not workspace-scoped
+    client = anthropic.Anthropic(api_key=lane_key(lc), max_retries=2, timeout=120,
+                                 default_headers={"anthropic-workspace-id": ws} if ws else None)
     kw = dict(model=model, max_tokens=max_tokens, messages=[{"role": "user", "content": user}])
     if system:
         kw["system"] = system
@@ -202,6 +204,10 @@ class _Fake(BaseHTTPRequestHandler):
 
 
 def self_test():
+    global LEDGER
+    real_ledger, LEDGER = LEDGER, ROOT / "runs" / "selftest-ledger.csv"  # never pollute the real ledger
+    LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    LEDGER.unlink(missing_ok=True)
     srv = HTTPServer(("127.0.0.1", 0), _Fake)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     os.environ["LMSTUDIO_BASE_URL"] = f"http://127.0.0.1:{srv.server_port}/v1"
@@ -216,6 +222,7 @@ def self_test():
     assert after - before == 3, (before, after)  # ok row, failed row, fallback row
     srv.shutdown()
     print("self-test ok: direct call, fallback path, ledger rows", LEDGER.relative_to(ROOT))
+    LEDGER = real_ledger
 
 
 def ping():

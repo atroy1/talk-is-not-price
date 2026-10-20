@@ -74,6 +74,16 @@ Why local and not the API for these jobs: 11,250 labels on Haiku cost about a do
 - DeepSeek's own API is cheaper off-peak and the whole weekend is off-peak, but it means a second key and a second billing account; OpenRouter is good enough at this volume. DeepSeek runs in China: synthetic auction prompts only, nothing personal.
 - If the Anthropic credit runs dry, Claude models exist on OpenRouter at list price. That is the fallback for the judge sample, never for a market run (a run must be one model, one route, start to finish).
 
+## 5b. Harness controls and what the first real runs showed (10/20)
+
+- **Hidden reasoning.** DeepSeek V4.1 Flash thinks by default: about 1,500 hidden tokens even for a one-line reply, and on the market prompt it can use the whole token budget and return no text, which crashed the first check run. The starter now reads `CDA_REASONING` (`off`, `minimal`, `low`, `medium`, `high`, `default`), set per run in the queue file. The sprint uses `off`: the 2025 GPT-4.1 runs had no hidden reasoning, so this keeps the comparison clean and the bill small. State it in Methods. GPT-6 Luna reasons lightly by default (about 120 tokens); also off.
+- **Empty replies** are retried with backoff instead of crashing the run; three empties in a row still stop it, and the log says why.
+- **Usage log.** Every call writes one line to `runs/live/<tag>/usage.<attempt>.jsonl`: model, host, finish reason, tokens including reasoning, and OpenRouter's own cost. The queue sums it into the log line, so `notes/log.md` shows real spend per run, not the estimate.
+- **First real runs**, 3 rounds each: DeepSeek Flash via OpenRouter, 47 calls, $0.012, all on one host (OpenInference); Haiku 5.5 via OpenRouter, 45 calls, $0.026. Scaled to 30 rounds: about $0.12 and $0.26 a run with the judge. The DeepSeek sellers were proposing to "hold firm" together by round 2.
+- **Anthropic key.** The first key was organisation-level and could not make calls without a workspace id. A standard key (`sk-ant-api03`) replaced it on 10/20 and works for Haiku 5.5 and Fable 5.1. The workspace header support stays in place in case it is needed again.
+- **Thinking on the direct Claude route.** Current Claude models think by default on the direct API: Haiku wrote about 1,550 tokens per reply against about 870 through OpenRouter with reasoning off. The starter's Claude client now honours the same switch. "off" disables thinking (Haiku: about 840 tokens per reply, so the two routes match). Fable 5.1 refuses to disable thinking, so "off" runs it at effort low, and every call records which setting applied. Methods must say that the Fable sellers ran at low effort, not without thinking.
+- **Routing for Friday:** Haiku controls and the Fable arm on the direct route (Max plan API credit), DeepSeek, Luna and the judge on OpenRouter. If the direct route fails mid-queue, the Haiku id swaps to `anthropic/claude-haiku-5.5`.
+
 ## 6. Rules
 
 1. One door: anything that is not the market simulator calls `tools.llm.complete(task, ...)`. New jobs get a `[tasks.x]` entry, not an ad-hoc client.

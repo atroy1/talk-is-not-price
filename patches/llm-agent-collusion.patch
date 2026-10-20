@@ -1,8 +1,8 @@
 diff --git a/src/continuous_double_auction/cda_types.py b/src/continuous_double_auction/cda_types.py
-index 6e7b645..9791142 100644
+index 6e7b645..e945d2c 100644
 --- a/src/continuous_double_auction/cda_types.py
 +++ b/src/continuous_double_auction/cda_types.py
-@@ -5,10 +5,12 @@ from typing import Any, Dict, Literal, Optional, Self
+@@ -5,10 +5,13 @@ from typing import Any, Dict, Literal, Optional, Self
  
  SUPPORTED_MODELS = ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", 
                      "claude-3-5-haiku-latest", "claude-3-5-sonnet-latest", "claude-3-7-sonnet-latest", 
@@ -14,12 +14,13 @@ index 6e7b645..9791142 100644
 +                    # Current models (2026-10): Claude API, DeepSeek's own API, OpenRouter ids
 +                    "claude-haiku-5-5", "claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-1",
 +                    "deepseek-flash",
-+                    "deepseek/deepseek-v4.1-flash", "openai/gpt-6-luna"]
++                    "deepseek/deepseek-v4.1-flash", "openai/gpt-6-luna",
++                    "anthropic/claude-haiku-5.5", "anthropic/claude-sonnet-5.5", "openai/gpt-4.1-mini"]
 +Model = Literal[tuple(SUPPORTED_MODELS)]
  
  class ExperimentParams(BaseModel):
      """
-@@ -36,6 +38,8 @@ class ExperimentParams(BaseModel):
+@@ -36,6 +39,8 @@ class ExperimentParams(BaseModel):
      initial_buyer_bid_spread: float = 2.5    # Default spread for initial buyer bids
      initial_condition: bool = True           # Flag to enable using initial conditions
      max_message_length: int = 500           # Maximum length for agent communication messages
@@ -136,10 +137,84 @@ index e083f52..6812be8 100644
          raise ValueError(f"Unknown model: {model}")
      return client
 diff --git a/src/resources/model_wrappers.py b/src/resources/model_wrappers.py
-index 490dfa0..fb7a26a 100644
+index 490dfa0..620463c 100644
 --- a/src/resources/model_wrappers.py
 +++ b/src/resources/model_wrappers.py
-@@ -146,11 +146,26 @@ class OpenRouterClient(ModelWrapper):
+@@ -13,6 +13,23 @@ import google.api_core.exceptions
+ logger = logging.getLogger(__name__)
+ logger.setLevel(logging.WARNING)
+ 
++
++def _log_usage(model: str, route: str, usage: dict, finish: str, ok: bool) -> None:
++    """One JSON line per API call to $CDA_USAGE_LOG (set by tools/run_queue.py), so each run's real
++    token bill, hidden reasoning included, sits beside its transcripts."""
++    path = os.getenv("CDA_USAGE_LOG")
++    if not path:
++        return
++    import json
++    row = {"t": round(time.time(), 2), "model": model, "route": route, "finish": finish, "ok": ok, **(usage or {})}
++    with _USAGE_LOCK:
++        with open(path, "a") as f:
++            f.write(json.dumps(row, default=str) + "\n")
++
++
++import threading as _threading
++_USAGE_LOCK = _threading.Lock()
++
+ class Message(TypedDict):
+     role: str
+     content: str
+@@ -118,19 +135,46 @@ class OpenRouterClient(ModelWrapper):
+             base_url = "https://openrouter.ai/api/v1",
+             api_key = os.getenv("OPENROUTER_API_KEY")
+         )
++        # One model, one host, start to finish: a provider fallback would record another host's
++        # serving of these weights (and quantisation) under this run's name.
++        self.extra_body = {"provider": {"allow_fallbacks": False}}
++        # Hidden reasoning: CDA_REASONING = off | minimal | low | medium | high | default (set per run by the queue).
++        # "off" matches the 2025 GPT-4.1 runs, which had none; "default" leaves the model's own setting.
++        mode = os.getenv("CDA_REASONING", "default")
++        if mode == "off":
++            self.extra_body["reasoning"] = {"enabled": False}
++        elif mode != "default":
++            self.extra_body["reasoning"] = {"effort": mode}
++        self.reasoning_mode = mode
++        # Current Claude models reject non-default sampling parameters, also when reached through OpenRouter.
++        self.send_sampling = not model_name.startswith("anthropic/")
+     
+     def generate(self, messages: List[Message]) -> str:
+         for attempt in range(self.max_retries):
+             try:
++                sampling = dict(temperature=self.temperature, top_p=self.top_p) if self.send_sampling else {}
+                 response = self.client.chat.completions.create(
+                     model=self.model_name,
+                     messages=messages,
+-                    temperature=self.temperature,
+                     max_completion_tokens=self.max_tokens,
+-                    top_p=self.top_p,
++                    extra_body=self.extra_body,
++                    **sampling,
+                     **self.additional_params
+                 )
+-                return response.choices[0].message.content
++                choice = response.choices[0]
++                usage = response.usage.model_dump() if response.usage else {}
++                usage["provider"] = getattr(response, "provider", None)
++                text = choice.message.content
++                _log_usage(self.model_name, "openrouter", usage, str(choice.finish_reason), bool(text))
++                if not text:
++                    # e.g. hidden reasoning used the whole max_completion_tokens budget
++                    logger.warning(f"OpenRouter empty reply (attempt {attempt + 1}/{self.max_retries}, {self.model_name}, "
++                                   f"finish={choice.finish_reason}, reasoning={self.reasoning_mode})")
++                    if attempt == self.max_retries - 1:
++                        return None
++                    self._exponential_backoff(attempt)
++                    continue
++                return text
+             except APIError as e:
+                 logger.warning(f"OpenRouter API error (attempt {attempt + 1}/{self.max_retries}): {str(e)} for prompt {messages}")
+                 if attempt == self.max_retries - 1:
+@@ -146,11 +190,34 @@ class OpenRouterClient(ModelWrapper):
          return responses
  
  
@@ -152,6 +227,7 @@ index 490dfa0..fb7a26a 100644
 +            base_url = "https://api.deepseek.com",
 +            api_key = os.getenv("DEEPSEEK_API_KEY")
 +        )
++        self.extra_body = {}  # DeepSeek's own API has no provider routing
 +
 +
  class AnthropicClient(ModelWrapper):
@@ -164,11 +240,18 @@ index 490dfa0..fb7a26a 100644
 +        # temperature/top_p with a 400, need room for thinking in max_tokens, and can run long.
 +        self.legacy = model_name.startswith("claude-3")
 +        self.effort = effort
-+        self.client = Anthropic(timeout=60 if self.legacy else 600)
++        # Same switch as the OpenRouter client. "off" disables thinking where the model allows it; models that
++        # only think adaptively (Fable 5.1) refuse that, and fall back to effort "low", recorded on every call.
++        self.reasoning_mode = os.getenv("CDA_REASONING", "default")
++        self.thinking_off = self.reasoning_mode == "off" and not self.legacy
++        # An organisation-level key must name a workspace on every request.
++        ws = os.getenv("ANTHROPIC_WORKSPACE_ID")
++        self.client = Anthropic(timeout=60 if self.legacy else 600,
++                                default_headers={"anthropic-workspace-id": ws} if ws else None)
      
      def generate(self, messages: List[Message]) -> str:
  
-@@ -162,16 +177,28 @@ class AnthropicClient(ModelWrapper):
+@@ -162,18 +229,46 @@ class AnthropicClient(ModelWrapper):
  
          for attempt in range(self.max_retries):
              try:
@@ -176,8 +259,14 @@ index 490dfa0..fb7a26a 100644
 +                    request = dict(max_tokens=self.max_tokens, temperature=self.temperature, top_p=self.top_p)
 +                else:
 +                    request = dict(max_tokens=max(self.max_tokens, 16000))
-+                    if self.effort:
-+                        request["extra_body"] = {"output_config": {"effort": self.effort}}
++                    effort = self.effort or (self.reasoning_mode if self.reasoning_mode not in ("default", "off") else None)
++                    if self.thinking_off:
++                        request["extra_body"] = {"thinking": {"type": "disabled"}}
++                    elif self.reasoning_mode == "off":
++                        effort = effort or "low"
++                    if effort:
++                        request.setdefault("extra_body", {})["output_config"] = {"effort": effort}
++                    applied = "thinking disabled" if self.thinking_off else (f"effort {effort}" if effort else "model default")
                  response = self.client.messages.create(
                      model=self.model_name,
                      system=system,
@@ -189,15 +278,27 @@ index 490dfa0..fb7a26a 100644
                      **self.additional_params
                  )
 -                return response.content[0].text
++                usage = response.usage.model_dump() if response.usage else {}
++                usage["reasoning_applied"] = "legacy sampling" if self.legacy else applied
++                _log_usage(self.model_name, "anthropic", usage, str(response.stop_reason), response.stop_reason != "refusal")
 +                if response.stop_reason == "refusal":
 +                    logger.error(f"Claude refused ({self.model_name}): {getattr(response, 'stop_details', None)}")
 +                    return None
 +                # Thinking blocks come before the answer, so take the text blocks, not content[0]
 +                text = "".join(block.text for block in response.content if block.type == "text")
 +                if not text:
-+                    logger.error(f"Claude returned no text ({self.model_name}, stop_reason={response.stop_reason})")
-+                    return None
++                    logger.warning(f"Claude returned no text (attempt {attempt + 1}/{self.max_retries}, {self.model_name}, stop_reason={response.stop_reason})")
++                    if attempt == self.max_retries - 1:
++                        return None
++                    self._exponential_backoff(attempt)
++                    continue
 +                return text
  
              except (APIConnectionError, RateLimitError, APIStatusError) as e:
++                if self.thinking_off and "thinking.type.disabled" in str(e):
++                    logger.warning(f"{self.model_name} cannot disable thinking; using effort low instead")
++                    self.thinking_off = False
++                    continue
                  logger.warning(f"Anthropic API error (attempt {attempt + 1}/{self.max_retries}): {str(e)}")
+                 if attempt == self.max_retries - 1:
+                     logger.error(f"Failed after {self.max_retries} attempts: {str(e)} for prompt {messages}")

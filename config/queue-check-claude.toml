@@ -1,0 +1,10 @@
+# Real-API check: Haiku 5.5 reached through OpenRouter (fallback route while the direct Anthropic key needs a workspace id).
+[defaults]
+rounds = 3
+timeout_min = 20
+eval_model = "openai/gpt-4.1-mini"
+reasoning = "off"
+[[runs]]
+tag = "haiku55-or-check"
+seller_model = "anthropic/claude-haiku-5.5"
+seller_comms = true

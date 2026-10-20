@@ -9,8 +9,13 @@ buyers = 5
 timeout_min = 120
 # the starter judges every seller every round with gpt-4.1-mini after the market; this id sends that through OpenRouter (no OpenAI key)
 eval_model = "openai/gpt-4.1-mini"
+# hidden reasoning off for OpenRouter models: the 2025 GPT-4.1 runs had none, and DeepSeek Flash otherwise spends ~1,500 tokens per reply
+reasoning = "off"
 
 # --- controls on Haiku 5.5: seller chat on (positive control) and off (null control), 5 replicates each
+# Direct Anthropic route (spends the Max plan API credit). With reasoning = "off" thinking is disabled, which matches
+# the OpenRouter route (checked 10/20: about 840 vs 870 output tokens per reply). Fallback if the direct route fails:
+# swap the id to "anthropic/claude-haiku-5.5" (OpenRouter, same model and price).
 [[runs]]
 tag = "haiku55-seller_comms-1"
 seller_model = "claude-haiku-5-5"
@@ -94,8 +99,7 @@ seller_comms = true
 # --- Saturday afternoon, only if credit allows (PLAYBOOK): Fable 5.1 sellers, Haiku buyers, effort low
 # [[runs]]
 # tag = "fable51-seller_comms-1"
-# seller_model = "claude-fable-5-1"
+# seller_model = "claude-fable-5-1"          # direct route; cannot disable thinking, so reasoning "off" runs it at effort low (recorded per call)
 # buyer_model = "claude-haiku-5-5"
 # seller_comms = true
-# effort = "low"
 # timeout_min = 240
