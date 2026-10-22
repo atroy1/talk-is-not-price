@@ -4,9 +4,11 @@
 
 [lanes.local]
 kind = "openai"
-base_url_env = "LMSTUDIO_BASE_URL"     # e.g. http://arthurs-mac-studio.local:1234/v1 (LM Studio, "serve on local network" on)
+base_url_env = "LMSTUDIO_BASE_URL"     # http://arthurs-mac-studio.local:1234/v1 (Studio, 192.168.4.31 on 10/21)
 key_env = "LMSTUDIO_API_KEY"           # LM Studio ignores it; any string
-default_model = "qwen3-30b-a3b"        # set to the exact id that GET /v1/models lists on setup day
+default_model = "qwen/qwen3.8-27b"     # Studio, 64 GB, MLX 4-bit, loaded at 8192 context (enough: an 8-minute talk window is ~2k tokens)
+# Qwen 3.x thinks by default (about 12 s per short reply); reasoning_effort "none" turns it off (0.4 s on the 9B, 1.2 s on the 27B). Checked 10/21.
+extra_body = { reasoning_effort = "none" }
 
 [lanes.claude]
 kind = "anthropic"
@@ -31,7 +33,6 @@ extra_body = { provider = { allow_fallbacks = false }, reasoning = { enabled = f
 "google/gemini-2.5-flash-lite" = [0.10, 0.40]
 "anthropic/claude-haiku-5.5" = [0.10, 0.50]   # OpenRouter route to Claude, same list price
 "anthropic/claude-sonnet-5.5" = [2.0, 10.0]
-"typesafe/jev-router" = [0.042, 0.0]        # OpenRouter id checked 2026-10-20 (there is no plain typesafe/jev)
 "gpt-4.1-mini" = [0.40, 1.60]              # the starter's per-run judge, OpenAI direct
 "openai/gpt-4.1-mini" = [0.40, 1.60]       # same judge via OpenRouter
 
@@ -45,7 +46,7 @@ purpose = "Claims, numbers and open problems with timestamps from one transcript
 
 [tasks.slide_ocr]
 lane = "local"
-model = "qwen3-vl-8b"
+model = "qwen/qwen3.8-27b"             # reads images too
 max_tokens = 600
 temperature = 0.0
 fallback = "claude:claude-haiku-5-5"
@@ -53,16 +54,21 @@ purpose = "Text and the one takeaway of a slide frame"
 
 [tasks.label_message]
 lane = "local"
+model = "qwen/qwen3.5-9b"              # fast labeller; the 27B is the second opinion
 max_tokens = 12
 temperature = 0.0
 purpose = "First-pass label for every seller message: proposes_floor / agrees / neither"
 
-[tasks.label_jev]
+[tasks.label_scored]
 lane = "openrouter"
-model = "typesafe/jev-router"
-max_tokens = 12
+model = "deepseek/deepseek-v4.1-flash"
+max_tokens = 3
 temperature = 0.0
-purpose = "Same label from Jev, as a cheap second labeller and a baseline"
+top_logprobs = 5
+provider = { order = ["coreweave/fp8"], allow_fallbacks = false }  # one host, 8-bit, returns probabilities (checked 2026-10-21)
+purpose = "Graded words score: P(FLOOR), P(AGREE), P(NEITHER) from the first answer token's probabilities; a continuous score the fixed false-alarm threshold can cut. About $0.30 for all 11,250 messages on this host"
+# Jev is NOT used: OpenRouter's only listing, typesafe/jev-router, forwards each request to a model it chooses,
+# so the labeller would change under us and could not be named in Methods. Checked 2026-10-21.
 
 [tasks.judge_sample]
 lane = "claude"

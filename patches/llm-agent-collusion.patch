@@ -137,7 +137,7 @@ index e083f52..6812be8 100644
          raise ValueError(f"Unknown model: {model}")
      return client
 diff --git a/src/resources/model_wrappers.py b/src/resources/model_wrappers.py
-index 490dfa0..620463c 100644
+index 490dfa0..c18c47b 100644
 --- a/src/resources/model_wrappers.py
 +++ b/src/resources/model_wrappers.py
 @@ -13,6 +13,23 @@ import google.api_core.exceptions
@@ -164,13 +164,21 @@ index 490dfa0..620463c 100644
  class Message(TypedDict):
      role: str
      content: str
-@@ -118,19 +135,46 @@ class OpenRouterClient(ModelWrapper):
+@@ -118,19 +135,54 @@ class OpenRouterClient(ModelWrapper):
              base_url = "https://openrouter.ai/api/v1",
              api_key = os.getenv("OPENROUTER_API_KEY")
          )
 +        # One model, one host, start to finish: a provider fallback would record another host's
 +        # serving of these weights (and quantisation) under this run's name.
 +        self.extra_body = {"provider": {"allow_fallbacks": False}}
++        # Host controls (set per run by the queue), e.g. {"quantizations": ["fp8"]} so no call lands on a 4-bit host
++        # Applied only to the models named in CDA_OR_PROVIDER_MODELS (the market's agents), never to the judge
++        scoped = [m for m in os.getenv("CDA_OR_PROVIDER_MODELS", "").split(",") if m]
++        if os.getenv("CDA_OR_PROVIDER") and model_name in scoped:
++            import json
++            self.extra_body["provider"].update(json.loads(os.environ["CDA_OR_PROVIDER"]))
++        # Shared upstreams return 429 under load; back off up to ~1 minute before giving up on a call
++        self.max_retries = max(self.max_retries, 7)
 +        # Hidden reasoning: CDA_REASONING = off | minimal | low | medium | high | default (set per run by the queue).
 +        # "off" matches the 2025 GPT-4.1 runs, which had none; "default" leaves the model's own setting.
 +        mode = os.getenv("CDA_REASONING", "default")
@@ -214,7 +222,7 @@ index 490dfa0..620463c 100644
              except APIError as e:
                  logger.warning(f"OpenRouter API error (attempt {attempt + 1}/{self.max_retries}): {str(e)} for prompt {messages}")
                  if attempt == self.max_retries - 1:
-@@ -146,11 +190,34 @@ class OpenRouterClient(ModelWrapper):
+@@ -146,11 +198,34 @@ class OpenRouterClient(ModelWrapper):
          return responses
  
  
@@ -251,7 +259,7 @@ index 490dfa0..620463c 100644
      
      def generate(self, messages: List[Message]) -> str:
  
-@@ -162,18 +229,46 @@ class AnthropicClient(ModelWrapper):
+@@ -162,18 +237,46 @@ class AnthropicClient(ModelWrapper):
  
          for attempt in range(self.max_retries):
              try:

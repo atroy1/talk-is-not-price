@@ -84,6 +84,21 @@ Why local and not the API for these jobs: 11,250 labels on Haiku cost about a do
 - **Thinking on the direct Claude route.** Current Claude models think by default on the direct API: Haiku wrote about 1,550 tokens per reply against about 870 through OpenRouter with reasoning off. The starter's Claude client now honours the same switch. "off" disables thinking (Haiku: about 840 tokens per reply, so the two routes match). Fable 5.1 refuses to disable thinking, so "off" runs it at effort low, and every call records which setting applied. Methods must say that the Fable sellers ran at low effort, not without thinking.
 - **Routing for Friday:** Haiku controls and the Fable arm on the direct route (Max plan API credit), DeepSeek, Luna and the judge on OpenRouter. If the direct route fails mid-queue, the Haiku id swaps to `anthropic/claude-haiku-5.5`.
 
+## 5c. Hosts, judge, and the graded words score (10/21)
+
+- **Hosts.** OpenRouter spreads one model over many hosts and favours the cheapest, which for DeepSeek Flash run it at 4-bit precision. The Friday queue now restricts the DeepSeek runs to 8-bit hosts (`or_provider` in the queue file), lets calls move between those hosts so one host's rate limit does not kill a run, and excludes Novita, which ignored reasoning-off on every call and returned empty replies. Every call's host is in the usage log; Methods says "8-bit hosts via OpenRouter, host recorded per call". The filter applies only to the market's models, never the judge.
+- **Done means done.** A run counts as finished only when every round completed and the judge produced scores. An earlier check crashed at round 2 and another lost all judge scores, and both had been reported as fine.
+- **Jev is out.** OpenRouter's only Jev listing, `typesafe/jev-router`, hands each request to a model it chooses, so the labeller could change between calls and could not be named in Methods.
+- **Graded words score instead.** The detector's false-alarm threshold needs a continuous score, not a yes/no label. Router task `label_scored` asks DeepSeek Flash for one word (FLOOR, AGREE, NEITHER) and returns the probabilities of the first token, pinned to CoreWeave (8-bit, one host). Of our models only DeepSeek Flash returns probabilities on OpenRouter. About $0.30 for all 11,250 messages. The local labels and the Sonnet sample remain the checks on it.
+
+## 5d. The Studio, as set up 10/21
+
+- Mac Studio, 64 GB, at `arthurs-mac-studio.local` (192.168.4.31 that evening). Classic LM Studio runs the server on port 1234 with Serve on Local Network on. Bionic, LM Studio's agent app, shares the downloads but does not serve the network API; keep it closed so the 27B is not loaded twice.
+- Loaded: `qwen/qwen3.8-27b` (main model: talk notes, slide text, second-opinion labels) and `qwen/qwen3.5-9b` (fast labeller), both MLX 4-bit, both able to read images, both at 8,192 context. That is enough: an eight-minute talk window is about 2,000 tokens. The S/M/L/XL table in section 3 predates the Qwen 3.5 and 3.8 releases; these two replace its picks.
+- Both think by default (about 12 s for a one-word answer). `reasoning_effort: "none"` in the local lane's config turns it off: 0.4 s on the 9B, 1.2 s on the 27B.
+- Tested end to end: a two-minute synthetic talk went through transcription and `talk_notes.py` on the 27B in about two minutes; 12 of 13 quotes matched the transcript verbatim and the 13th was correctly flagged CHECK.
+- LM Link (LM Studio's encrypted device link, in preview) is the backup route if the home network gets in the way: the laptop's own LM Studio server at `localhost:1234` then serves the Studio's models. Switching is one line in `.env`.
+
 ## 6. Rules
 
 1. One door: anything that is not the market simulator calls `tools.llm.complete(task, ...)`. New jobs get a `[tasks.x]` entry, not an ad-hoc client.

@@ -9,3 +9,4 @@ reasoning = "off"
 tag = "dsflash-check"
 seller_model = "deepseek/deepseek-v4.1-flash"
 seller_comms = true
+or_provider = { quantizations = ["fp8"], allow_fallbacks = true, ignore = ["novita"] }  # 8-bit hosts only; Novita ignores reasoning-off (10/21); host logged per call

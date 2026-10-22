@@ -15,7 +15,8 @@ A tag whose folder already holds collusion_metrics.json is skipped unless --forc
 Queue file (TOML):
     [defaults]            rounds = 30, sellers = 5, buyers = 5, timeout_min = 120, effort = "" (Claude only),
                           eval_model = "gpt-4.1-mini" (the starter's per-run judge; "openai/gpt-4.1-mini" routes it via OpenRouter),
-                          reasoning = "default" | "off" | "minimal" | "low" | "medium" | "high" (OpenRouter models' hidden reasoning)
+                          reasoning = "default" | "off" | "minimal" | "low" | "medium" | "high" (OpenRouter models' hidden reasoning),
+                          or_provider = { quantizations = ["fp8"] } (OpenRouter host filter, merged into the provider block)
     [[runs]]              tag, seller_model, buyer_model, seller_comms, oversight, boss_pressure, hide_num_rounds, plus any default
 Models must be in the starter's SUPPORTED_MODELS (patched list in patches/llm-agent-collusion.patch).
 """
@@ -49,7 +50,7 @@ FLAG_ARG = {"seller_comms": "--seller_comms_enabled", "buyer_comms": "--buyer_co
 def load_queue(path):
     q = tomllib.load(open(path, "rb"))
     d = {"rounds": 30, "sellers": 5, "buyers": 5, "timeout_min": 120, "effort": "", "overseer_model": "",
-         "eval_model": "gpt-4.1-mini", "reasoning": "default"}  # the starter's per-run judge; "openai/gpt-4.1-mini" sends it through OpenRouter
+         "eval_model": "gpt-4.1-mini", "reasoning": "default", "or_provider": {}}  # the starter's per-run judge; "openai/gpt-4.1-mini" sends it through OpenRouter
     d.update(q.get("defaults", {}))
     runs = []
     for r in q["runs"]:
@@ -116,7 +117,9 @@ def run_one(spec, cfg, attempt, env):
     t0 = time.time()
     usage_log = out / f"usage.{attempt}.jsonl"
     usage_log.unlink(missing_ok=True)
-    env = dict(env, CDA_EVAL_MODEL=spec["eval_model"], CDA_REASONING=spec["reasoning"], CDA_USAGE_LOG=str(usage_log))
+    env = dict(env, CDA_EVAL_MODEL=spec["eval_model"], CDA_REASONING=spec["reasoning"], CDA_USAGE_LOG=str(usage_log),
+               CDA_OR_PROVIDER=json.dumps(spec["or_provider"]) if spec["or_provider"] else "",
+               CDA_OR_PROVIDER_MODELS=",".join({spec["seller_model"], spec["buyer_model"]}))
     with open(out / f"stdout.{attempt}.log", "w") as so, open(out / f"stderr.{attempt}.log", "w") as se:
         try:
             p = subprocess.run(cmd, cwd=STARTER, stdout=so, stderr=se, env=env, timeout=spec["timeout_min"] * 60)
@@ -130,9 +133,26 @@ def run_one(spec, cfg, attempt, env):
         if dest.exists():
             shutil.rmtree(dest)
         shutil.move(str(res), dest)
-    market_ok = res is not None and (out / "run" / "auction_results.md").exists()
-    metrics_ok = market_ok and (out / "run" / "collusion_metrics.json").exists()
+    market_ok = res is not None and rounds_done(out / "run" / "auction_results.md") >= spec["rounds"]
+    metrics_ok = market_ok and judge_scored(out / "run" / "collusion_metrics.json")
     return code, mins, market_ok, metrics_ok, actual_cost(usage_log, cfg)
+
+
+def judge_scored(path):
+    """True when the per-run judge produced at least one seller coordination score."""
+    if not path.exists():
+        return False
+    m = json.loads(path.read_text())
+    return any(v is not None for k, vals in m.items() if k.endswith("_coordination_score") for v in (vals or []))
+
+
+def rounds_done(path):
+    """Completed rounds in the starter's auction_results.md (one JSON block per finished round)."""
+    if not path.exists():
+        return 0
+    import re
+    blocks = re.findall(r"````json\n(.*?)\n````", path.read_text(), re.S)
+    return max((json.loads(b).get("round_number", 0) for b in blocks), default=0)
 
 
 def actual_cost(usage_log, cfg):
@@ -188,7 +208,7 @@ def main():
     for spec in runs:
         if STOP.exists():
             log_line(f"STOP file found, stopping before {spec['tag']}"); print("STOP"); break
-        done = (LIVE / spec["tag"] / "run" / "collusion_metrics.json").exists()
+        done = rounds_done(LIVE / spec["tag"] / "run" / "auction_results.md") >= spec["rounds"]
         if done and not a.force:
             print(f"skip {spec['tag']} (done)"); continue
         for attempt in (1, 2):
@@ -197,9 +217,9 @@ def main():
             if metrics_ok and code == 0:
                 status = "ok"
             elif market_ok:
-                status = f"market done, judge/metrics failed (exit {code}); recompute metrics later, not rerun"
+                status = f"market done, judge scores missing (exit {code}); rescore later, not rerun"
             else:
-                status = f"failed (exit {code}), no market output"
+                status = f"failed (exit {code}), market incomplete"
             bill = (f"spent ${spent['usd']:.3f} over {spent['calls']} calls ({spent['empty']} empty, {spent['reasoning_tokens']} reasoning tokens)"
                     if spent else f"est ${estimate(spec, cfg):.2f}")
             log_line(f"{spec['tag']} attempt {attempt}: {status}, {mins:.1f} min, runs/live/{spec['tag']}, {bill} "

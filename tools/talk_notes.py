@@ -93,11 +93,24 @@ def main():
             print(f"window {i + 1}: unparseable reply, skipped")
     if a.dry_run:
         print(f"dry run: prompts in {tdir / 'prompts'}"); return
+    # keep the longest version of overlapping quotes (windows overlap), then order by time
+    items = [it for it in items if (it.get("quote") or "").strip()]
+    items.sort(key=lambda it: -len(norm(it["quote"])))
+    kept = []
+    for it in items:
+        n = norm(it["quote"])
+        if any(n in norm(k["quote"]) for k in kept):
+            continue
+        kept.append(it)
+    def secs(t):
+        try:
+            m, s_ = str(t).split(":"); return int(m) * 60 + int(s_)
+        except ValueError:
+            return 10 ** 9
+    items = sorted(kept, key=lambda it: secs(it.get("t", "")))
     seen, rows, ok, opens = set(), [], 0, []
     for it in items:
-        q = (it.get("quote") or "").strip()
-        if not q or norm(q) in seen:
-            continue
+        q = it["quote"].strip()
         seen.add(norm(q))
         verified = norm(q) in full
         ok += verified

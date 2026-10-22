@@ -68,6 +68,7 @@ class Reply:
     fallback_from: str = ""
     stop_reason: str = ""
     note: str = ""
+    top_logprobs: list = None  # first answer token's alternatives as (token, probability), when the task asks for them
 
 
 def price(cfg, lane, model, in_tokens, out_tokens):
@@ -98,7 +99,7 @@ def lane_ready(cfg, lane):
     return bool(lane_base_url(lc))
 
 
-def _call_openai(lc, model, system, user, max_tokens, temperature):
+def _call_openai(lc, model, system, user, max_tokens, temperature, logprobs=0, provider=None):
     from openai import OpenAI
     base = lane_base_url(lc)
     client = OpenAI(base_url=base, api_key=lane_key(lc) or "none", max_retries=2, timeout=120)
@@ -107,16 +108,27 @@ def _call_openai(lc, model, system, user, max_tokens, temperature):
     if temperature is not None:
         kw["temperature"] = temperature
     if lc.get("extra_body"):
-        kw["extra_body"] = lc["extra_body"]
+        kw["extra_body"] = json.loads(json.dumps(lc["extra_body"]))
+    if provider:
+        kw.setdefault("extra_body", {}).setdefault("provider", {}).update(provider)
+    if logprobs:
+        kw.update(logprobs=True, top_logprobs=logprobs)
+        # only hosts that really return logprobs may serve the call
+        kw.setdefault("extra_body", {}).setdefault("provider", {})["require_parameters"] = True
     r = client.chat.completions.create(**kw)
     text = r.choices[0].message.content or ""
+    _call_openai.last_top = None
+    lp = getattr(r.choices[0], "logprobs", None)
+    if logprobs and lp and lp.content:
+        import math
+        _call_openai.last_top = [(t.token, round(math.exp(t.logprob), 4)) for t in lp.content[0].top_logprobs]
     u = r.usage
     provider = getattr(r, "provider", None) or urlparse(base).hostname or "openai-compatible"
     return text, int(u.prompt_tokens or 0), int(u.completion_tokens or 0), str(provider), r.model or model, \
         str(r.choices[0].finish_reason or "")
 
 
-def _call_anthropic(lc, model, system, user, max_tokens, temperature):
+def _call_anthropic(lc, model, system, user, max_tokens, temperature, logprobs=0, provider=None):
     import anthropic
     ws = os.environ.get("ANTHROPIC_WORKSPACE_ID")  # needed when the key is organisation-level, not workspace-scoped
     client = anthropic.Anthropic(api_key=lane_key(lc), max_retries=2, timeout=120,
@@ -129,14 +141,15 @@ def _call_anthropic(lc, model, system, user, max_tokens, temperature):
     return text, int(r.usage.input_tokens), int(r.usage.output_tokens), "anthropic", r.model, str(r.stop_reason)
 
 
-def _once(cfg, task, lane, model, system, user, max_tokens, temperature, note, fallback_from=""):
+def _once(cfg, task, lane, model, system, user, max_tokens, temperature, note, fallback_from="", logprobs=0, provider=None):
     lc = cfg["lanes"][lane]
     t0 = time.time()
     fn = _call_anthropic if lc["kind"] == "anthropic" else _call_openai
-    text, tin, tout, provider, model_used, stop = fn(lc, model, system, user, max_tokens, temperature)
+    text, tin, tout, provider, model_used, stop = fn(lc, model, system, user, max_tokens, temperature, logprobs, provider)
+    top = getattr(_call_openai, "last_top", None) if fn is _call_openai else None
     return Reply(text=text, task=task, lane=lane, model=model_used, provider=provider, in_tokens=tin,
                  out_tokens=tout, usd=price(cfg, lane, model, tin, tout), latency_s=round(time.time() - t0, 2),
-                 fallback_from=fallback_from, stop_reason=stop, note=note)
+                 fallback_from=fallback_from, stop_reason=stop, note=note, top_logprobs=top)
 
 
 def log(reply):
@@ -144,7 +157,7 @@ def log(reply):
     new = not LEDGER.exists()
     row = asdict(reply)
     row["ts"] = time.strftime("%Y-%m-%dT%H:%M:%S")
-    row.pop("text")
+    row.pop("text"); row.pop("top_logprobs", None)
     with open(LEDGER, "a", newline="") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS)
         if new:
@@ -160,8 +173,10 @@ def complete(task, user, system=None, model=None, lane=None, max_tokens=None, te
     model = model or t.get("model") or cfg["lanes"][lane].get("default_model")
     max_tokens = max_tokens or t.get("max_tokens", 256)
     temperature = t.get("temperature") if temperature is None else temperature
+    logprobs = int(t.get("top_logprobs", 0))
+    provider = t.get("provider")
     try:
-        reply = _once(cfg, task, lane, model, system, user, max_tokens, temperature, note)
+        reply = _once(cfg, task, lane, model, system, user, max_tokens, temperature, note, logprobs=logprobs, provider=provider)
     except Exception as e:  # noqa: BLE001
         fb = t.get("fallback")
         failed = Reply(text="", task=task, lane=lane, model=model, provider="", in_tokens=0, out_tokens=0,
@@ -171,7 +186,7 @@ def complete(task, user, system=None, model=None, lane=None, max_tokens=None, te
             raise
         fl, fm = fb.split(":", 1)
         reply = _once(cfg, task, fl, fm, system, user, max_tokens, temperature, note,
-                      fallback_from=f"{lane}:{model}")
+                      fallback_from=f"{lane}:{model}", logprobs=logprobs)
     log(reply)
     return reply
 

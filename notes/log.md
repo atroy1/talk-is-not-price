@@ -38,3 +38,19 @@ One line per run or decision, with the time. Started 2026-10-15.
 - 2026-10-20 13:31 queue: end config/queue-check-direct.toml
 - 2026-10-20 13:45 new standard Anthropic key (sk-ant-api03) works: Haiku 5.5 and Fable 5.1 answer directly. Found: direct Claude thinks by default (Haiku ~1,550 output tokens per reply vs ~870 via OpenRouter with reasoning off). Claude client now honours CDA_REASONING: off = thinking disabled (Haiku ~840, routes match); Fable 5.1 refuses disabled, runs at effort low, logged per call. haiku55-direct-check 3 rounds $0.028. Friday queue's Haiku controls moved back to the direct route; OpenRouter id is the fallback.
 - 2026-10-20 committed readiness work; Mac Studio setup moved to Wed Oct 21 (his word).
+- 2026-10-21 19:30 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-21 19:31 queue: dsflash-check attempt 1: failed (exit 1), no market output, 0.4 min, runs/live/dsflash-check, spent $0.001 over 10 calls (0 empty, 0 reasoning tokens) (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-21 19:31 queue: dsflash-check attempt 2: failed (exit 1), no market output, 0.2 min, runs/live/dsflash-check, est $0.02 (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-21 19:31 queue: dsflash-check skipped after 2 attempts
+- 2026-10-21 19:31 queue: end config/queue-check.toml
+- 2026-10-21 19:31 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-21 19:35 queue: dsflash-check attempt 1: market done, judge/metrics failed (exit 1); recompute metrics later, not rerun, 3.1 min, runs/live/dsflash-check, spent $0.042 over 38 calls (7 empty, 28000 reasoning tokens) (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-21 19:35 queue: end config/queue-check.toml
+- 2026-10-21 19:35 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-21 19:41 queue: dsflash-check attempt 1: ok, 5.7 min, runs/live/dsflash-check, spent $0.019 over 32 calls (0 empty, 0 reasoning tokens) (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-21 19:41 queue: end config/queue-check.toml
+- 2026-10-21 19:41 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-21 19:42 queue: dsflash-check attempt 1: ok, 0.6 min, runs/live/dsflash-check, spent $0.027 over 46 calls (0 empty, 0 reasoning tokens) (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-21 19:42 queue: end config/queue-check.toml
+- 2026-10-21 Studio setup in progress (64 GB; Qwen3.8 27B already downloaded via Bionic, Qwen3.5 9B added; headless llmster route, LM Link as backup). Harness: DeepSeek runs on 8-bit hosts only (filter scoped to market models, Novita excluded, rate-limit backoff), done = all rounds + judge scores; dsflash-check passes with judge scores. Router: label_scored (DeepSeek Flash probabilities, CoreWeave). Jev dropped (OpenRouter listing is a router).
+- 2026-10-21 19:50 Studio live: LM Studio server at arthurs-mac-studio.local:1234 (192.168.4.31), qwen/qwen3.8-27b + qwen/qwen3.5-9b loaded, 8192 ctx, thinking off via reasoning_effort none. All three lanes green in make g0. Talk pipeline tested on the Studio with a synthetic 2-minute talk: 12/13 quotes verbatim, 1 correctly flagged. Only red: ssh to the Studio needs the first interactive connection (no saved host key; Remote Login is on).
