@@ -2,7 +2,7 @@
 
 The judges read one PDF. Everything below exists to make that PDF true, clear and submitted by Sunday evening. Version 1 (10/15) assumed a free Saturday; this version is built around the real calendar: a Wegmans shift Saturday 7 AM to noon, the Thursday shift and the DC interview, and talks that are only recorded "after the event" (sprint FAQ), so the Friday talks must be captured live.
 
-Companion documents: `docs/MODEL-ROUTING.md` (which model does what, and what it costs), `docs/TALKS-PIPELINE.md` (speech to transcript to cited note), `docs/PDF-TEMPLATE.md` (the report, page by page). The research itself is in `docs/END-PRODUCT.md` and `docs/RESEARCH-BRIEF.md`.
+Companion documents: `docs/FRIDAY-BUILD.md` (what gets built Friday and Saturday, with tests and commands), `docs/MODEL-ROUTING.md` (which model does what, and what it costs), `docs/TALKS-PIPELINE.md` (speech to transcript to cited note), `docs/PDF-TEMPLATE.md` (the report, page by page). The research itself is in `docs/END-PRODUCT.md` and `docs/RESEARCH-BRIEF.md`.
 
 ## 1. Who does what
 
@@ -11,7 +11,7 @@ Companion documents: `docs/MODEL-ROUTING.md` (which model does what, and what it
 | **Arty** | Decisions at every gate. All prose in the report. Discord, Luma, the submission form. Attends the Friday talks. | Hand-edits run outputs or figures after the freeze. |
 | **Claude Code session "lab"** (this folder, experiments) | Detector code, calibration, run queue, figures, tables, `notes/log.md`. Subagents on Sonnet only, none while API runs are in flight. | Writes report prose. Fans out agents. Changes a frozen number. |
 | **Claude Code session "desk"** (write-up) | Rubric critique ("score 1 to 5 per dimension, say what moves each by one"), reference and caption checks, consistency between numbers in text, tables and figures, the export checklist. | Writes final sentences into the Doc. Its drafts are raw material for rewriting, and that is what the LLM Usage Statement says. |
-| **Mac Studio, local models** | Transcripts, slide OCR, talk notes, bulk labelling of the 11,250 seller messages, log triage, anything bulk or repetitive. Free and private. | Plays a market agent in a headline run. Judges the final sample (that is the Claude judge's job). |
+| **Mac Studio, local models** | Transcripts, slide OCR, talk notes, bulk labelling of the 9,654 seller messages, log triage, anything bulk or repetitive. Free and private. | Plays a market agent in a headline run. Judges the final sample (that is the Claude judge's job). |
 | **Claude API** (Max plan credits) | Market agents for new runs (Haiku 5.5), the reference judge on a stratified sample (Sonnet 5.5), the Fable 5.1 seller arm if credit allows. | Anything the local lane can do. |
 | **OpenRouter** | The other model families (DeepSeek V4.1 Flash, GPT-6 Luna, Gemini Flash-Lite), Jev as a cheap labeller, and the fallback if Anthropic credit runs out. | Silent provider substitution: fallbacks off, provider logged. |
 
@@ -58,14 +58,14 @@ A gate has a pass test and a named cut. Record the outcome in `notes/log.md` wit
 - 9 AM to noon: fix anything G0 left red. Reread `docs/END-PRODUCT.md`. Open the two Zoom links from Luma ten minutes early and start the local recording (pipeline section 3).
 - 1:15 to 3:15 PM: the talks. Notes by hand on what each speaker says is unsolved. Recording runs.
 - 3:15 to 4 PM: `tools/talks.sh` on both recordings, then `tools/talk_notes.py`. Read the notes. Pick the one or two lines that change Related Work.
-- 4 PM: G2. Commit.
+- 4 PM: G2. Write `seller_prompt_compete.jinja2` (the honest-chat reference, decided 10/21), uncomment the compete runs, commit.
 - 4:30 to 9 PM: the detector on the bundled 75 runs: words score, deeds score, fusion, threshold set on honest runs at 5% false alarms, permutation null. G3 at 9.
-- 9 to 10 PM: `make queue`. Check the first run completes, lands in `runs/live/`, and bills what the cost table says. Sleep.
+- 9 to 10 PM: `make studio-queue` (the queue runs on the Studio, detached). `make studio-status` after ten minutes: the first run finished and billed what the cost table says. Sleep.
 
 ### Saturday Oct 24
 
 - 7 AM to noon: shift. The queue runs. Nothing is scheduled that needs you.
-- 12:30 PM: read the queue log. Load the finished runs through the loader. Note failures.
+- 12:30 PM: `make studio-pull`, read `runs/live/queue-log.md`. Load the finished runs through the loader. Note failures.
 - 1 to 2:30 PM: the headline analysis (lead time by round: chat, prices, fused) and the quadrant. G4.
 - 2:30 to 6 PM: cross-model scoring with the detector calibrated on the 2025 runs; the Fable seller arm only if the Anthropic credit shows at least $60 left and the queue is idle. G5 at 6.
 - 6 to 10 PM: Methods written while the setup is fresh. Limitations as a running list. Tables filled from the frozen file. Figures exported at the sizes in `docs/PDF-TEMPLATE.md`.

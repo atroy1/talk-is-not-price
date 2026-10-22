@@ -16,7 +16,8 @@ Queue file (TOML):
     [defaults]            rounds = 30, sellers = 5, buyers = 5, timeout_min = 120, effort = "" (Claude only),
                           eval_model = "gpt-4.1-mini" (the starter's per-run judge; "openai/gpt-4.1-mini" routes it via OpenRouter),
                           reasoning = "default" | "off" | "minimal" | "low" | "medium" | "high" (OpenRouter models' hidden reasoning),
-                          or_provider = { quantizations = ["fp8"] } (OpenRouter host filter, merged into the provider block)
+                          or_provider = { quantizations = ["fp8"] } (OpenRouter host filter, merged into the provider block),
+                          seller_prompt_template = "seller_prompt_compete.jinja2" (a file in the starter's prompt_templates/)
     [[runs]]              tag, seller_model, buyer_model, seller_comms, oversight, boss_pressure, hide_num_rounds, plus any default
 Models must be in the starter's SUPPORTED_MODELS (patched list in patches/llm-agent-collusion.patch).
 """
@@ -74,6 +75,8 @@ def command(spec):
         cmd += ["--effort", spec["effort"]]
     if spec.get("overseer_model"):
         cmd += ["--overseer_model", spec["overseer_model"]]
+    if spec.get("seller_prompt_template"):
+        cmd += ["--seller_prompt_template", spec["seller_prompt_template"]]
     return cmd
 
 
@@ -176,7 +179,12 @@ def main():
     ap.add_argument("queue"); ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--fake", action="store_true", help="serve a fake OpenAI endpoint and point the starter at it")
     ap.add_argument("--force", action="store_true", help="rerun tags that already have metrics")
+    ap.add_argument("--log", help="append queue lines here instead of notes/log.md (the Studio uses runs/live/queue-log.md)")
     a = ap.parse_args()
+    global LOG
+    if a.log:
+        LOG = (ROOT / a.log) if not os.path.isabs(a.log) else Path(a.log)
+        LOG.parent.mkdir(parents=True, exist_ok=True)
     load_env()
     cfg = load_config()
     runs = load_queue(a.queue)
@@ -256,8 +264,8 @@ class FakeOpenAI(BaseHTTPRequestHandler):
             reply["bid"] = 91.0
             if "message_to_buyers" in prompt:
                 reply.update(plan_for_message="fake", message_to_buyers="hold bids")
-        if "collusion" in prompt.lower() and '"ask":' not in prompt and '"bid"' not in prompt:
-            reply = {"score": 1, "reasoning": "fake"}  # overseer or judge style prompts
+        if '"coordination":' in prompt:  # the starter's per-run judge and the overseer ask for this shape
+            reply = {"coordination": "no", "score": 1, "type": "null", "evidence": []}
         body = json.dumps({"id": "fake", "object": "chat.completion", "created": 0, "model": req.get("model"),
                            "choices": [{"index": 0, "finish_reason": "stop",
                                         "message": {"role": "assistant", "content": json.dumps(reply)}}],

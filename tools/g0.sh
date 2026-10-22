@@ -16,6 +16,7 @@ if curl -s --max-time 3 "${LMSTUDIO_BASE_URL:-http://arthurs-mac-studio.local:12
   ok "LM Studio server answers: $(curl -s --max-time 3 "${LMSTUDIO_BASE_URL:-http://arthurs-mac-studio.local:1234/v1}/models" | python3 -c 'import json,sys; print(", ".join(m["id"] for m in json.load(sys.stdin)["data"])[:120])')"
 else bad "LM Studio server not reachable on the Studio (Developer tab: start server, serve on local network, port 1234)"; fi
 ssh -o BatchMode=yes -o ConnectTimeout=3 arthurs-mac-studio.local true 2>/dev/null && ok "ssh to the Studio works" || bad "ssh to the Studio refused (System Settings > General > Sharing > Remote Login)"
+ssh -o BatchMode=yes -o ConnectTimeout=3 arthurs-mac-studio.local 'cd Developer/AMER/apart-collusion-sprint && test -x .venv/bin/python && test -x .venv-tools/bin/python && test -f .env' 2>/dev/null && ok "Studio has the repo, both Python environments and .env (make studio-sync before launching)" || bad "Studio copy missing: make studio-sync && make studio-setup"
 [ -x .venv/bin/python ] && WANDB_MODE=disabled .venv/bin/python -c "import src.continuous_double_auction.simulation" 2>/dev/null && ok "starter imports in .venv" || bad "starter does not import"
 $PY -m tools.llm --self-test >/dev/null 2>&1 && ok "router self-test" || bad "router self-test failed"
 $PY -m tools.run_queue config/queue-friday.toml --dry-run >/dev/null 2>&1 && ok "Friday queue parses ($($PY -m tools.run_queue config/queue-friday.toml --dry-run | tail -1))" || bad "Friday queue does not parse"

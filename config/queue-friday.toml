@@ -52,6 +52,60 @@ seller_model = "claude-haiku-5-5"
 tag = "haiku55-base-5"
 seller_model = "claude-haiku-5-5"
 
+# --- honest reference for the chat signal (decided 10/21, option A): Haiku 5.5, chat on, one added
+# "compete independently" sentence. UNCOMMENT AT THE FRIDAY 4 PM LOCK once
+# vendor/llm-agent-collusion/src/continuous_double_auction/prompt_templates/seller_prompt_compete.jinja2 exists.
+# [[runs]]
+# tag = "haiku55-compete-1"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-2"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-3"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-4"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-5"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-6"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-7"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-8"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-9"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-10"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+
 # --- second family: DeepSeek V4.1 Flash via OpenRouter, chat on; 8-bit hosts only (OpenRouter otherwise picks 4-bit hosts by price)
 [[runs]]
 tag = "dsflash-seller_comms-1"

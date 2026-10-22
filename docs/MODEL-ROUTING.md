@@ -6,7 +6,7 @@ Written 2026-10-18. Which model does which job during the sprint, what each cost
 
 | Lane | Where | Pays for | Good at | Not for |
 |---|---|---|---|---|
-| **local** | LM Studio on the Mac Studio, OpenAI-compatible server on the LAN (`LMSTUDIO_BASE_URL`); speech-to-text runs on either Mac | nothing | bulk and private work: transcripts, slide OCR, talk notes, a first label on all 11,250 seller messages, log triage, dedup | the headline judge, market agents in a headline run |
+| **local** | LM Studio on the Mac Studio, OpenAI-compatible server on the LAN (`LMSTUDIO_BASE_URL`); speech-to-text runs on either Mac | nothing | bulk and private work: transcripts, slide OCR, talk notes, a first label on all 9,654 seller messages, log triage, dedup | the headline judge, market agents in a headline run |
 | **claude** | Anthropic API, paid from the Max plan's monthly API credit ($100 or $200, expires at cycle end) | per token, list price | market agents for new runs (Haiku 5.5), the reference judge on a sample (Sonnet 5.5), the Fable 5.1 seller arm, the Batch API for a full judge pass at half price | anything the local lane can do as well |
 | **openrouter** | OpenRouter, prepaid ($20) | per token plus a small fee | the other families (DeepSeek V4.1 Flash, GPT-6 Luna, Gemini 2.5 Flash-Lite), Jev as a near-free labeller, Claude at list price if the Anthropic credit runs out | provider roulette: fallbacks are off and the provider is logged |
 
@@ -19,10 +19,10 @@ Claude Code itself (the Max plan, not the API credit) is a fourth resource: it b
 | Speech to text (talks) | this Mac or the Studio, parakeet-mlx (tdt 0.6b v3); mlx-whisper large-v3-turbo as the spot check | none needed | 2 talks of 60 min | $0 |
 | Talk notes (claims with timestamps) | local, workhorse model | none; the transcript is still usable by hand | about 16 windows | $0 |
 | Slide OCR | local, Qwen3-VL-8B | claude: Haiku 5.5 vision | 40 to 80 frames | $0, or under $0.50 |
-| First label on every seller message | local, workhorse | none | 11,250 messages, about 150 tokens in and 5 out each | $0; about 20 to 60 min on the Studio with 8 parallel requests |
+| First label on every seller message | local, workhorse | none | 9,654 messages, about 150 tokens in and 5 out each | $0; about 20 to 60 min on the Studio with 8 parallel requests |
 | Second cheap label | openrouter, Jev | none | same | under $1 |
 | Reference label, stratified sample | claude, Sonnet 5.5 | openrouter: anthropic/claude-sonnet-5.5 | 300 to 500 messages | $1 to $3 |
-| Full reference pass (only if local agreement is poor) | claude Batch API, Haiku 5.5 | none | 11,250 | about $1 |
+| Full reference pass (only if local agreement is poor) | claude Batch API, Haiku 5.5 | none | 9,654 messages | about $1 |
 | Market agents, controls | claude, Haiku 5.5, via the patched starter | none, on purpose | 2 conditions x 5 seeds | $1.50 |
 | Market agents, other families | openrouter, DeepSeek Flash and GPT-6 Luna, via the starter | none | 5 seeds each | $2 |
 | Per-run judge inside the starter (5 sellers x 30 rounds) | openrouter, `openai/gpt-4.1-mini` via `CDA_EVAL_MODEL` | none | 150 calls a run | about $0.16 a run |
@@ -55,7 +55,7 @@ Names are LM Studio's as of October 2026. If the catalogue has moved on, the rul
 
 What to expect: a 30B-A3B MoE on an Ultra-class chip decodes at roughly 60 to 100 tokens a second and takes 8 parallel requests without falling over; a 120B dense-ish model is three to five times slower. The labelling job is prompt-heavy and output-light, so it is bounded by prompt processing, which is fast. If the Studio is busy or down, every local task also runs on the Air with a smaller model (Qwen3-4B or 8B in LM Studio here), slower but free; speech-to-text already runs on the Air (tested 10/18: a 16-second clip in a few seconds, every word right).
 
-Why local and not the API for these jobs: 11,250 labels on Haiku cost about a dollar, so the saving is small; the point is that the local lane has no rate limit, no credit to protect, and can be rerun as often as the prompt changes, which during a sprint is often. It also keeps the Anthropic credit for the one thing only it can do, the Fable arm.
+Why local and not the API for these jobs: 9,654 labels on Haiku cost about a dollar, so the saving is small; the point is that the local lane has no rate limit, no credit to protect, and can be rerun as often as the prompt changes, which during a sprint is often. It also keeps the Anthropic credit for the one thing only it can do, the Fable arm.
 
 ## 4. The Claude lane
 
@@ -89,7 +89,7 @@ Why local and not the API for these jobs: 11,250 labels on Haiku cost about a do
 - **Hosts.** OpenRouter spreads one model over many hosts and favours the cheapest, which for DeepSeek Flash run it at 4-bit precision. The Friday queue now restricts the DeepSeek runs to 8-bit hosts (`or_provider` in the queue file), lets calls move between those hosts so one host's rate limit does not kill a run, and excludes Novita, which ignored reasoning-off on every call and returned empty replies. Every call's host is in the usage log; Methods says "8-bit hosts via OpenRouter, host recorded per call". The filter applies only to the market's models, never the judge.
 - **Done means done.** A run counts as finished only when every round completed and the judge produced scores. An earlier check crashed at round 2 and another lost all judge scores, and both had been reported as fine.
 - **Jev is out.** OpenRouter's only Jev listing, `typesafe/jev-router`, hands each request to a model it chooses, so the labeller could change between calls and could not be named in Methods.
-- **Graded words score instead.** The detector's false-alarm threshold needs a continuous score, not a yes/no label. Router task `label_scored` asks DeepSeek Flash for one word (FLOOR, AGREE, NEITHER) and returns the probabilities of the first token, pinned to CoreWeave (8-bit, one host). Of our models only DeepSeek Flash returns probabilities on OpenRouter. About $0.30 for all 11,250 messages. The local labels and the Sonnet sample remain the checks on it.
+- **Graded words score instead.** The detector's false-alarm threshold needs a continuous score, not a yes/no label. Router task `label_scored` asks DeepSeek Flash for one word (FLOOR, AGREE, NEITHER) and returns the probabilities of the first token, pinned to CoreWeave (8-bit, one host). Of our models only DeepSeek Flash returns probabilities on OpenRouter. About $0.30 for all 9,654 seller messages. The local labels and the Sonnet sample remain the checks on it.
 
 ## 5d. The Studio, as set up 10/21
 
