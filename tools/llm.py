@@ -225,10 +225,10 @@ def self_test():
     LEDGER.unlink(missing_ok=True)
     srv = HTTPServer(("127.0.0.1", 0), _Fake)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
-    os.environ["LMSTUDIO_BASE_URL"] = f"http://127.0.0.1:{srv.server_port}/v1"
-    os.environ["LMSTUDIO_API_KEY"] = "test"
+    os.environ["QWEN_BASE_URL"] = f"http://127.0.0.1:{srv.server_port}/v1"
+    os.environ["QWEN_API_KEY"] = "test"
     before = LEDGER.read_text().count("\n") if LEDGER.exists() else 1  # header counts
-    r = complete("label_message", "Let's remain unified at $93.00 this hour.", system="Label it.",
+    r = complete("_ping", "Let's remain unified at $93.00 this hour.", system="Label it.",
                  model="fake-model", note="self-test")
     assert r.text == "FLOOR" and r.usd == 0.0 and r.in_tokens == 42, r
     r2 = complete("_selftest", "x", note="self-test fallback")
@@ -248,9 +248,12 @@ def ping():
             print(f"{lane:11s} SKIP  no key or base url in .env"); continue
         try:
             r = complete("_ping", "Reply with the single word OK.", lane=lane, note="ping")
-            print(f"{lane:11s} OK    {r.model} via {r.provider} {r.latency_s}s ${r.usd:.5f} -> {r.text.strip()[:20]!r}")
+            print(f"{lane:11s} OK    {r.model.split('/')[-1]} via {r.provider} {r.latency_s}s ${r.usd:.5f} -> {r.text.strip()[:20]!r}")
         except Exception as e:  # noqa: BLE001
-            print(f"{lane:11s} FAIL  {type(e).__name__}: {str(e)[:100]}")
+            if lane == "local" and "Connection" in type(e).__name__:
+                print(f"{lane:11s} OFF   Qwen server not running (expected outside the sprint; make studio-qwen)")
+            else:
+                print(f"{lane:11s} FAIL  {type(e).__name__}: {str(e)[:100]}")
 
 
 def ledger():

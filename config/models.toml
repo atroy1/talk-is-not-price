@@ -3,12 +3,13 @@
 # Prices: USD per 1M tokens [input, output]. OpenRouter ids and prices checked against its live list 2026-10-20; Anthropic list prices 10/16. Recheck Thu Oct 22.
 
 [lanes.local]
+# The Qwen arm only (10/22: local exists for research levers, not for daytime jobs). The stock Qwen3.5 35B-A3B
+# mlx_lm server on the Studio, up during the sprint (make studio-qwen). "default_model" = whatever it was started with.
 kind = "openai"
-base_url_env = "LMSTUDIO_BASE_URL"     # http://arthurs-mac-studio.local:1234/v1 (Studio, 192.168.4.31 on 10/21)
-key_env = "LMSTUDIO_API_KEY"           # LM Studio ignores it; any string
-default_model = "qwen/qwen3.8-27b"     # Studio, 64 GB, MLX 4-bit, loaded at 8192 context (enough: an 8-minute talk window is ~2k tokens)
-# Qwen 3.x thinks by default (about 12 s per short reply); reasoning_effort "none" turns it off (0.4 s on the 9B, 1.2 s on the 27B). Checked 10/21.
-extra_body = { reasoning_effort = "none" }
+base_url_env = "QWEN_BASE_URL"         # http://arthurs-mac-studio.local:8083/v1
+key_env = "QWEN_API_KEY"               # ignored by the server; any string
+default_model = "default_model"
+extra_body = { chat_template_kwargs = { enable_thinking = false } }
 
 [lanes.claude]
 kind = "anthropic"
@@ -31,6 +32,13 @@ extra_body = { provider = { allow_fallbacks = false }, reasoning = { enabled = f
 "deepseek/deepseek-v4.1-flash" = [0.028, 0.12]   # OpenRouter listing 2026-10-20
 "openai/gpt-6-luna" = [0.10, 0.50]
 "google/gemini-2.5-flash-lite" = [0.10, 0.40]
+"local/qwen35-9b-stock" = [0.0, 0.0]        # Studio, free
+"local/qwen35-9b-abl" = [0.0, 0.0]
+"local/qwen35-35b-stock" = [0.0, 0.0]
+"local/qwen35-35b-abl" = [0.0, 0.0]
+"local/qwen35-35b-steer" = [0.0, 0.0]
+"local/qwen/qwen3.5-9b" = [0.0, 0.0]
+"local/qwen/qwen3.8-27b" = [0.0, 0.0]
 "anthropic/claude-haiku-5.5" = [0.10, 0.50]   # OpenRouter route to Claude, same list price
 "anthropic/claude-sonnet-5.5" = [2.0, 10.0]
 "gpt-4.1-mini" = [0.40, 1.60]              # the starter's per-run judge, OpenAI direct
@@ -39,25 +47,20 @@ extra_body = { provider = { allow_fallbacks = false }, reasoning = { enabled = f
 # ---- tasks: lane, model (else the lane default), limits, optional "lane:model" fallback ----
 
 [tasks.talk_notes]
-lane = "local"
+lane = "claude"
+model = "claude-haiku-5-5"   # 10/22: notes are optional; an online transcript service is fine too
 max_tokens = 1500
 temperature = 0.2
 purpose = "Claims, numbers and open problems with timestamps from one transcript chunk"
 
 [tasks.slide_ocr]
-lane = "local"
-model = "qwen/qwen3.8-27b"             # reads images too
+lane = "claude"
+model = "claude-haiku-5-5"             # 10/22: off the local lane
 max_tokens = 600
-temperature = 0.0
-fallback = "claude:claude-haiku-5-5"
 purpose = "Text and the one takeaway of a slide frame"
 
-[tasks.label_message]
-lane = "local"
-model = "qwen/qwen3.5-9b"              # fast labeller; the 27B is the second opinion
-max_tokens = 12
-temperature = 0.0
-purpose = "First-pass label for every seller message: proposes_floor / agrees / neither"
+# [tasks.label_message] retired 10/22: the local 9B second labeller was a convenience, not a research lever.
+# The graded DeepSeek labels are checked against the Sonnet sample and the 40 hand labels instead.
 
 [tasks.label_scored]
 lane = "openrouter"

@@ -1,0 +1,29 @@
+{
+  "_note": "Local models the starter talks to directly. Each is served by its own mlx_lm server on the Studio (make studio-mlx-up), which honours per-request seeds, so seeded runs replay exactly. The starter renders Qwen's chat template itself with thinking off, byte-identical to what tools/extract_activations.py rebuilds. Paths are on the Studio.",
+  "qwen35-9b-stock": {
+    "base_url": "http://arthurs-mac-studio.local:8081/v1",
+    "weights": "~/.lmstudio/models/local-sprint/Qwen3.5-9B-stock-MLX-4bit",
+    "template": "~/.lmstudio/models/local-sprint/Qwen3.5-9B-stock-MLX-4bit/chat_template.jinja"
+  },
+  "qwen35-9b-abl": {
+    "base_url": "http://arthurs-mac-studio.local:8082/v1",
+    "weights": "~/.lmstudio/models/local-sprint/Qwen3.5-9B-abliterated-MLX-4bit",
+    "template": "~/.lmstudio/models/local-sprint/Qwen3.5-9B-abliterated-MLX-4bit/chat_template.jinja"
+  },
+  "qwen35-35b-stock": {
+    "base_url": "http://arthurs-mac-studio.local:8083/v1",
+    "weights": "~/.lmstudio/models/local-sprint/Qwen3.5-35B-A3B-stock-MLX-4bit",
+    "template": "~/.lmstudio/models/local-sprint/Qwen3.5-35B-A3B-stock-MLX-4bit/chat_template.jinja"
+  },
+  "qwen35-35b-abl": {
+    "base_url": "http://arthurs-mac-studio.local:8084/v1",
+    "weights": "~/.lmstudio/models/local-sprint/Qwen3.5-35B-A3B-abliterated-MLX-4bit",
+    "template": "~/.lmstudio/models/local-sprint/Qwen3.5-35B-A3B-abliterated-MLX-4bit/chat_template.jinja"
+  },
+  "qwen35-35b-steer": {
+    "base_url": "http://arthurs-mac-studio.local:8085/v1",
+    "weights": "~/.lmstudio/models/local-sprint/Qwen3.5-35B-A3B-stock-MLX-4bit",
+    "template": "~/.lmstudio/models/local-sprint/Qwen3.5-35B-A3B-stock-MLX-4bit/chat_template.jinja",
+    "_note": "reserve: tools/steer_server.py, untested (its launch was blocked 10/22 pending Arty's decision)"
+  }
+}

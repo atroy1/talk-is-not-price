@@ -99,6 +99,16 @@ Why local and not the API for these jobs: 9,654 labels on Haiku cost about a dol
 - Tested end to end: a two-minute synthetic talk went through transcription and `talk_notes.py` on the 27B in about two minutes; 12 of 13 quotes matched the transcript verbatim and the 13th was correctly flagged CHECK.
 - LM Link (LM Studio's encrypted device link, in preview) is the backup route if the home network gets in the way: the laptop's own LM Studio server at `localhost:1234` then serves the Studio's models. Switching is one line in `.env`.
 
+## 5e. The Qwen arm's servers (10/21 night)
+
+- The Qwen arm does not go through LM Studio. LM Studio's MLX engine ignores seeds, and its thinking switch works only for its own catalogue builds. Each Qwen build runs under its own `mlx_lm` server instead: 35B-A3B stock on port 8083 and abliterated on 8084 (the 9B fallback pair on 8081 and 8082). These honour per-request seeds, and the starter renders Qwen's chat template itself with thinking off. The model list lives in `config/local-models.json`.
+- **Memory rule:** the two 35B servers (about 18 GB each) and LM Studio's 27B and 9B cannot share the 64 GB comfortably. With all four loaded, a local-lane ping took 42 s instead of 1.5 s. Since 10/22 LM Studio has no job in the plan: at 4:10 PM Friday `make studio-qwen` unloads it and starts the 35B servers. Outside the sprint the servers stay off, because the Studio is also Arty's daily machine. LM Studio reloads a model on its own when called (about 7 s, tested).
+- Speed: about 15 to 21 s per seller reply on either 35B build, sequential (seeded requests are not batched); two servers at once share one GPU.
+
+## 5f. Local is for research levers only (10/22)
+
+Arty's rule: local models exist for what hosted ones cannot give, not to save money or run convenience jobs. The router's local lane now points only at the stock 35B Qwen server (`QWEN_BASE_URL`, thinking off through `chat_template_kwargs`); talk notes and slide text moved to Haiku; the local 9B second labeller is retired (the graded DeepSeek labels are checked against the Sonnet sample and the hand labels). LM Studio's 27B and 9B are no longer part of the plan; `make studio-qwen` unloads them on Friday so the two 35B servers have the memory, which also lets the Qwen queue start at 4:15 PM instead of overnight.
+
 ## 6. Rules
 
 1. One door: anything that is not the market simulator calls `tools.llm.complete(task, ...)`. New jobs get a `[tasks.x]` entry, not an ad-hoc client.

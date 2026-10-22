@@ -106,6 +106,59 @@ seller_model = "claude-haiku-5-5"
 # seller_comms = true
 # seller_prompt_template = "seller_prompt_compete.jinja2"
 
+# --- OPTIONAL, recommended in docs/METHODS-NOTES.md section 2: 10 more compete runs (20 in all) so the chat and
+# fused detectors can certify a 5% false-alarm rate (10 honest runs certify 9.1% at best). About $3, 40 minutes.
+# [[runs]]
+# tag = "haiku55-compete-11"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-12"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-13"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-14"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-15"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-16"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-17"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-18"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-19"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+# [[runs]]
+# tag = "haiku55-compete-20"
+# seller_model = "claude-haiku-5-5"
+# seller_comms = true
+# seller_prompt_template = "seller_prompt_compete.jinja2"
+
 # --- second family: DeepSeek V4.1 Flash via OpenRouter, chat on; 8-bit hosts only (OpenRouter otherwise picks 4-bit hosts by price)
 [[runs]]
 tag = "dsflash-seller_comms-1"

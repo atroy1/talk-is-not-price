@@ -34,11 +34,20 @@ studio-sync: ## copy code, config, .env and the starter to the Studio (results a
 studio-setup: ## one-off: build the two Python environments on the Studio
 	ssh $(STUDIO) 'cd $(SDIR) && ~/.local/bin/uv venv -q --python 3.12 .venv && ~/.local/bin/uv pip install -q --python .venv/bin/python -r config/starter-requirements.lock && ~/.local/bin/uv pip install -q --python .venv/bin/python -e vendor/llm-agent-collusion && ~/.local/bin/uv venv -q --python 3.12 .venv-tools && ~/.local/bin/uv pip install -q --python .venv-tools/bin/python openai anthropic && echo studio envs ok'
 QUEUE ?= config/queue-friday.toml
-studio-queue: ## launch a queue on the Studio, detached and kept awake (default the Friday one; QUEUE=... ARGS=--fake to test)
+QNAME = $(notdir $(basename $(QUEUE)))
+studio-queue: ## launch a queue on the Studio, detached and kept awake (default the Friday one; QUEUE=config/queue-qwen.toml for the Qwen arm; ARGS=--fake to test)
 	$(MAKE) studio-sync
-	ssh $(STUDIO) 'cd $(SDIR) && rm -f runs/STOP && mkdir -p runs/live && nohup caffeinate -is .venv-tools/bin/python -m tools.run_queue $(QUEUE) $(ARGS) --log runs/live/queue-log.md > runs/live/queue.out 2>&1 < /dev/null & echo launched $(QUEUE)'
-studio-status: ## what the Studio queue is doing: last log lines, live process, spend so far
-	ssh $(STUDIO) 'cd $(SDIR) && tail -n 8 runs/live/queue-log.md 2>/dev/null; pgrep -fl "tools.run_queue|continuous_double_auction" | cut -c1-90 || echo "queue not running"; tail -c 300 runs/live/queue.out 2>/dev/null'
+	ssh $(STUDIO) 'cd $(SDIR) && rm -f runs/STOP && mkdir -p runs/live && nohup caffeinate -is .venv-tools/bin/python -m tools.run_queue $(QUEUE) $(ARGS) --log runs/live/$(QNAME).log.md > runs/live/$(QNAME).out 2>&1 < /dev/null & echo launched $(QUEUE)'
+studio-status: ## every Studio queue: last log lines, live processes
+	ssh $(STUDIO) 'cd $(SDIR) && for f in runs/live/*.log.md; do [ -f "$$f" ] && echo "== $$f" && tail -n 4 "$$f"; done; echo "== running"; pgrep -fl "tools.run_queue" | sed "s/.*run_queue //" || echo "no queue running"'
+QWEN ?= 35b
+studio-mlx-up: ## start the seeded Qwen servers on the Studio: QWEN=35b (default; ports 8083/8084) or QWEN=9b (8081/8082)
+	ssh $(STUDIO) 'cd $(SDIR) && mkdir -p runs/live && if [ "$(QWEN)" = 9b ]; then set -- 8081:9B-stock 8082:9B-abliterated; else set -- 8083:35B-A3B-stock 8084:35B-A3B-abliterated; fi; for spec in "$$@"; do port=$${spec%%:*}; name=$${spec##*:}; curl -s -m 2 localhost:$$port/v1/models >/dev/null && echo "$$port up" || { nohup .venv-tools/bin/python -m mlx_lm server --model ~/.lmstudio/models/local-sprint/Qwen3.5-$$name-MLX-4bit --host 0.0.0.0 --port $$port > runs/live/mlx-$$name.log 2>&1 < /dev/null & echo "$$port starting ($$name)"; }; done'
+studio-mlx-down: ## stop all Qwen servers
+	ssh $(STUDIO) 'pkill -f "mlx_lm server" && echo stopped || echo "none running"'
+studio-qwen: ## sprint only (Friday 4:10 PM): free LM Studio's memory, start the two seeded 35B servers
+	ssh $(STUDIO) '~/.lmstudio/bin/lms unload --all >/dev/null 2>&1; echo "LM Studio models unloaded"'
+	$(MAKE) studio-mlx-up
 studio-stop: ## finish the current run, then stop
 	ssh $(STUDIO) 'cd $(SDIR) && touch runs/STOP && echo "STOP set: the queue ends after the current run"'
 studio-pull: ## bring finished runs and the queue log back to the laptop

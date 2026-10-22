@@ -54,3 +54,12 @@ What repeats across the twenty placed entries:
 4. **Negative or limiting results place well** ("Not Causal", "usually not the loyalty", "Evades"). A clean "deeds catch what words miss, and here is where both fail" is a winning shape.
 
 Sources: [AI Control results](https://apartresearch.com/sprints/ai-control-hackathon-2026-03-20-to-2026-03-22), [Secret Loyalties results](https://apartresearch.com/sprints/secret-loyalties-hackathon-2026-07-24-to-2026-07-26), [Digital Minds results](https://apartresearch.com/sprints/digital-minds-research-sprint-2026-08-14-to-2026-08-16), [AI Incident Response results](https://apartresearch.com/sprints/ai-incident-response-sprint-2026-09-11-to-2026-09-13). One search summary listed "Loyal Lies" as Secret Loyalties' 1st place. The sprint page itself shows it in 5th, and this brief follows the page.
+
+## Update 2026-10-21: two days before
+
+A refresh of the novelty check found no new paper on calibrated words-and-deeds detection in markets. Additions:
+
+- **Emergent Collusion in Long-Horizon LLM Agent Interaction** (Shi, Zhang and Yang, [arXiv:2609.24967](https://arxiv.org/abs/2609.24967), September 2026): collusion emerges in 94% of trajectories across 10 models in a verification game, and more capable models in a family reach it earlier. Supports the lead-time framing (timing matters and differs by model) and the cross-model arm. It measures protocol deviation, not detection at a fixed false-alarm rate, so it does not take our slot.
+- **On the Fragility of AI Agent Collusion** ([arXiv:2603.20281](https://arxiv.org/html/2603.20281), already cited): its section 6 shows an anti-collusion prompt pushing GPT-5-mini prices about 30% below the static Nash level. This bears on our compete runs; see docs/METHODS-NOTES.md section 2.
+- **Mapping Human Anti-collusion Mechanisms to Multi-agent AI Systems** ([arXiv:2601.00360](https://arxiv.org/html/2601.00360v2)): a governance mapping; a possible citation beside Berger et al. for the plus-factors table.
+- **Abliteration and collusion:** no study found comparing safety-trained and refusal-removed models on collusion. The Qwen arm is open ground; cite Arditi et al. 2024 ([arXiv:2406.11717](https://arxiv.org/abs/2406.11717)) for what abliteration does.

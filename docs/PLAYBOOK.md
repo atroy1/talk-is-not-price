@@ -47,7 +47,7 @@ A gate has a pass test and a named cut. Record the outcome in `notes/log.md` wit
 | **G1 Talks captured** | Fri 3:30 PM | Both Friday talks have a transcript with timestamps and a note in `notes/talks/`. | Use the papers only; the Related Work paragraph cites Colosseum the paper, not the talk. |
 | **G2 Lock** | Fri 4 PM | The claim sentence is written ("We show that X, measured by Y, under Z, against baseline B") and three predictions are committed. The commit hash goes in the report's pre-registration box. | If the sentence cannot be written, the project is not ready: take the recommendation on file as is and commit it. Do not spend the evening choosing. |
 | **G3 Controls** | Fri 9 PM | Positive control: seller_comms runs score above the no-chat base runs on both channels. Null control: permutation null gives the expected false-alarm rate at the chosen threshold. | Debug to midnight. If still failing, the headline becomes the descriptive quadrant on whichever channel registers, and the lead-time claim moves to the appendix. |
-| **Overnight** | Fri 10 PM to Sat noon | Run queue launched: controls on Haiku 5.5, then DeepSeek Flash, then GPT-6 Luna, 5 seeds each, seller messaging on. Stop file checked before each run. | Runs that fail retry once, then skip. Whatever finished by Saturday noon is the cross-model data. |
+| **Queues** | Fri 4:15 PM to Sat noon | Both queues launched right after the pre-registration: API runs (Haiku controls and compete runs, DeepSeek, Luna) and the Qwen arm. Stop file checked before each run. | Runs that fail retry once, then skip. Whatever finished by Saturday noon is the data. |
 | **G4 Figure 1** | Sat 2:30 PM | A draft of the headline figure exists from the bundled runs, with intervals across seeds. | Cut conditions, not seeds. Cut the cross-model arm before anything on the bundled data. |
 | **G5 Freeze** | Sat 6 PM | Numbers for the main claim are frozen and copied into `notes/results-frozen.md`. Everything after is an ablation or appendix. | Freeze what exists. A narrower true claim beats a wider late one. |
 | **G6 Early submit** | Sun 1 PM | A complete report is submitted through the form and the confirmation email arrived. | Submit whatever is complete; the same title later replaces it. |
@@ -60,7 +60,8 @@ A gate has a pass test and a named cut. Record the outcome in `notes/log.md` wit
 - 3:15 to 4 PM: `tools/talks.sh` on both recordings, then `tools/talk_notes.py`. Read the notes. Pick the one or two lines that change Related Work.
 - 4 PM: G2. Write `seller_prompt_compete.jinja2` (the honest-chat reference, decided 10/21), uncomment the compete runs, commit.
 - 4:30 to 9 PM: the detector on the bundled 75 runs: words score, deeds score, fusion, threshold set on honest runs at 5% false alarms, permutation null. G3 at 9.
-- 9 to 10 PM: `make studio-queue` (the queue runs on the Studio, detached). `make studio-status` after ten minutes: the first run finished and billed what the cost table says. Sleep.
+- 4:10 to 4:15 PM: `make studio-qwen`, then `make studio-queue` and `make studio-queue QUEUE=config/queue-qwen.toml` (both run on the Studio, detached). `make studio-status` after twenty minutes: the first runs finished and billed as expected.
+- 9 to 10 PM: `make studio-status`; sleep.
 
 ### Saturday Oct 24
 

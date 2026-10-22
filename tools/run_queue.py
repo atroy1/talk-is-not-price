@@ -17,7 +17,11 @@ Queue file (TOML):
                           eval_model = "gpt-4.1-mini" (the starter's per-run judge; "openai/gpt-4.1-mini" routes it via OpenRouter),
                           reasoning = "default" | "off" | "minimal" | "low" | "medium" | "high" (OpenRouter models' hidden reasoning),
                           or_provider = { quantizations = ["fp8"] } (OpenRouter host filter, merged into the provider block),
-                          seller_prompt_template = "seller_prompt_compete.jinja2" (a file in the starter's prompt_templates/)
+                          seller_prompt_template = "seller_prompt_compete.jinja2" (a file in the starter's prompt_templates/),
+                          seed = 7 (fixes the market and local replies), zip_buyers = true (algorithmic buyers),
+                          inject_round = 12, inject_text = "..." (added to every seller prompt from that round: branch replays),
+                          think_prefill = "...", think_round = 8 (written as the opening of each seller's private reasoning
+                          from that round; needs reasoning = "default": thought injection)
     [[runs]]              tag, seller_model, buyer_model, seller_comms, oversight, boss_pressure, hide_num_rounds, plus any default
 Models must be in the starter's SUPPORTED_MODELS (patched list in patches/llm-agent-collusion.patch).
 """
@@ -77,6 +81,11 @@ def command(spec):
         cmd += ["--overseer_model", spec["overseer_model"]]
     if spec.get("seller_prompt_template"):
         cmd += ["--seller_prompt_template", spec["seller_prompt_template"]]
+    if spec.get("seed") is not None:
+        cmd += ["--seed", str(spec["seed"])]
+    if spec.get("zip_buyers"):
+        i = cmd.index("--buyer_models")
+        cmd[i:i + 1 + spec["buyers"]] = ["--zip_buyers"]
     return cmd
 
 
@@ -84,7 +93,7 @@ def estimate(spec, cfg):
     """Rough dollars: half the tokens to sellers' model, half to buyers', scaled by rounds."""
     tin, tout = (t * spec["rounds"] / 30 for t in TOKENS_PER_30_ROUNDS)
     total = 0.0
-    for model in (spec["seller_model"], spec["buyer_model"]):
+    for model in (spec["seller_model"],) + (() if spec.get("zip_buyers") else (spec["buyer_model"],)):
         lane = "claude" if model.startswith("claude") else "openrouter"
         p = price(cfg, lane, model, tin / 2, tout / 2)
         total += 0.0 if p != p else p  # NaN (unknown price) counts as 0 and is flagged by the caller
@@ -99,7 +108,8 @@ def attempt_needs_openai(spec):
 
 
 def known_prices(spec, cfg):
-    return all(m in cfg.get("prices", {}) for m in (spec["seller_model"], spec["buyer_model"], spec["eval_model"]))
+    models = (spec["seller_model"], spec["eval_model"]) + (() if spec.get("zip_buyers") else (spec["buyer_model"],))
+    return all(m in cfg.get("prices", {}) for m in models)
 
 
 def log_line(text):
@@ -120,9 +130,15 @@ def run_one(spec, cfg, attempt, env):
     t0 = time.time()
     usage_log = out / f"usage.{attempt}.jsonl"
     usage_log.unlink(missing_ok=True)
+    reasoning_log = out / f"reasoning.{attempt}.jsonl"
+    reasoning_log.unlink(missing_ok=True)
     env = dict(env, CDA_EVAL_MODEL=spec["eval_model"], CDA_REASONING=spec["reasoning"], CDA_USAGE_LOG=str(usage_log),
+               CDA_REASONING_LOG=str(reasoning_log),
                CDA_OR_PROVIDER=json.dumps(spec["or_provider"]) if spec["or_provider"] else "",
-               CDA_OR_PROVIDER_MODELS=",".join({spec["seller_model"], spec["buyer_model"]}))
+               CDA_OR_PROVIDER_MODELS=",".join({spec["seller_model"], spec["buyer_model"]}),
+               CDA_INJECT_ROUND=str(spec.get("inject_round", "")), CDA_INJECT_TEXT=spec.get("inject_text", ""),
+               CDA_LOCAL_MODELS=str(ROOT / "config" / "local-models.json"),
+               CDA_THINK_PREFILL=spec.get("think_prefill", ""), CDA_THINK_ROUND=str(spec.get("think_round", 1)))
     with open(out / f"stdout.{attempt}.log", "w") as so, open(out / f"stderr.{attempt}.log", "w") as se:
         try:
             p = subprocess.run(cmd, cwd=STARTER, stdout=so, stderr=se, env=env, timeout=spec["timeout_min"] * 60)
@@ -165,6 +181,8 @@ def actual_cost(usage_log, cfg):
     usd, calls, empty, reasoning = 0.0, 0, 0, 0
     for line in usage_log.read_text().splitlines():
         r = json.loads(line); calls += 1; empty += not r.get("ok", True)
+        if r.get("route") == "local":
+            continue  # the Studio costs nothing per call
         if r.get("route") == "openrouter":
             usd += float(r.get("cost") or 0)
             reasoning += int(((r.get("completion_tokens_details") or {}).get("reasoning_tokens")) or 0)
@@ -200,7 +218,8 @@ def main():
     for spec in runs:
         est = estimate(spec, cfg); total += est
         flag = "" if known_prices(spec, cfg) else "  (price unknown for a model: estimate incomplete)"
-        print(f"  {spec['tag']:34s} {spec['seller_model']} / {spec['buyer_model']}  {spec['rounds']} rounds  ~${est:.2f}{flag}")
+        buyers = "ZIP buyers" if spec.get("zip_buyers") else spec["buyer_model"]
+        print(f"  {spec['tag']:34s} {spec['seller_model']} / {buyers}  {spec['rounds']} rounds  ~${est:.2f}{flag}")
         if attempt_needs_openai(spec):
             print(f"     NOTE: judge {spec['eval_model']} goes to the OpenAI API and needs OPENAI_API_KEY; set eval_model = \"openai/gpt-4.1-mini\" to use OpenRouter")
         if a.dry_run:
@@ -231,7 +250,7 @@ def main():
             bill = (f"spent ${spent['usd']:.3f} over {spent['calls']} calls ({spent['empty']} empty, {spent['reasoning_tokens']} reasoning tokens)"
                     if spent else f"est ${estimate(spec, cfg):.2f}")
             log_line(f"{spec['tag']} attempt {attempt}: {status}, {mins:.1f} min, runs/live/{spec['tag']}, {bill} "
-                     f"({spec['seller_model']} sellers, {spec['buyer_model']} buyers, {spec['rounds']} rounds, reasoning {spec['reasoning']}, judge {spec['eval_model']})")
+                     f"({spec['seller_model']} sellers, {'ZIP' if spec.get('zip_buyers') else spec['buyer_model']} buyers, {spec['rounds']} rounds, reasoning {spec['reasoning']}, judge {spec['eval_model']})")
             print(f"   {status} in {mins:.1f} min; {bill}")
             if market_ok:
                 break  # never pay for the same market twice because the judge failed

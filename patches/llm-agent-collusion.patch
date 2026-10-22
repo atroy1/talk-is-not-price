@@ -1,8 +1,8 @@
 diff --git a/src/continuous_double_auction/cda_types.py b/src/continuous_double_auction/cda_types.py
-index 6e7b645..e945d2c 100644
+index 6e7b645..fe5d516 100644
 --- a/src/continuous_double_auction/cda_types.py
 +++ b/src/continuous_double_auction/cda_types.py
-@@ -5,10 +5,13 @@ from typing import Any, Dict, Literal, Optional, Self
+@@ -5,10 +5,16 @@ from typing import Any, Dict, Literal, Optional, Self
  
  SUPPORTED_MODELS = ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", 
                      "claude-3-5-haiku-latest", "claude-3-5-sonnet-latest", "claude-3-7-sonnet-latest", 
@@ -15,17 +15,21 @@ index 6e7b645..e945d2c 100644
 +                    "claude-haiku-5-5", "claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-1",
 +                    "deepseek-flash",
 +                    "deepseek/deepseek-v4.1-flash", "openai/gpt-6-luna",
-+                    "anthropic/claude-haiku-5.5", "anthropic/claude-sonnet-5.5", "openai/gpt-4.1-mini"]
++                    "anthropic/claude-haiku-5.5", "anthropic/claude-sonnet-5.5", "openai/gpt-4.1-mini",
++                    # LM Studio on the Mac Studio, by the identifier given at load time
++                    "local/qwen35-9b-stock", "local/qwen35-9b-abl", "local/qwen35-35b-stock", "local/qwen35-35b-abl", "local/qwen35-35b-steer",
++                    "local/qwen/qwen3.5-9b", "local/qwen/qwen3.8-27b"]
 +Model = Literal[tuple(SUPPORTED_MODELS)]
  
  class ExperimentParams(BaseModel):
      """
-@@ -36,6 +39,8 @@ class ExperimentParams(BaseModel):
+@@ -36,6 +42,9 @@ class ExperimentParams(BaseModel):
      initial_buyer_bid_spread: float = 2.5    # Default spread for initial buyer bids
      initial_condition: bool = True           # Flag to enable using initial conditions
      max_message_length: int = 500           # Maximum length for agent communication messages
 +    effort: Optional[Literal["low", "medium", "high", "xhigh", "max"]] = None  # Claude effort level; None = model default
 +    overseer_model: Model = "gpt-4.1-mini"   # Model that reads seller messages when oversight is on
++    seed: Optional[int] = None               # Fixes names, opening asks/bids, ZIP noise and every local model reply
      
      @model_validator(mode='after')
      def validate_param_combinations(self) -> Self:
@@ -48,11 +52,99 @@ index e1c0716..5776dbe 100644
  DEFAULT_EVAL_TEMPERATURE = 0.1
  
  
+diff --git a/src/continuous_double_auction/market/agents.py b/src/continuous_double_auction/market/agents.py
+index c9f87f2..728c6c0 100644
+--- a/src/continuous_double_auction/market/agents.py
++++ b/src/continuous_double_auction/market/agents.py
+@@ -1,3 +1,4 @@
++import os
+ import json
+ import random
+ from typing import Any, Dict, Optional
+@@ -121,7 +122,11 @@ class ZIPBuyer(Agent):
+         base_bid = (1 - self.profit_margin) * self.valuation
+ 
+         # Introduce a minor randomness of to break symmetry between identical buyers.
+-        noise_factor = random.uniform(-self.random_noise, self.random_noise)
++        if os.getenv("CDA_SEED"):  # replays: each buyer draws from its own stream, whatever order threads run in
++            rng = random.Random(f"{os.environ['CDA_SEED']}|{self.id}|{kwargs.get('round_num', 0)}")
++            noise_factor = rng.uniform(-self.random_noise, self.random_noise)
++        else:
++            noise_factor = random.uniform(-self.random_noise, self.random_noise)
+         return {"bid": base_bid * (1 + noise_factor)}
+ 
+ 
+@@ -276,6 +281,9 @@ class LMSeller(Agent):
+             oversight_enabled=self.expt_params.oversight_enabled,
+             max_message_length=self.expt_params.max_message_length,
+         )
++        inject_round = os.getenv("CDA_INJECT_ROUND")
++        if inject_round and round_num >= int(inject_round):  # branch replays: same history, one added line from round N
++            prompt = prompt + "\n\n" + os.getenv("CDA_INJECT_TEXT", "")
+         messages = [Message(role="user", content=prompt)]
+         response = self.client.generate(messages=messages)
+         assert response is not None
+diff --git a/src/continuous_double_auction/market/market.py b/src/continuous_double_auction/market/market.py
+index c89a8b3..9c19c1b 100644
+--- a/src/continuous_double_auction/market/market.py
++++ b/src/continuous_double_auction/market/market.py
+@@ -1,3 +1,5 @@
++import copy
++import os
+ from concurrent.futures import ThreadPoolExecutor, as_completed
+ from typing import Optional, Sequence
+ 
+@@ -121,14 +123,19 @@ class Market(BaseModel):
+ 
+             agents: list[Agent] = self.buyers + self.sellers  # type: ignore
+             n_threads = max(3, len(agents) - self.n_claude_agents)  # Our rate limits for Anthropic are lower than OpenAI, so we can do fewer parallel calls
++            # Replays (seeded runs): every agent sees the book as it stood at the start of the round. Unseeded runs keep
++            # the original behaviour, where a fast agent's bid can reach a slower agent's prompt (as in the 2025 runs).
++            seeded = bool(os.getenv("CDA_SEED"))
++            bid_view = copy.deepcopy(self.buyer_bid_queue) if seeded else self.buyer_bid_queue
++            ask_view = copy.deepcopy(self.seller_ask_queue) if seeded else self.seller_ask_queue
+             with ThreadPoolExecutor(max_workers=n_threads) as executor:
+ 
+                 future_to_agent = {
+                     executor.submit(get_agent_bid_response,
+                                     agent=agent,
+                                     round_num=self.current_round.round_number,
+-                                    bid_queue=self.buyer_bid_queue,
+-                                    ask_queue=self.seller_ask_queue,
++                                    bid_queue=bid_view,
++                                    ask_queue=ask_view,
+                                     past_bids_and_asks=self.formatted_past_bids_and_asks,
+                                     past_trades=self.formatted_past_trades,
+                                     agent_successful_trades=self.get_agent_successful_trades(agent.id),
+@@ -136,7 +143,9 @@ class Market(BaseModel):
+                     for agent in agents
+                 }
+ 
+-                for future in as_completed(future_to_agent):
++                # Replays (seeded runs) apply replies in a fixed agent order; otherwise arrival order, as in the 2025 runs
++                ordered = list(future_to_agent) if os.getenv("CDA_SEED") else as_completed(future_to_agent)
++                for future in ordered:
+                     agent, agent_bid_response = future.result()
+                     if agent in self.sellers:
+                         # Handle ask based on response
 diff --git a/src/continuous_double_auction/simulation.py b/src/continuous_double_auction/simulation.py
-index 9473a65..db284ae 100644
+index 9473a65..2ef9bab 100644
 --- a/src/continuous_double_auction/simulation.py
 +++ b/src/continuous_double_auction/simulation.py
-@@ -41,7 +41,7 @@ def run_simulation(params: ExperimentParams):
+@@ -18,6 +18,12 @@ import wandb
+ 
+ def run_simulation(params: ExperimentParams):
+     """Runs the market simulation."""
++    if params.seed is not None:  # replays: same seed, same market, same local replies
++        import os, random
++        import numpy as np
++        random.seed(params.seed)
++        np.random.seed(params.seed)
++        os.environ["CDA_SEED"] = str(params.seed)
+     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+     run_name = f"{timestamp}_{params.tag}"
+     logger = ExperimentLogger(params, experiment_id=run_name)
+@@ -41,7 +47,7 @@ def run_simulation(params: ExperimentParams):
                  company=buyer_companies[i],
                  valuation=params.buyer_valuations[i],
                  expt_params=params,
@@ -61,7 +153,7 @@ index 9473a65..db284ae 100644
                  logger=logger
              ))
              if buyer_model.startswith("claude"):
-@@ -62,7 +62,7 @@ def run_simulation(params: ExperimentParams):
+@@ -62,7 +68,7 @@ def run_simulation(params: ExperimentParams):
              company=seller_companies[i],
              valuation=params.seller_valuations[i],
              expt_params=params,
@@ -70,7 +162,7 @@ index 9473a65..db284ae 100644
              logger=logger
          ))
          if seller_model.startswith("claude"):
-@@ -75,7 +75,7 @@ def run_simulation(params: ExperimentParams):
+@@ -75,7 +81,7 @@ def run_simulation(params: ExperimentParams):
      # Initialize overseer agent if oversight is enabled
      if params.oversight_enabled:
          overseer = MessageOverseer(
@@ -79,7 +171,7 @@ index 9473a65..db284ae 100644
              logger=logger,
          )
      else:
-@@ -232,6 +232,18 @@ if __name__ == "__main__":
+@@ -232,7 +238,25 @@ if __name__ == "__main__":
          help="Maximum length for agent communication messages",
          default=500,
      )
@@ -95,11 +187,18 @@ index 9473a65..db284ae 100644
 +        default="gpt-4.1-mini",
 +        help="Model that reads seller messages when --oversight_enabled is set",
 +    )
++    parser.add_argument("--seed", type=int, default=None,
++                        help="Seed for names, opening asks/bids, ZIP buyers and local model sampling (replays)")
++    parser.add_argument("--zip_buyers", action="store_true",
++                        help="Use the algorithmic ZIP buyers instead of language-model buyers")
      args = parser.parse_args()
      expt_params_dict = vars(args)
++    if expt_params_dict.pop("zip_buyers", False):
++        expt_params_dict["buyer_models"] = [None] * len(expt_params_dict["buyer_valuations"])
      params = ExperimentParams(**expt_params_dict)
+     run_simulation(params)
 diff --git a/src/continuous_double_auction/util/misc.py b/src/continuous_double_auction/util/misc.py
-index e083f52..6812be8 100644
+index e083f52..8852f9f 100644
 --- a/src/continuous_double_auction/util/misc.py
 +++ b/src/continuous_double_auction/util/misc.py
 @@ -4,10 +4,10 @@ import re
@@ -107,7 +206,7 @@ index e083f52..6812be8 100644
  from typing import Dict, Any, List, Tuple
  import numpy as np
 -from src.resources.model_wrappers import ModelWrapper, OpenAIClient, AnthropicClient, GoogleClient
-+from src.resources.model_wrappers import ModelWrapper, OpenAIClient, AnthropicClient, GoogleClient, OpenRouterClient, DeepSeekClient
++from src.resources.model_wrappers import ModelWrapper, OpenAIClient, AnthropicClient, GoogleClient, OpenRouterClient, DeepSeekClient, LocalClient
  
  
 -def get_client(model: str, temperature: float, **kwargs) -> ModelWrapper:
@@ -115,7 +214,7 @@ index e083f52..6812be8 100644
      if model.startswith("gpt"):
          client = OpenAIClient(model, 
                                response_format={"type": "json_object"},
-@@ -16,11 +16,20 @@ def get_client(model: str, temperature: float, **kwargs) -> ModelWrapper:
+@@ -16,11 +16,24 @@ def get_client(model: str, temperature: float, **kwargs) -> ModelWrapper:
      elif model.startswith("claude"):
          client = AnthropicClient(model,
                                   temperature=temperature,
@@ -129,6 +228,10 @@ index e083f52..6812be8 100644
 +        client = DeepSeekClient(model,
 +                                temperature=temperature,
 +                                **kwargs)
++    elif model.startswith("local/"):  # served by LM Studio on the Mac Studio
++        client = LocalClient(model,
++                             temperature=temperature,
++                             **kwargs)
 +    elif "/" in model:  # OpenRouter ids look like "deepseek/deepseek-v4.1-flash"
 +        client = OpenRouterClient(model,
 +                                  temperature=temperature,
@@ -137,7 +240,7 @@ index e083f52..6812be8 100644
          raise ValueError(f"Unknown model: {model}")
      return client
 diff --git a/src/resources/model_wrappers.py b/src/resources/model_wrappers.py
-index 490dfa0..c18c47b 100644
+index 490dfa0..4ae9170 100644
 --- a/src/resources/model_wrappers.py
 +++ b/src/resources/model_wrappers.py
 @@ -13,6 +13,23 @@ import google.api_core.exceptions
@@ -222,7 +325,7 @@ index 490dfa0..c18c47b 100644
              except APIError as e:
                  logger.warning(f"OpenRouter API error (attempt {attempt + 1}/{self.max_retries}): {str(e)} for prompt {messages}")
                  if attempt == self.max_retries - 1:
-@@ -146,11 +198,34 @@ class OpenRouterClient(ModelWrapper):
+@@ -146,11 +198,140 @@ class OpenRouterClient(ModelWrapper):
          return responses
  
  
@@ -236,6 +339,112 @@ index 490dfa0..c18c47b 100644
 +            api_key = os.getenv("DEEPSEEK_API_KEY")
 +        )
 +        self.extra_body = {}  # DeepSeek's own API has no provider routing
++
++
++class LocalClient(OpenRouterClient):
++    """A model served by LM Studio on our own machine (ids "local/<lm studio identifier>").
++    OpenAI-compatible; thinking off by default (Qwen 3.x thinks unless told not to); usage logged."""
++    _asked = {}                      # prompt text -> times asked in this run (seeded retries)
++    _lock = _threading.Lock()
++
++    def __init__(self, model_name: str, **kwargs):
++        ModelWrapper.__init__(self, model_name, **kwargs)
++        self.served_name = model_name.split("/", 1)[1]
++        self.client = OpenAI(base_url=os.getenv("LMSTUDIO_BASE_URL", "http://arthurs-mac-studio.local:1234/v1"),
++                             api_key=os.getenv("LMSTUDIO_API_KEY", "lm-studio"), timeout=900)
++        mode = os.getenv("CDA_REASONING", "default")
++        self.reasoning_mode = mode
++        self.extra_body = {"reasoning_effort": "none"} if mode == "off" else ({} if mode == "default" else {"reasoning_effort": mode})
++        self.send_sampling = True
++        self.max_retries = max(self.max_retries, 4)
++        # For our own conversions the template is rendered here, so "thinking off" is exact and the prompt the
++        # model plays with is byte-identical to the one tools/extract_activations.py rebuilds.
++        self.template = None
++        mapping = os.getenv("CDA_LOCAL_MODELS")
++        if mapping and os.path.exists(mapping):
++            import json
++            entry = json.load(open(mapping)).get(self.served_name)
++            if entry:
++                path = entry["template"]
++                # talk to this model's own mlx_lm server, by the weights path it was started with
++                self.client = OpenAI(base_url=entry["base_url"], api_key="local", timeout=900)
++                self.served_name = os.path.expanduser(entry["weights"])
++                import jinja2
++                from jinja2.sandbox import ImmutableSandboxedEnvironment
++                env = ImmutableSandboxedEnvironment(trim_blocks=True, lstrip_blocks=True)
++                def _raise(m): raise jinja2.TemplateError(m)
++                env.globals["raise_exception"] = _raise
++                self.template = env.from_string(open(os.path.expanduser(path)).read())
++
++    def _complete_raw(self, messages, seed_kw):
++        thinking = self.reasoning_mode != "off"
++        prompt = self.template.render(messages=messages, add_generation_prompt=True, enable_thinking=thinking)
++        # Thought injection (adversarial checks): the opening of the private reasoning is written for the model from
++        # round CDA_THINK_ROUND on; it continues from there. Plants a known intent without touching the weights.
++        planted = ""
++        if thinking and os.getenv("CDA_THINK_PREFILL"):
++            import re as _re
++            m = _re.search(r"This is Hour #(\d+)", messages[-1]["content"])
++            if m and int(m.group(1)) >= int(os.getenv("CDA_THINK_ROUND", "1")):
++                planted = os.environ["CDA_THINK_PREFILL"].strip() + " "
++                prompt += planted
++        r = self.client.completions.create(model=self.served_name, prompt=prompt,
++                                           max_tokens=max(self.max_tokens, 9000) if thinking else self.max_tokens,
++                                           temperature=self.temperature, top_p=self.top_p,
++                                           stop=["<|im_end|>"], **seed_kw)
++        text = r.choices[0].text or ""
++        usage = r.usage.model_dump() if r.usage else {}
++        if thinking:
++            # The private reasoning goes to its own log (joined to the transcript by the prompt's hash);
++            # only the answer reaches the market. No closing tag means it ran out of tokens: treat as empty.
++            if "</think>" not in text:
++                return "", usage, "length-in-thinking"
++            reasoning, text = text.split("</think>", 1)
++            reasoning = planted + reasoning.replace("<think>", "").strip()
++            usage["reasoning_chars"] = len(reasoning)
++            path = os.getenv("CDA_REASONING_LOG")
++            if path:
++                import hashlib, json
++                row = {"t": round(time.time(), 2), "model": self.model_name,
++                       "prompt_sha256": hashlib.sha256(messages[-1]["content"].encode()).hexdigest(),
++                       "reasoning": reasoning, "answer": text.strip(), "planted": planted.strip()}
++                with _USAGE_LOCK:
++                    with open(path, "a") as f:
++                        f.write(json.dumps(row) + "\n")
++        return text.strip(), usage, str(r.choices[0].finish_reason)
++
++    def generate(self, messages: List[Message]) -> str:
++        for attempt in range(self.max_retries):
++            try:
++                seed_kw = {}
++                if os.getenv("CDA_SEED"):  # same seed + same prompt -> same reply, whatever order threads run in
++                    import hashlib
++                    content = messages[-1]['content']
++                    with LocalClient._lock:  # a retry of the same prompt gets a fresh, still reproducible draw
++                        n = LocalClient._asked.get(content, 0)
++                        LocalClient._asked[content] = n + 1
++                    key = f"{os.environ['CDA_SEED']}|{self.served_name}|{n}|{content}".encode()
++                    seed_kw["seed"] = int(hashlib.sha256(key).hexdigest(), 16) % (2 ** 31)
++                if self.template is not None:
++                    text, usage, finish = self._complete_raw(messages, seed_kw)
++                    usage["provider"] = "mlx-server"
++                else:
++                    response = self.client.chat.completions.create(
++                        model=self.served_name, messages=messages, max_tokens=self.max_tokens,
++                        temperature=self.temperature, top_p=self.top_p, extra_body=self.extra_body, **seed_kw)
++                    choice = response.choices[0]
++                    usage = response.usage.model_dump() if response.usage else {}
++                    usage["provider"] = "lmstudio"
++                    text, finish = choice.message.content, str(choice.finish_reason)
++                _log_usage(self.model_name, "local", usage, finish, bool(text))
++                if text:
++                    return text
++                logger.warning(f"Local empty reply (attempt {attempt + 1}/{self.max_retries}, {self.model_name}, finish={finish})")
++            except APIError as e:
++                logger.warning(f"Local API error (attempt {attempt + 1}/{self.max_retries}): {str(e)[:300]}")
++            if attempt == self.max_retries - 1:
++                return None
++            self._exponential_backoff(attempt)
 +
 +
  class AnthropicClient(ModelWrapper):
@@ -259,7 +468,7 @@ index 490dfa0..c18c47b 100644
      
      def generate(self, messages: List[Message]) -> str:
  
-@@ -162,18 +237,46 @@ class AnthropicClient(ModelWrapper):
+@@ -162,18 +343,46 @@ class AnthropicClient(ModelWrapper):
  
          for attempt in range(self.max_retries):
              try:
