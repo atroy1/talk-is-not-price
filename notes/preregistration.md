@@ -8,7 +8,7 @@ Predictions, written before any result is looked at:
 2. (quadrant) ______
 3. (cross-model) ______
 
-Honest references (decided 2026-10-21): prices = the 10 no-chat `base` runs; chat = 10 new Haiku 5.5 runs with seller chat on and one added sentence in the seller prompt (`seller_prompt_compete.jinja2`):
+Honest references (decided 2026-10-21): prices = the 10 no-chat `base` runs; chat = 20 new Haiku 5.5 runs with seller chat on (raised from 10 on 10/22 so a 5% false-alarm rate is certifiable) and one added sentence in the seller prompt (`seller_prompt_compete.jinja2`):
 
 > Added sentence: ______ (write Friday 4 PM; suggested, neutral wording to avoid the overshoot in arXiv:2603.20281: "Set your ask independently, based on your own costs and what you see in the market.")
 

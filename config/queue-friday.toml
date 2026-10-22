@@ -53,7 +53,7 @@ tag = "haiku55-base-5"
 seller_model = "claude-haiku-5-5"
 
 # --- honest reference for the chat signal (decided 10/21, option A): Haiku 5.5, chat on, one added
-# "compete independently" sentence. UNCOMMENT AT THE FRIDAY 4 PM LOCK once
+# "compete independently" sentence. Switched on at the Friday 4 PM lock with make compete-on, which refuses until
 # vendor/llm-agent-collusion/src/continuous_double_auction/prompt_templates/seller_prompt_compete.jinja2 exists.
 # [[runs]]
 # tag = "haiku55-compete-1"
@@ -106,8 +106,8 @@ seller_model = "claude-haiku-5-5"
 # seller_comms = true
 # seller_prompt_template = "seller_prompt_compete.jinja2"
 
-# --- OPTIONAL, recommended in docs/METHODS-NOTES.md section 2: 10 more compete runs (20 in all) so the chat and
-# fused detectors can certify a 5% false-alarm rate (10 honest runs certify 9.1% at best). About $3, 40 minutes.
+# --- compete runs 11-20 (DECIDED 10/22: 20 in all, so the chat and fused detectors can certify a 5% false-alarm rate;
+# 10 honest runs certify 9.1% at best). Switched on with the others at the lock: make compete-on
 # [[runs]]
 # tag = "haiku55-compete-11"
 # seller_model = "claude-haiku-5-5"

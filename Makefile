@@ -53,6 +53,8 @@ studio-stop: ## finish the current run, then stop
 studio-pull: ## bring finished runs and the queue log back to the laptop
 	rsync -az $(STUDIO):$(SDIR)/runs/live/ runs/live/
 	@ls runs/live | grep -v -E 'queue' | wc -l | xargs echo "run folders here:"
+compete-on:  ## Friday 4 PM lock: switch on the compete runs in both queues (refuses until the template exists)
+	$(PY) tools/compete_on.py
 help:
 	@grep -E '^[a-z-]+:.*##' Makefile | sed 's/:.*##/  /'
 .PHONY: studio-sync studio-setup studio-queue studio-status studio-stop studio-pull g0 ping self-test ledger talk notes figs mock queue queue-dry queue-fake help

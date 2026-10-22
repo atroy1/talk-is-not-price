@@ -10,11 +10,11 @@ Options:
 
 | Option | What it is | For | Against |
 |---|---|---|---|
-| **A. Instructed-competition runs (recommended)** | 10 new Haiku runs, chat on, one added line in the seller prompt: compete independently and do not coordinate prices. They join the Friday queue. | A real honest-with-chat reference; cheap (about $3); the same market and the same model as the controls | "Instructed" honest is not "naturally" honest; the prompt change has to be stated in Methods |
+| **A. Instructed-competition runs (chosen)** | 20 new Haiku runs (10 decided 10/21, raised to 20 on 10/22 to certify 5%), chat on, one added line in the seller prompt: compete independently and do not coordinate prices. They join the Friday queue. | A real honest-with-chat reference; cheap (about $3); the same market and the same model as the controls | "Instructed" honest is not "naturally" honest; the prompt change has to be stated in Methods |
 | B. Permutation only | Shuffle messages between runs to break the words-to-deeds link | No new runs | Shuffled collusive chat is still collusive chat, so it is no honest reference for the words channel |
 | C. Calibrate on prices only | Set the threshold on the base runs' prices, report the chat signal without its own false-alarm rate | Simplest | Gives up the paper's main comparison at a fixed false-alarm rate |
 
-**Arty chose A on 10/21.** Friday at 4 PM, make a copy of `seller_prompt_base.jinja2` named `seller_prompt_compete.jinja2` with the one line added, uncomment the 10 `haiku55-compete-N` runs already sitting in `config/queue-friday.toml` (the queue passes `seller_prompt_template` through since 10/21), and record the exact sentence in the pre-registration. The compete runs are the honest reference for the chat signal; the 10 base runs stay the honest reference for prices.
+**Arty chose A on 10/21.** Friday at 4 PM, make a copy of `seller_prompt_base.jinja2` named `seller_prompt_compete.jinja2` with the one line added, switch on the 20 `haiku55-compete-N` runs and the 3 Qwen compete runs with `make compete-on` (the queue passes `seller_prompt_template` through since 10/21), and record the exact sentence in the pre-registration. The compete runs are the honest reference for the chat signal; the 10 base runs stay the honest reference for prices.
 
 ## 1. What gets built, in order
 
@@ -40,7 +40,7 @@ Tests stay light: one or two per piece, on synthetic data, there to catch a wron
 | 10:15 | Hand-label 40 seller messages for the labeller check (blind to condition) | a CSV in `notes/` |
 | 1:05 PM | Start recording Zoom on the laptop | Shift-Command-5, system audio on |
 | 3:15 | Talk notes, optional: use an existing transcript or an online service if one is posted; the local pipeline still works on the laptop (notes now run on Haiku) | `make talk ...`, `make notes ...` |
-| 4:00 | Gate G2: claim sentence, three predictions, the compete sentence; write `seller_prompt_compete.jinja2`, uncomment the compete runs in both queues; commit | `notes/preregistration.md`, then the commit command in it |
+| 4:00 | Gate G2: claim sentence, three predictions, the compete sentence; write `seller_prompt_compete.jinja2`, then `make compete-on` (switches on the compete runs in both queues); commit | `notes/preregistration.md`, then the commit command in it |
 | 4:10 | Free the Studio and start the two seeded 35B servers | `make studio-qwen` |
 | 4:15 | Launch both queues on the Studio, right after the pre-registration commit: API runs and the Qwen arm | `make queue-dry`, `make studio-queue`, `make studio-queue QUEUE=config/queue-qwen.toml` |
 | 4:30 | Launch the labelling pass in the background | `python -m analysis.labels` (built 4:00 to 4:30) |
