@@ -66,13 +66,11 @@ def seller_messages(live=False):
     m = m[m["channel"] == "seller"].copy()
     if live:
         import pandas as pd
-        from analysis.load_runs import _load_run
-        rows = []
-        for d in sorted((ROOT / "runs" / "live").glob("*/run")):
-            if (d / "experiment_metadata.json").exists() and (d / "collusion_metrics.json").exists():
-                rows += [x for x in _load_run(str(d))[3] if x["channel"] == "seller"]
-        if rows:
-            m = pd.concat([m, pd.DataFrame(rows)], ignore_index=True)
+        from analysis.load_runs import load_live
+        lt = load_live()
+        if lt:
+            lm = lt["messages"]
+            m = pd.concat([m, lm[lm["channel"] == "seller"]], ignore_index=True)
     m = m[m["text"].notna() & (m["text"].astype(str).str.strip() != "")]
     m["id"] = m.apply(msg_id, axis=1)
     return m
@@ -104,7 +102,7 @@ def _retry(task, user, note, tries=7):
         try:
             return llm.complete(task, user, system=SYSTEM, note=note)
         except Exception as e:  # noqa: BLE001
-            if i == tries - 1 or "429" not in str(e) and "rate" not in str(e).lower():
+            if i == tries - 1 or not any(k in f"{type(e).__name__} {e}".lower() for k in ("429", "rate", "connection", "timeout")):
                 raise
             time.sleep(min(90, 5 * 2 ** i))
 

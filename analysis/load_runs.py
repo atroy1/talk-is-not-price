@@ -145,6 +145,50 @@ def load_all(rebuild=False):
     return tables
 
 
+LIVE = os.path.join(ROOT, "runs", "live")
+
+
+def live_run_dirs(prefixes=None):
+    """Finished new runs: runs/live/<tag>/run/ holding metrics and the judge file. Checks are skipped by name."""
+    out = []
+    for d in sorted(glob.glob(os.path.join(LIVE, "*", "run"))):
+        tag = os.path.basename(os.path.dirname(d))
+        if tag.endswith("-check") or tag.endswith("-check2") or tag.startswith(("fake", "replay", "test", "qwen9b", "qwen35b-")):
+            continue
+        if prefixes and not tag.startswith(tuple(prefixes)):
+            continue
+        if all(os.path.exists(os.path.join(d, f)) for f in ("experiment_metadata.json", "collusion_metrics.json", "auction_results.md")):
+            out.append(d)
+    return out
+
+
+def load_live(prefixes=None):
+    """Same tables as load_all, for the sprint's new runs (sprint work, Fri Oct 23). run_id = the queue tag."""
+    parts = []
+    for d in live_run_dirs(prefixes):
+        p = list(_load_run(d))
+        tag = os.path.basename(os.path.dirname(d))
+        old = p[0]["run_id"]
+        p[0] = p[0] | {"run_id": tag}
+        p[0]["condition"], p[0]["seed"] = _split_tag(tag)
+        for i in (1, 2, 3, 5, 6):
+            for row in p[i]:
+                row["run_id"] = tag
+        p[4]["run_id"] = tag
+        parts.append(p)
+    if not parts:
+        return {}
+    return {
+        "runs": pd.DataFrame([p[0] for p in parts]),
+        "orders": pd.DataFrame([o for p in parts for o in p[1]]),
+        "trades": pd.DataFrame([t for p in parts for t in p[2]]),
+        "messages": pd.DataFrame([m for p in parts for m in p[3]]),
+        "metric_rounds": pd.concat([p[4] for p in parts], ignore_index=True),
+        "turns": pd.DataFrame([t for p in parts for t in p[5]]),
+        "judge": pd.DataFrame([j for p in parts for j in p[6]]),
+    }
+
+
 if __name__ == "__main__":
     t = load_all(rebuild=True)
     for name, df in t.items():

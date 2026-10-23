@@ -268,7 +268,7 @@ index e083f52..8852f9f 100644
          raise ValueError(f"Unknown model: {model}")
      return client
 diff --git a/src/resources/model_wrappers.py b/src/resources/model_wrappers.py
-index 490dfa0..4ae9170 100644
+index 490dfa0..430d565 100644
 --- a/src/resources/model_wrappers.py
 +++ b/src/resources/model_wrappers.py
 @@ -13,6 +13,23 @@ import google.api_core.exceptions
@@ -295,7 +295,16 @@ index 490dfa0..4ae9170 100644
  class Message(TypedDict):
      role: str
      content: str
-@@ -118,19 +135,54 @@ class OpenRouterClient(ModelWrapper):
+@@ -26,7 +43,7 @@ class ModelWrapper(ABC):
+         temperature: float = 0.7,
+         max_tokens: int = 4000,
+         top_p: float = 1.0,
+-        max_retries: int = 3,
++        max_retries: int = 5,  # was 3; raised 2026-10-23 for hosts that flag ~1 reply in 12 as failed
+         initial_retry_delay: float = 1.0,
+         **kwargs
+     ):
+@@ -118,19 +135,56 @@ class OpenRouterClient(ModelWrapper):
              base_url = "https://openrouter.ai/api/v1",
              api_key = os.getenv("OPENROUTER_API_KEY")
          )
@@ -341,10 +350,12 @@ index 490dfa0..4ae9170 100644
 +                usage["provider"] = getattr(response, "provider", None)
 +                text = choice.message.content
 +                _log_usage(self.model_name, "openrouter", usage, str(choice.finish_reason), bool(text))
-+                if not text:
-+                    # e.g. hidden reasoning used the whole max_completion_tokens budget
-+                    logger.warning(f"OpenRouter empty reply (attempt {attempt + 1}/{self.max_retries}, {self.model_name}, "
-+                                   f"finish={choice.finish_reason}, reasoning={self.reasoning_mode})")
++                if not text or str(choice.finish_reason) == "error":
++                    # empty: e.g. hidden reasoning used the whole max_completion_tokens budget.
++                    # finish=error: the host flagged the reply as failed; seen 2026-10-23 on gpt-6-luna, about 1 call in 12,
++                    # as leaked planning notes with no JSON, which crashed the market. Retried like an empty reply.
++                    logger.warning(f"OpenRouter unusable reply (attempt {attempt + 1}/{self.max_retries}, {self.model_name}, "
++                                   f"finish={choice.finish_reason}, empty={not text}, reasoning={self.reasoning_mode})")
 +                    if attempt == self.max_retries - 1:
 +                        return None
 +                    self._exponential_backoff(attempt)
@@ -353,7 +364,7 @@ index 490dfa0..4ae9170 100644
              except APIError as e:
                  logger.warning(f"OpenRouter API error (attempt {attempt + 1}/{self.max_retries}): {str(e)} for prompt {messages}")
                  if attempt == self.max_retries - 1:
-@@ -146,11 +198,140 @@ class OpenRouterClient(ModelWrapper):
+@@ -146,11 +200,140 @@ class OpenRouterClient(ModelWrapper):
          return responses
  
  
@@ -496,7 +507,7 @@ index 490dfa0..4ae9170 100644
      
      def generate(self, messages: List[Message]) -> str:
  
-@@ -162,18 +343,46 @@ class AnthropicClient(ModelWrapper):
+@@ -162,18 +345,46 @@ class AnthropicClient(ModelWrapper):
  
          for attempt in range(self.max_retries):
              try:
