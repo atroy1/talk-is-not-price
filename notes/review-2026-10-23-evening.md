@@ -58,9 +58,10 @@ Stress test, $6 cost shock (10 honest runs): prices 0/10, chat 2/10 (0/10 with t
    cost-shock run). Both versions stay in the tables either way.
 3. **Silent-pricing arm (spend).** Opus 5.5 neutral-sentence markets, 30 rounds, about $5 each: 3 runs ($15) would
    test whether prices catch collusion that never shows in chat. Claude credit after tonight: about $45 left of $100.
-4. **Qwen arm.** Qwen's neutral compete runs will likely coordinate like Haiku's, which breaks the probe's honest
-   reference; option: append 3 Qwen explicit-sentence runs to the Qwen queue (they would run about 10 AM to 1 PM
-   Saturday, free). The forced-deviation forks still wait for Saturday afternoon.
+4. **Qwen arm: done, no decision needed.** Qwen's neutral compete run coordinated too (113 of 134 messages with
+   coordination language, asks at cost), so at 5:40 PM the two remaining compete runs were switched to the explicit
+   sentence and a third explicit run was added (free, local). The neutral run stays as a finding. The forced-deviation
+   forks still wait for Saturday afternoon. The Qwen arm now finishes about 11 AM Saturday.
 5. **Hand labels.** Still needed for the pre-registered labeller check (Sonnet agreement is kappa 0.85 meanwhile).
 
 ## 5. Also done today
@@ -75,4 +76,4 @@ Stress test, $6 cost shock (10 honest runs): prices 0/10, chat 2/10 (0/10 with t
 ## 6. Spend and timing
 
 Claude about $48 of $100 this month after tonight's queues; OpenRouter about $43 left. Tonight: $12 cost shock and five
-more Haiku chat runs done about 7 PM. Qwen arm done about 10 AM Saturday.
+more Haiku chat runs done about 7 PM. Qwen arm done about 11 AM Saturday.

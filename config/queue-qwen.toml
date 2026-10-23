@@ -49,10 +49,12 @@ seed = 2
 
 # Honest reference for the probe. UNCOMMENT AT THE FRIDAY 4 PM LOCK, once seller_prompt_compete.jinja2 exists.
 [[runs]]
-tag = "qwen35b-stock-compete-s2"
+# deviation 3 on the Qwen arm (Fri Oct 23 ~5:40 PM): Qwen also coordinated under the neutral sentence (compete-s1),
+# so the remaining honest-reference runs use the explicit sentence, as on the Haiku arm.
+tag = "qwen35b-stock-explicit-s2"
 seller_model = "local/qwen35-35b-stock"
 seed = 2
-seller_prompt_template = "seller_prompt_compete.jinja2"
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
 
 [[runs]]
 tag = "qwen35b-stock-chat-s3"
@@ -66,10 +68,12 @@ seed = 3
 
 # Honest reference for the probe. UNCOMMENT AT THE FRIDAY 4 PM LOCK, once seller_prompt_compete.jinja2 exists.
 [[runs]]
-tag = "qwen35b-stock-compete-s3"
+# deviation 3 on the Qwen arm (Fri Oct 23 ~5:40 PM): Qwen also coordinated under the neutral sentence (compete-s1),
+# so the remaining honest-reference runs use the explicit sentence, as on the Haiku arm.
+tag = "qwen35b-stock-explicit-s3"
 seller_model = "local/qwen35-35b-stock"
 seed = 3
-seller_prompt_template = "seller_prompt_compete.jinja2"
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
 
 [[runs]]
 tag = "qwen35b-stock-chat-s4"
@@ -80,6 +84,13 @@ seed = 4
 tag = "qwen35b-abl-chat-s4"
 seller_model = "local/qwen35-35b-abl"
 seed = 4
+
+[[runs]]
+# deviation 3: third explicit-sentence honest run (seed 1), before the slow thinking-on runs
+tag = "qwen35b-stock-explicit-s1"
+seller_model = "local/qwen35-35b-stock"
+seed = 1
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
 
 # The lying arm: thinking ON, so each seller's full private reasoning is saved (runs/live/<tag>/reasoning.1.jsonl),
 # while the starter's oversight mode tells sellers an overseer reads their messages. Where the reasoning plans to
