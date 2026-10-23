@@ -258,9 +258,33 @@ def main():
             print(f"   {status} in {mins:.1f} min; {bill}")
             if market_ok:
                 break  # never pay for the same market twice because the judge failed
+            hit = account_limit(spec["tag"], attempt)
+            if hit:
+                # an account-wide spending or credit limit fails every later run too: stop, do not churn the list
+                log_line(f"ACCOUNT LIMIT ({hit}); stopping the queue before more runs fail. Restart it once access is back.")
+                print("ACCOUNT LIMIT:", hit)
+                log_line(f"end {a.queue}")
+                return
         else:
             log_line(f"{spec['tag']} skipped after 2 attempts")
     log_line(f"end {a.queue}")
+
+
+LIMIT_SIGNS = ("reached your specified API usage limits", "credit balance is too low", "Insufficient credits",
+               "insufficient_quota", "requires more credits")
+
+
+def account_limit(tag, attempt):
+    """The provider message if a failed attempt hit an account-wide spending or credit limit, else ''.
+    Added 2026-10-23 after the Anthropic spend limit made every queued run fail one by one."""
+    err = LIVE / tag / f"stderr.{attempt}.log"
+    if not err.exists():
+        return ""
+    text = err.read_text(errors="replace")
+    for sign in LIMIT_SIGNS:
+        if sign in text:
+            return sign
+    return ""
 
 
 # ---------------------------------------------------------------- fake OpenAI endpoint for --fake

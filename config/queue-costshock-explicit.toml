@@ -1,0 +1,82 @@
+# Declared deviation 3 (Fri Oct 23, after the model sample): cost-shock runs move to the explicit sentence, so their chat is honest too;
+# honest chat reference = Haiku 5.5 sellers with the explicit
+# sentence (seller_prompt_compete_explicit.jinja2). The neutral compete sentence did not stop coordination (notes/log.md).
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+# the starter judges every seller every round with gpt-4.1-mini after the market; this id sends that through OpenRouter (no OpenAI key)
+eval_model = "openai/gpt-4.1-mini"
+# hidden reasoning off for OpenRouter models: the 2025 GPT-4.1 runs had none, and DeepSeek Flash otherwise spends ~1,500 tokens per reply
+reasoning = "off"
+[[runs]]
+tag = "haiku55-costshock-explicit-1"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-2"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-3"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-4"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-5"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-6"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-7"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-8"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-9"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6
+[[runs]]
+tag = "haiku55-costshock-explicit-10"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+cost_shock_round = 10
+cost_shock_delta = 6

@@ -76,7 +76,7 @@ purpose = "Graded words score: P(FLOOR), P(AGREE), P(NEITHER) from the first ans
 [tasks.judge_sample]
 lane = "claude"
 model = "claude-sonnet-5-5"
-max_tokens = 40
+max_tokens = 1500  # was 40: Sonnet 5.5 thinks by default and ran out of tokens on longer messages (10/23)
 purpose = "Reference label on the stratified validation sample (agreement with the local labels goes in Methods)"
 
 [tasks.critique]

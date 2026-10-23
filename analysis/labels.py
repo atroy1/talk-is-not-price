@@ -15,6 +15,7 @@ pass resumes where it ended. Message id = run_id|round|agent.
 import argparse
 import csv
 import os
+import re
 import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -117,7 +118,11 @@ def label_graded(text):
 def label_reference(text):
     r = _retry("judge_sample", PROMPT.format(text=str(text)[:2000]), "labels.py reference")
     word = (r.text or "").strip().upper()
-    return {"label": next((c for c in CLASSES if word.startswith(c)), "UNPARSED"), "usd": r.usd}
+    label = next((c for c in CLASSES if word.startswith(c)), None)
+    if label is None:  # an explanation first: take the last class word it names
+        found = re.findall(r"\b(FLOOR|AGREE|NEITHER)\b", word)
+        label = found[-1] if found else "UNPARSED"
+    return {"label": label, "usd": r.usd}
 
 
 def run_pass(rows, fn, path, fields, workers=8):

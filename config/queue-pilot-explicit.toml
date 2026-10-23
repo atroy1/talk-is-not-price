@@ -1,0 +1,19 @@
+# EXPLORATORY pilot, Fri Oct 23 ~3 PM (post-lock): does a stronger instruction give an honest chat reference?
+# The neutral compete sentence did not stop Haiku 5.5 sellers coordinating in chat (notes/log.md).
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+eval_model = "openai/gpt-4.1-mini"
+reasoning = "off"
+[[runs]]
+tag = "haiku55-pilot-explicit-1"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"
+[[runs]]
+tag = "haiku55-pilot-explicit-2"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_explicit.jinja2"

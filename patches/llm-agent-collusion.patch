@@ -53,15 +53,21 @@ index e1c0716..5776dbe 100644
  
  
 diff --git a/src/continuous_double_auction/market/agents.py b/src/continuous_double_auction/market/agents.py
-index c9f87f2..728c6c0 100644
+index c9f87f2..847874e 100644
 --- a/src/continuous_double_auction/market/agents.py
 +++ b/src/continuous_double_auction/market/agents.py
-@@ -1,3 +1,4 @@
+@@ -1,8 +1,10 @@
 +import os
  import json
  import random
  from typing import Any, Dict, Optional
-@@ -121,7 +122,11 @@ class ZIPBuyer(Agent):
+ import anthropic
+ import backoff
++from src.resources.model_wrappers import ModelRefusal
+ import openai
+ from pydantic import BaseModel
+ 
+@@ -121,7 +123,11 @@ class ZIPBuyer(Agent):
          base_bid = (1 - self.profit_margin) * self.valuation
  
          # Introduce a minor randomness of to break symmetry between identical buyers.
@@ -74,7 +80,25 @@ index c9f87f2..728c6c0 100644
          return {"bid": base_bid * (1 + noise_factor)}
  
  
-@@ -276,6 +281,9 @@ class LMSeller(Agent):
+@@ -184,7 +190,16 @@ class LMBuyer(Agent):
+             max_message_length=self.expt_params.max_message_length,
+         )
+         messages = [Message(role="user", content=prompt)]
+-        response = self.client.generate(messages=messages)
++        try:
++            response = self.client.generate(messages=messages)
++        except ModelRefusal as refusal:
++            # A declined turn: no new order and no message this hour, so the standing order holds. Logged in the
++            # transcript and counted per run (finish "refusal" in the usage log). Every other failure still stops the run.
++            print(f"REFUSED turn: round {round_num}, {self.id}: {refusal}", flush=True)
++            if self.logger:
++                self.logger.log_agent_round(round_num=round_num, agent_id=self.id, prompt=prompt,
++                                            response_dict={"refused": str(refusal)[:300]})
++            return {}
+         assert response is not None
+         response_dict = extract_json(response)
+         if self.logger:
+@@ -276,8 +291,20 @@ class LMSeller(Agent):
              oversight_enabled=self.expt_params.oversight_enabled,
              max_message_length=self.expt_params.max_message_length,
          )
@@ -82,8 +106,38 @@ index c9f87f2..728c6c0 100644
 +        if inject_round and round_num >= int(inject_round):  # branch replays: same history, one added line from round N
 +            prompt = prompt + "\n\n" + os.getenv("CDA_INJECT_TEXT", "")
          messages = [Message(role="user", content=prompt)]
-         response = self.client.generate(messages=messages)
+-        response = self.client.generate(messages=messages)
++        try:
++            response = self.client.generate(messages=messages)
++        except ModelRefusal as refusal:
++            # A declined turn: no new order and no message this hour, so the standing order holds. Logged in the
++            # transcript and counted per run (finish "refusal" in the usage log). Every other failure still stops the run.
++            print(f"REFUSED turn: round {round_num}, {self.id}: {refusal}", flush=True)
++            if self.logger:
++                self.logger.log_agent_round(round_num=round_num, agent_id=self.id, prompt=prompt,
++                                            response_dict={"refused": str(refusal)[:300]})
++            return {}
          assert response is not None
+         response_dict = extract_json(response)
+         if self.logger:
+@@ -316,7 +343,16 @@ class MessageOverseer(BaseModel):
+             seller_messages_this_round=seller_messages_this_round,
+         )
+         messages = [Message(role="user", content=prompt)]
+-        response = self.client.generate(messages=messages)
++        try:
++            response = self.client.generate(messages=messages)
++        except ModelRefusal as refusal:
++            # A declined turn: no new order and no message this hour, so the standing order holds. Logged in the
++            # transcript and counted per run (finish "refusal" in the usage log). Every other failure still stops the run.
++            print(f"REFUSED turn: round {round_num}, Overseer: {refusal}", flush=True)
++            if self.logger:
++                self.logger.log_agent_round(round_num=round_num, agent_id="Overseer", prompt=prompt,
++                                            response_dict={"refused": str(refusal)[:300]})
++            return {}
+         assert response is not None
+         response_dict = extract_json(response)
+         if self.logger:
 diff --git a/src/continuous_double_auction/market/market.py b/src/continuous_double_auction/market/market.py
 index c89a8b3..bee8c13 100644
 --- a/src/continuous_double_auction/market/market.py
@@ -268,10 +322,10 @@ index e083f52..8852f9f 100644
          raise ValueError(f"Unknown model: {model}")
      return client
 diff --git a/src/resources/model_wrappers.py b/src/resources/model_wrappers.py
-index 490dfa0..430d565 100644
+index 490dfa0..dce60de 100644
 --- a/src/resources/model_wrappers.py
 +++ b/src/resources/model_wrappers.py
-@@ -13,6 +13,23 @@ import google.api_core.exceptions
+@@ -13,6 +13,27 @@ import google.api_core.exceptions
  logger = logging.getLogger(__name__)
  logger.setLevel(logging.WARNING)
  
@@ -292,10 +346,14 @@ index 490dfa0..430d565 100644
 +import threading as _threading
 +_USAGE_LOCK = _threading.Lock()
 +
++class ModelRefusal(Exception):
++    """The model declined this request (stop_reason "refusal"). Callers decide what a declined turn means."""
++
++
  class Message(TypedDict):
      role: str
      content: str
-@@ -26,7 +43,7 @@ class ModelWrapper(ABC):
+@@ -26,7 +47,7 @@ class ModelWrapper(ABC):
          temperature: float = 0.7,
          max_tokens: int = 4000,
          top_p: float = 1.0,
@@ -304,7 +362,7 @@ index 490dfa0..430d565 100644
          initial_retry_delay: float = 1.0,
          **kwargs
      ):
-@@ -118,19 +135,56 @@ class OpenRouterClient(ModelWrapper):
+@@ -118,19 +139,56 @@ class OpenRouterClient(ModelWrapper):
              base_url = "https://openrouter.ai/api/v1",
              api_key = os.getenv("OPENROUTER_API_KEY")
          )
@@ -364,7 +422,7 @@ index 490dfa0..430d565 100644
              except APIError as e:
                  logger.warning(f"OpenRouter API error (attempt {attempt + 1}/{self.max_retries}): {str(e)} for prompt {messages}")
                  if attempt == self.max_retries - 1:
-@@ -146,11 +200,140 @@ class OpenRouterClient(ModelWrapper):
+@@ -146,11 +204,140 @@ class OpenRouterClient(ModelWrapper):
          return responses
  
  
@@ -507,7 +565,7 @@ index 490dfa0..430d565 100644
      
      def generate(self, messages: List[Message]) -> str:
  
-@@ -162,18 +345,46 @@ class AnthropicClient(ModelWrapper):
+@@ -162,18 +349,52 @@ class AnthropicClient(ModelWrapper):
  
          for attempt in range(self.max_retries):
              try:
@@ -517,7 +575,10 @@ index 490dfa0..430d565 100644
 +                    request = dict(max_tokens=max(self.max_tokens, 16000))
 +                    effort = self.effort or (self.reasoning_mode if self.reasoning_mode not in ("default", "off") else None)
 +                    if self.thinking_off:
-+                        request["extra_body"] = {"thinking": {"type": "disabled"}}
++                        # Sonnet 5.5 rejects "disabled"; "between_tools" (no other field, effort high or below) is its
++                        # off switch, so it runs without thinking like Haiku (added 2026-10-23 for the model sample).
++                        off = "between_tools" if self.model_name.startswith("claude-sonnet-5-5") else "disabled"
++                        request["extra_body"] = {"thinking": {"type": off}}
 +                    elif self.reasoning_mode == "off":
 +                        effort = effort or "low"
 +                    if effort:
@@ -538,8 +599,11 @@ index 490dfa0..430d565 100644
 +                usage["reasoning_applied"] = "legacy sampling" if self.legacy else applied
 +                _log_usage(self.model_name, "anthropic", usage, str(response.stop_reason), response.stop_reason != "refusal")
 +                if response.stop_reason == "refusal":
-+                    logger.error(f"Claude refused ({self.model_name}): {getattr(response, 'stop_details', None)}")
-+                    return None
++                    # Not retried and not sent to a fallback model (that would mix models in one market). The agent
++                    # catches ModelRefusal and holds its standing order for this hour (added 2026-10-23, Opus 5.5).
++                    details = getattr(response, 'stop_details', None)
++                    logger.error(f"Claude refused ({self.model_name}): {details}")
++                    raise ModelRefusal(f"{self.model_name}: {details}")
 +                # Thinking blocks come before the answer, so take the text blocks, not content[0]
 +                text = "".join(block.text for block in response.content if block.type == "text")
 +                if not text:

@@ -31,18 +31,20 @@ def late_asks(t, condition):
 
 
 def main():
-    t = load_live(["haiku55-base", "haiku55-compete"])
-    base, comp = late_asks(t, "haiku55-base"), late_asks(t, "haiku55-compete")
-    print(f"Haiku base runs {len(base)}, compete runs {len(comp)} (late window rounds {START_ROUND}-30)")
+    # deviation 3: the same rule applies to the explicit-sentence runs; pass "explicit" to check them
+    cand = "haiku55-explicit" if (len(sys.argv) > 1 and sys.argv[1] == "explicit") else "haiku55-compete"
+    t = load_live(["haiku55-base", cand])
+    base, comp = late_asks(t, "haiku55-base"), late_asks(t, cand)
+    print(f"Haiku base runs {len(base)}, {cand} runs {len(comp)} (late window rounds {START_ROUND}-30)")
     if len(base) < 3 or len(comp) < 3:
         sys.exit("too few finished runs to apply the rule yet")
     gap = comp.median() - base.median()
     p = mannwhitneyu(comp, base, alternative="two-sided").pvalue
     join = abs(gap) <= GAP and p >= ALPHA
-    print(f"median late ask: base ${base.median():.2f}, compete ${comp.median():.2f}, gap ${gap:+.2f} (rule: within ${GAP:.2f})")
+    print(f"median late ask: base ${base.median():.2f}, candidate ${comp.median():.2f}, gap ${gap:+.2f} (rule: within ${GAP:.2f})")
     print(f"Mann-Whitney p = {p:.3f} (rule: not below {ALPHA})")
-    print("DECISION: compete runs JOIN the price reference" if join else
-          "DECISION: prices calibrated on the base runs alone; compete runs serve the chat channel only")
+    print("DECISION: these runs JOIN the price reference" if join else
+          "DECISION: prices calibrated on the base runs alone; these runs serve the chat channel only")
     if len(comp) < 20:
         print(f"provisional: {len(comp)} of 20 compete runs finished; rerun when all have landed")
 

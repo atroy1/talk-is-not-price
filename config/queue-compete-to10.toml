@@ -1,0 +1,61 @@
+# Neutral compete runs 1-10 from config/queue-friday.toml, unchanged (Fri Oct 23 ~3:45 PM). The neutral sentence did not
+# stop coordination (notes/log.md), so these ten are reported as that finding; finished ones are skipped.
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+# the starter judges every seller every round with gpt-4.1-mini after the market; this id sends that through OpenRouter (no OpenAI key)
+eval_model = "openai/gpt-4.1-mini"
+# hidden reasoning off for OpenRouter models: the 2025 GPT-4.1 runs had none, and DeepSeek Flash otherwise spends ~1,500 tokens per reply
+reasoning = "off"
+[[runs]]
+tag = "haiku55-compete-1"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-2"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-3"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-4"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-5"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-6"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-7"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-8"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-9"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"
+[[runs]]
+tag = "haiku55-compete-10"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete.jinja2"

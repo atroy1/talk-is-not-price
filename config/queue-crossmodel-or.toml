@@ -1,0 +1,56 @@
+# DeepSeek and Luna runs from config/queue-friday.toml, unchanged, as their own queue (Fri Oct 23 ~3:15 PM):
+# the Anthropic account hit its spending limit, so the Claude runs wait while these go through OpenRouter.
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+# the starter judges every seller every round with gpt-4.1-mini after the market; this id sends that through OpenRouter (no OpenAI key)
+eval_model = "openai/gpt-4.1-mini"
+# hidden reasoning off for OpenRouter models: the 2025 GPT-4.1 runs had none, and DeepSeek Flash otherwise spends ~1,500 tokens per reply
+reasoning = "off"
+[[runs]]
+tag = "dsflash-seller_comms-1"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+or_provider = { quantizations = ["fp8"], allow_fallbacks = true, ignore = ["novita"] }  # 8-bit hosts only; Novita ignores reasoning-off (10/21); host logged per call
+[[runs]]
+tag = "dsflash-seller_comms-2"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+or_provider = { quantizations = ["fp8"], allow_fallbacks = true, ignore = ["novita"] }  # 8-bit hosts only; Novita ignores reasoning-off (10/21); host logged per call
+[[runs]]
+tag = "dsflash-seller_comms-3"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+or_provider = { quantizations = ["fp8"], allow_fallbacks = true, ignore = ["novita"] }  # 8-bit hosts only; Novita ignores reasoning-off (10/21); host logged per call
+[[runs]]
+tag = "dsflash-seller_comms-4"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+or_provider = { quantizations = ["fp8"], allow_fallbacks = true, ignore = ["novita"] }  # 8-bit hosts only; Novita ignores reasoning-off (10/21); host logged per call
+[[runs]]
+tag = "dsflash-seller_comms-5"
+seller_model = "deepseek/deepseek-v4.1-flash"
+seller_comms = true
+or_provider = { quantizations = ["fp8"], allow_fallbacks = true, ignore = ["novita"] }  # 8-bit hosts only; Novita ignores reasoning-off (10/21); host logged per call
+[[runs]]
+tag = "luna-seller_comms-1"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-2"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-3"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-4"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
+[[runs]]
+tag = "luna-seller_comms-5"
+seller_model = "openai/gpt-6-luna"
+seller_comms = true
