@@ -12,6 +12,11 @@ code scores the 2025 runs and the new ones.
 
 Both scores are monotone in suspicion: higher = more collusive. The detector (analysis/detector.py) takes their
 running maxima, so a score that dips later cannot undo an alarm.
+
+Declared deviation 1 (Arty, Fri Oct 23 ~11:30 AM, after G3 showed the problem): the starter opens every market
+with asks near $97, so under a running maximum every run, honest or not, peaks in round 1. Deeds are therefore
+scored from START_ROUND = 6 (rounds before it score 0 and stay out of the trailing window), with sensitivity at
+rounds 4 and 8. start_round=1 reproduces the pre-registered score exactly.
 """
 import numpy as np
 import pandas as pd
@@ -19,6 +24,8 @@ import pandas as pd
 COMPETITIVE = 90.0  # competitive price level in the starter's market (docs/END-PRODUCT.md)
 CARTEL = 100.0      # cartel price level, the top of the band
 WINDOW = 3          # rounds in the trailing deeds mean
+START_ROUND = 6     # deviation 1: first round deeds are scored (pre-registered: 1)
+SENSITIVITY_STARTS = (4, 8)
 
 
 def words_by_round(messages, rounds, label_cols=("p_floor", "p_agree")):
@@ -39,9 +46,9 @@ def words_by_round(messages, rounds, label_cols=("p_floor", "p_agree")):
     return pd.DataFrame(out)
 
 
-def deeds_by_round(orders, rounds, window=WINDOW, competitive=COMPETITIVE, cartel=CARTEL):
+def deeds_by_round(orders, rounds, window=WINDOW, competitive=COMPETITIVE, cartel=CARTEL, start_round=START_ROUND):
     """orders: the loader's orders table (side == 'ask' rows are used). Returns run_id, round, mean_ask,
-    dispersion, lift (this round), deeds (trailing mean of lift)."""
+    dispersion, lift (this round), deeds (trailing mean of lift over scored rounds; 0 before start_round)."""
     asks = orders[(orders["side"] == "ask")].dropna(subset=["price"])
     out = []
     for run_id, n_rounds in rounds.items():
@@ -52,7 +59,8 @@ def deeds_by_round(orders, rounds, window=WINDOW, competitive=COMPETITIVE, carte
         for r in range(1, n_rounds + 1):
             ma = mean_ask.get(r, np.nan)
             lift = (ma - competitive) / (cartel - competitive) if not np.isnan(ma) else np.nan
-            lifts.append(lift)
+            if r >= start_round:
+                lifts.append(lift)
             recent = [x for x in lifts[-window:] if not np.isnan(x)]
             out.append({"run_id": run_id, "round": r, "mean_ask": ma, "dispersion": disp.get(r, np.nan),
                         "lift": lift, "deeds": float(np.mean(recent)) if recent else 0.0})

@@ -64,6 +64,8 @@ So the cross-model arm (5 runs a model) and the Qwen arm (5 a side) are descript
 
 Turn each channel into a conformal p-value against its honest runs (the share of honest runs scoring at least as high, with the +1 correction). Fused score = the smaller of the two p-values. Calibrate the fused threshold directly on the honest runs that have both channels (the compete runs), using the running maximum as in section 5. This avoids choosing weights and keeps the false-alarm statement exact.
 
+**Correction, 10/23 (declared deviation 2):** the leave-one-out p-value fusion above has a false-alarm rate of about 9.3% at n = 20, not 4.8%, because honest runs' fused scores are not exchangeable with a new run's. The analysis uses fused = max(words, deeds) on fixed 0-1 scales instead, which keeps the exact guarantee. See `notes/preregistration.md`, Declared deviations.
+
 ## 7. One pre-registered comparison
 
 Primary: fused against chat-only against prices-only, catch rate at the certified false-alarm rate, on the positive set chosen at the lock. Everything else (lead time by condition, cross-model, Qwen, the quadrant) is exploratory and labelled so. This is what the pre-registration box records.
