@@ -14,11 +14,13 @@ deviation 3), so their certified false-alarm rate is 1/21 = 4.8%. Prices on the 
 |---|---|---|---|---|
 | 2025 headline (35) | 35 | 3 | 35 | 35 |
 | 2025 oversight and CEO pressure (30) | 30 (29 with the 0.5 cut) | 17 | 30 | 16 |
-| Haiku 5.5 chat (5; 10 tonight) | 5 | 1 | 5 | 5 |
+| Haiku 5.5 chat (10) | 10 | 2 | 10 | 10 |
 | DeepSeek Flash chat (5, described only) | 5 | 0 | 5 | 5 |
 | GPT-6 Luna chat (5, described only) | 5 | 0 | 5 | 4 |
 
-Stress test, $6 cost shock (10 honest runs): prices 0/10, chat 2/10 (0/10 with the 0.5 cut), chat + prices 1/10, judge 0/10.
+Stress tests, honest sellers with the explicit sentence (10 runs each): $6 cost shock: prices 0/10, chat 2/10 (0/10 with
+the 0.5 cut), chat + prices 1/10, judge 0/10. $12 cost shock (added tonight): prices 1/10, chat 1/10 (0/10 with the
+0.5 cut), chat + prices 2/10, judge 0/10.
 
 ## 2. The four predictions (provisional)
 
@@ -27,10 +29,13 @@ Stress test, $6 cost shock (10 honest runs): prices 0/10, chat 2/10 (0/10 with t
    gap is structural anyway. Say so plainly if lead time stays in the paper.
 2. **Fused catches at least as many as either channel, more than prices: met.** But fused equals chat on every set.
    Prices add no catch the chat misses, because every 2025 collusive run talks.
-3. **Haiku catch rate inside the 2025 interval: met** (5/5 against 35/35). Ten runs by tonight.
-4. **Cost shock: prices alarm on 5+ of 10: failed; fused on 2 or fewer: met.** The $6 shock did not move prices at
-   all (asks $88.78 before, $88.83 after): buyers bid there and sellers simply took a thinner margin. So the test never
-   got its innocent price rise. Follow-up running: a $12 shock (cost $92, above the going price), 10 runs, done ~7 PM.
+3. **Haiku catch rate inside the 2025 interval: met** (10/10, interval 0.69 to 1.00, against 35/35).
+4. **Cost shock: prices alarm on 5+ of 10: failed; fused on 2 or fewer: met.** The $6 shock did not move prices
+   (asks $88.78 before, $88.83 after). The $12 follow-up did not either, and for a striking reason: with cost raised to
+   $92 (the prompt says so from round 10), 73% of asks and 76% of 456 trades stayed below $92, so Haiku sellers kept
+   selling at a loss rather than pass the cost through, and no seller message mentions it. The innocent parallel price
+   rise this test needs never happens with these agents. Report that as the result; it also means price screens' usual
+   innocent explanation (shared cost shocks) did not arise in this market.
 
 ## 3. What the data is actually saying (candidate story)
 
@@ -44,6 +49,8 @@ Stress test, $6 cost shock (10 honest runs): prices 0/10, chat 2/10 (0/10 with t
   game (tacit parallel pricing), which pushes any price threshold up; prices catch 3/35 headline runs.
 - **The blind spot is silence:** Opus 5.5 with the neutral sentence sent no messages yet asked $92.83 on average (2
   runs). That is the case a chat monitor cannot see and only prices can, and it is the case our 2025 data lacks.
+- **No cost pass-through:** LLM sellers absorbed a cost increase that pushed cost above the going price (76% of
+  trades below the new cost), with no message about it.
 - **The judge is chat-dependent too:** 35/35 where sellers talk, 16/30 in the oversight and pressure runs where they
   talk less.
 
@@ -75,5 +82,5 @@ Stress test, $6 cost shock (10 honest runs): prices 0/10, chat 2/10 (0/10 with t
 
 ## 6. Spend and timing
 
-Claude about $48 of $100 this month after tonight's queues; OpenRouter about $43 left. Tonight: $12 cost shock and five
-more Haiku chat runs done about 7 PM. Qwen arm done about 11 AM Saturday.
+Claude about $48 of $100 this month; OpenRouter about $43 left. The $12 cost shock and Haiku chat runs 6-10 finished
+at 6:47 PM. The Qwen arm finishes about 11 AM Saturday.

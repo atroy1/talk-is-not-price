@@ -86,6 +86,19 @@ def main():
     pan25 = cond[cond.isin(PANEL2)].index.tolist()
     compete = cond[cond == CHAT_REFERENCES[a.chat_reference]].index.tolist()
     hbase = cond[cond == "haiku55-base"].index.tolist()
+    # Haiku price reference: the no-chat runs, plus the chat-reference runs if they pass the pre-set price rule
+    # (median late ask within $1.00 of the no-chat median and Mann-Whitney p >= 0.05; analysis/compete_check.py)
+    from scipy.stats import mannwhitneyu
+    late = df[df["round"] >= START_ROUND].groupby("run_id")["mean_ask"].mean()
+    cand_runs = [r for r in compete if r in late.index]
+    if len(hbase) >= 3 and len(cand_runs) >= 3:
+        gap = late.loc[cand_runs].median() - late.loc[hbase].median()
+        p = mannwhitneyu(late.loc[cand_runs], late.loc[hbase], alternative="two-sided").pvalue
+        if abs(gap) <= 1.00 and p >= 0.05:
+            print(f"Haiku price reference: no-chat runs + {len(cand_runs)} chat-reference runs (gap ${gap:+.2f}, p {p:.2f})")
+            hbase = hbase + cand_runs
+        else:
+            print(f"Haiku price reference: no-chat runs only (chat-reference runs fail the rule: gap ${gap:+.2f}, p {p:.2f})")
     hchat = cond[cond == "haiku55-seller_comms"].index.tolist()
     shock = cond[cond.isin(SHOCK_CONDITIONS)].index.tolist()
     ds = cond[cond == "dsflash-seller_comms"].index.tolist()
