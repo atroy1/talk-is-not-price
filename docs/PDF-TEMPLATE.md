@@ -25,7 +25,7 @@ The replica (`make mock`) sets the slots below in the template's type with two f
 |---|---|---|---|
 | 1 | Title | 10 to 14 | Two lines in capitals at 22 pt. Three lines costs a paragraph of the introduction. |
 | 1 | Authors | | Arthur Troy, Independent, Chantilly, Virginia (your call on the affiliation). |
-| 1 | Abstract | 120 to 150 | The form takes 150 or fewer. Problem (1 sentence), what we built (1), the headline number with its baseline and its false-alarm rate (2), what it does not show (1). Written last. |
+| 1 | Abstract | **exactly 150** | The form takes 150 or fewer and the template asks for 150 to 250; exactly 150 satisfies both (decided 10/22). Problem (1 sentence), what we built (1), the headline number with its baseline and its false-alarm rate (2), what it does not show (1). Written last. |
 | 1 | Introduction, opening | 100 to 110 | One real run, one quote from it, the threat model in two sentences. Ends by pointing at Figure 1. |
 | 2 | Figure 1 | | Full width, 6.5 x 2.4 inches, caption 40 to 60 words. Top of page 2. |
 | 2 | Introduction, rest | 60 + list | Why an auditor cannot do this today, then "Our main contributions are:" and three numbered items of about 20 words. |
@@ -34,7 +34,7 @@ The replica (`make mock`) sets the slots below in the template's type with two f
 | 3 | Methods | 70 + 90 + 60 | Data and the prior-work line verbatim; the detector in one equation with threshold, null and seeds; controls, what did not work, the label-validation kappa. |
 | 3 | Pre-registration box | 40 | Grey box: date, time, commit hash, three predictions. |
 | 3 to 4 | Results | 50 + 120 + 80 | Observation then interpretation, separately, each prediction marked. |
-| 4 | Table 2, the numbers | 4 rows | Detector by catch rate at 5% and 1% FPR with intervals, and median lead in rounds. Best row bold. |
+| 4 | Table 2, the numbers | 4 rows | Detector by catch rate at the certified false-alarm rate with intervals, false alarms on the 10 cost-shock runs (innocent parallel pricing), and median lead in rounds. Best row bold. |
 | 4 | Figure 2 | | Half width, 3.15 x 3.0 inches, text alongside. The quadrant. |
 | 4 to 5 | Discussion | 70 | Theory of change: what an auditor does with it. |
 | 5 | Table 3, plus factors | 4 rows | Doctrine to statistic to separation. The only place the legal frame appears. |
@@ -128,7 +128,7 @@ Before and after, for the opening:
 ## 9. Export checklist (Sunday, twice: before the 1 PM early submission and before the final)
 
 - [ ] Info box and all guidance text gone; title and author block current; footnote 1 intact.
-- [ ] Abstract counted on the form: 150 words or fewer.
+- [ ] Abstract counted on the form: exactly 150 words.
 - [ ] Figures inserted at 100 percent, in line, each numbered, each caption stands alone, each referenced in the text before it appears.
 - [ ] Tables native, numbered, captioned, intervals and n present, best row bold.
 - [ ] Pre-registration box carries the real commit hash and the predictions are marked in Results.

@@ -113,4 +113,4 @@ Thursday, once keys exist: one real run with `rounds = 3` on Haiku to confirm th
 
 ## 8. Submission form, fields to have ready
 
-Title (the finding, chosen Sunday from `END-PRODUCT.md`), abstract (150 words or fewer, pasted from the Doc after the word count), track (2, Detection and Audit), authors and affiliation ("Independent" or "AMER"), PDF under 25 MB, repo link (public by Sunday 1 PM, with a one-command reproduction), video link if made, publishing interest yes or no, the dual-use appendix present.
+Title (the finding, chosen Sunday from `END-PRODUCT.md`), abstract (exactly 150 words, which satisfies both the form's limit and the template's range; pasted from the Doc after the word count), track (2, Detection and Audit), authors and affiliation ("Independent" or "AMER"), PDF under 25 MB, repo link (public by Sunday 1 PM, with a one-command reproduction), video link if made, publishing interest yes or no, the dual-use appendix present.

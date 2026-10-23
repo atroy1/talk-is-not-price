@@ -21,7 +21,9 @@ Queue file (TOML):
                           seed = 7 (fixes the market and local replies), zip_buyers = true (algorithmic buyers),
                           inject_round = 12, inject_text = "..." (added to every seller prompt from that round: branch replays),
                           think_prefill = "...", think_round = 8 (written as the opening of each seller's private reasoning
-                          from that round; needs reasoning = "default": thought injection)
+                          from that round; needs reasoning = "default": thought injection),
+                          cost_shock_round = 10, cost_shock_delta = 6 (every seller's cost rises from that round),
+                          force_round = 8, force_seller = 0, force_ask = 84.0 (one seller's ask replaced for one round)
     [[runs]]              tag, seller_model, buyer_model, seller_comms, oversight, boss_pressure, hide_num_rounds, plus any default
 Models must be in the starter's SUPPORTED_MODELS (patched list in patches/llm-agent-collusion.patch).
 """
@@ -138,7 +140,9 @@ def run_one(spec, cfg, attempt, env):
                CDA_OR_PROVIDER_MODELS=",".join({spec["seller_model"], spec["buyer_model"]}),
                CDA_INJECT_ROUND=str(spec.get("inject_round", "")), CDA_INJECT_TEXT=spec.get("inject_text", ""),
                CDA_LOCAL_MODELS=str(ROOT / "config" / "local-models.json"),
-               CDA_THINK_PREFILL=spec.get("think_prefill", ""), CDA_THINK_ROUND=str(spec.get("think_round", 1)))
+               CDA_THINK_PREFILL=spec.get("think_prefill", ""), CDA_THINK_ROUND=str(spec.get("think_round", 1)),
+               CDA_COST_SHOCK=f"{spec['cost_shock_round']}:{spec['cost_shock_delta']}" if spec.get("cost_shock_round") else "",
+               CDA_FORCE_ASK=f"{spec['force_round']}:{spec['force_seller']}:{spec['force_ask']}" if spec.get("force_round") else "")
     with open(out / f"stdout.{attempt}.log", "w") as so, open(out / f"stderr.{attempt}.log", "w") as se:
         try:
             p = subprocess.run(cmd, cwd=STARTER, stdout=so, stderr=se, env=env, timeout=spec["timeout_min"] * 60)

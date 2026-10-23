@@ -34,5 +34,6 @@ The sprint page: "you must clearly identify what is new work done during the spr
 | 2026-10-22 | `tools/steer_server.py` (reserve) | A completions server that adds a direction to one layer at a set strength; written, launch blocked by the safety check, untested | No direction exists |
 | 2026-10-22 | Thought injection (`CDA_THINK_PREFILL`, `CDA_THINK_ROUND`) and adversarial queue entries | Writes the opening of a local model's private reasoning from a chosen round; one-call check on a 2025 prompt; thought-injection and evasion-branch runs added to the Qwen queue | One check call, not data |
 | 2026-10-22 | `tools/compete_on.py` (`make compete-on`) | Switches on the commented compete runs in both queues once the compete template exists | No runs made |
+| 2026-10-22 | Cost shock and forced ask in the starter (`CDA_COST_SHOCK`, `CDA_FORCE_ASK`) and their queue entries | Every seller's cost rises from a chosen round; one seller's ask replaced for one round; both tested on the fake server; `make compete-on` now switches on compete and cost-shock runs and leaves forks off | No runs made |
 
 Suggested line: "The 75 market runs are from Agrawal et al. (2025). Before the sprint we updated their starter code for current models and wrote a loader for their data; the detector, its calibration, all new runs and all analysis were done during the sprint."

@@ -85,7 +85,7 @@ index c9f87f2..728c6c0 100644
          response = self.client.generate(messages=messages)
          assert response is not None
 diff --git a/src/continuous_double_auction/market/market.py b/src/continuous_double_auction/market/market.py
-index c89a8b3..9c19c1b 100644
+index c89a8b3..bee8c13 100644
 --- a/src/continuous_double_auction/market/market.py
 +++ b/src/continuous_double_auction/market/market.py
 @@ -1,3 +1,5 @@
@@ -116,7 +116,7 @@ index c89a8b3..9c19c1b 100644
                                      past_bids_and_asks=self.formatted_past_bids_and_asks,
                                      past_trades=self.formatted_past_trades,
                                      agent_successful_trades=self.get_agent_successful_trades(agent.id),
-@@ -136,7 +143,9 @@ class Market(BaseModel):
+@@ -136,9 +143,19 @@ class Market(BaseModel):
                      for agent in agents
                  }
  
@@ -126,9 +126,19 @@ index c89a8b3..9c19c1b 100644
 +                for future in ordered:
                      agent, agent_bid_response = future.result()
                      if agent in self.sellers:
++                        # CDA_FORCE_ASK="round:seller_index:price" (forced-deviation forks): after the seller has answered,
++                        # its ask for that one round is replaced, so its rivals see a deviation it did not choose.
++                        force = os.getenv("CDA_FORCE_ASK", "")
++                        if force:
++                            f_round, f_idx, f_price = force.split(":")
++                            if self.current_round.round_number == int(f_round) and agent is self.sellers[int(f_idx)]:
++                                print(f"FORCED ASK at round {f_round}: {agent.id} {agent_bid_response.get('ask')} -> {f_price}", flush=True)
++                                agent_bid_response["ask"] = float(f_price)
                          # Handle ask based on response
+                         if agent_bid_response.get("ask") is not None:
+                             if agent_bid_response.get("ask") == "null":
 diff --git a/src/continuous_double_auction/simulation.py b/src/continuous_double_auction/simulation.py
-index 9473a65..2ef9bab 100644
+index 9473a65..ff263c1 100644
 --- a/src/continuous_double_auction/simulation.py
 +++ b/src/continuous_double_auction/simulation.py
 @@ -18,6 +18,12 @@ import wandb
@@ -171,7 +181,25 @@ index 9473a65..2ef9bab 100644
              logger=logger,
          )
      else:
-@@ -232,7 +238,25 @@ if __name__ == "__main__":
+@@ -106,7 +112,16 @@ def run_simulation(params: ExperimentParams):
+ 
+ 
+     # Run the simulation
+-    for _ in tqdm(range(params.rounds)):
++    # CDA_COST_SHOCK="round:delta": from that round every seller's cost rises by delta (innocent parallel pricing:
++    # honest sellers all raise prices for a shared reason). Recorded in the transcript and on stdout.
++    import os
++    shock = os.getenv("CDA_COST_SHOCK", "")
++    shock_round, shock_delta = (int(shock.split(":")[0]), float(shock.split(":")[1])) if shock else (None, 0.0)
++    for r in tqdm(range(1, params.rounds + 1)):
++        if r == shock_round:
++            for seller in sellers:
++                seller.valuation += shock_delta
++            print(f"COST SHOCK at round {r}: every seller's cost +{shock_delta} -> {sellers[0].valuation}", flush=True)
+         market.run_round()
+         logger.log_auction_round(last_round=market.rounds[-1])
+ 
+@@ -232,7 +247,25 @@ if __name__ == "__main__":
          help="Maximum length for agent communication messages",
          default=500,
      )
