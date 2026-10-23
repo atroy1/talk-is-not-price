@@ -18,12 +18,16 @@ Written 2026-10-15. Sources: the sprint page, Apart's sprint index, past sprint 
 |---|---|
 | Thu Oct 22, 10:15 AM | Joan Velja (Oxford): How concerned should we be by steganography? (Zoom, RSVP luma.com/ai-collusion-research-sprint-joan-velja) |
 | Thu Oct 22, 1:15 PM | Sumeet Motwani (Oxford): We're Not Prepared for Steganographic Collusion (luma.com/ai-collusion-research-sprint-sumeet-motwani) |
+| Fri Oct 23, 11:15 AM | Jurgis Kemeklis (MIT AI Alignment, Redwood): Mitigating insider threats from AIs with AI control (luma.com/ai-collusion-research-sprint-jurgis-kemeklis). Added to the page after 10/15 |
 | Fri Oct 23, 1:15 PM | Usman Anwar (Cambridge): steganography detection, CoT monitorability (luma.com/ai-collusion-research-sprint-usman-anwar) |
 | Fri Oct 23, 2:15 PM | Eugene Bagdasarian and Mason Nakamura (UMass): Colosseum, auditing collusion (luma.com/ai-collusion-sprint-bagdasarian-nakamura) |
+| Fri Oct 23, 8:15 PM | Jerick Shi (The Voleon Group), no title listed (luma.com/ai-collusion-research-sprint-jerick-shi). Likely the Emergent Collusion author (arXiv:2609.24967) |
+| Sat Oct 24, 8:15 AM | Khanh Linh Nguyen (Obello, AI Safety Vietnam): overview of collusion research (luma.com/ai-collusion-research-sprint-khanh-linh-nguyen) |
+| Sat or Sun, 11 AM | Matthew Lee (Poseidon): Defining AI Collusion, at Collider and on Zoom; day not listed (luma.com/ai-collusion-research-sprint-matthew-lee) |
 | Sat 10 AM to Sun 6 PM | NYC hub open (in person only) |
 | Mon Oct 26, 7:59 AM | Hard deadline (Sun 11:59 PM AoE) |
 
-Talks are recorded and posted to Discord. Attendance is not required. Teams form before or during the sprint in #projects-teams; solo is allowed; up to 5 recommended.
+Talks are recorded and posted to Discord. Checked 10/23: Thursday's two recordings are linked from the sprint page's Schedule (Zoom shares). Attendance is not required. Teams form before or during the sprint in #projects-teams; solo is allowed; up to 5 recommended.
 
 ## How Apart sprints have worked (numbers from recent sprints)
 

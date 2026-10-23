@@ -15,6 +15,10 @@ figs:        ## layout-proof figures (synthetic numbers)
 	.venv/bin/python report/fig_proof.py
 mock:        ## the page-budget mock-up of the report
 	typst compile --font-path report/fonts report/mock/report.typ report/mock/mock.pdf && pdfinfo report/mock/mock.pdf | grep Pages
+test:        ## synthetic tests for the scores, detector and labeller
+	.venv/bin/python -m pytest -q tests
+labels:      ## graded labels for every seller message (resumable); ARGS=--live adds finished new runs, ARGS=--check compares with the hand labels
+	.venv/bin/python -m analysis.labels $(ARGS)
 queue-dry:   ## print the Friday queue's commands and cost, run nothing
 	$(PY) -m tools.run_queue config/queue-friday.toml --dry-run
 queue:       ## run the Friday queue unattended (caffeinate keeps the Mac awake); touch runs/STOP to stop after the current run

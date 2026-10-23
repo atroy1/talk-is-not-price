@@ -68,7 +68,7 @@ model = "deepseek/deepseek-v4.1-flash"
 max_tokens = 3
 temperature = 0.0
 top_logprobs = 5
-provider = { order = ["coreweave/fp8"], allow_fallbacks = false }  # one host, 8-bit, returns probabilities (checked 2026-10-21)
+provider = { order = ["nebius/fp8"], allow_fallbacks = false }  # one host, 8-bit, returns probabilities (CoreWeave 2026-10-21; moved to Nebius 2026-10-23 when CoreWeave was rate-limited upstream)
 purpose = "Graded words score: P(FLOOR), P(AGREE), P(NEITHER) from the first answer token's probabilities; a continuous score the fixed false-alarm threshold can cut. About $0.30 for all 9,654 seller messages on this host"
 # Jev is NOT used: OpenRouter's only listing, typesafe/jev-router, forwards each request to a model it chooses,
 # so the labeller would change under us and could not be named in Methods. Checked 2026-10-21.
