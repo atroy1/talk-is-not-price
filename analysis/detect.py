@@ -29,7 +29,7 @@ ALPHA = 0.05
 # Honest chat reference. Pre-registered: the neutral compete runs. If the model sample confirms the switch, the
 # explicit-sentence runs (declared deviation 3). Both are reported; --chat-reference picks the headline one.
 CHAT_REFERENCES = {"compete": "haiku55-compete", "explicit": "haiku55-explicit"}
-SHOCK_CONDITIONS = ["haiku55-costshock", "haiku55-costshock-explicit"]
+SHOCK_CONDITIONS = ["haiku55-costshock", "haiku55-costshock-explicit", "haiku55-costshock12-explicit"]
 
 
 def live_scores():
@@ -77,6 +77,8 @@ def main():
     old = pd.read_csv(ROOT / "runs/derived/scores-2025.csv")
     new = live_scores()
     df = fused_fixed(pd.concat([old, new], ignore_index=True))
+    if "words_hard" in df:  # proposed deviation 4, reported beside the pre-registered graded score
+        df["fused_hard"] = np.maximum(df["words_hard"].fillna(0.0), df["deeds"].fillna(0.0))
     cond = df.groupby("run_id")["condition"].first()
 
     base25 = cond[cond == "base"].index.tolist()
@@ -86,6 +88,8 @@ def main():
     hbase = cond[cond == "haiku55-base"].index.tolist()
     hchat = cond[cond == "haiku55-seller_comms"].index.tolist()
     shock = cond[cond.isin(SHOCK_CONDITIONS)].index.tolist()
+    ds = cond[cond == "dsflash-seller_comms"].index.tolist()
+    luna = cond[cond == "luna-seller_comms"].index.tolist()
     print(f"honest chat reference: {CHAT_REFERENCES[a.chat_reference]} ({len(compete)} runs)")
     print(f"honest: 2025 base {len(base25)}, Haiku base {len(hbase)}; "
           f"positives: 2025 headline {len(head25)}, panel 2 {len(pan25)}, Haiku chat {len(hchat)}; cost-shock {len(shock)}")
@@ -94,9 +98,12 @@ def main():
 
     rows, leads = [], {}
     plan = [
-        ("2025 headline", head25, {"words": compete, "deeds": base25, "fused": compete, "judge_score": compete}),
-        ("2025 panel 2", pan25, {"words": compete, "deeds": base25, "fused": compete, "judge_score": compete}),
-        ("Haiku chat", hchat, {"words": compete, "deeds": hbase, "fused": compete, "judge_score": compete}),
+        ("2025 headline", head25, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
+        ("2025 panel 2", pan25, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
+        ("Haiku chat", hchat, {"words": compete, "words_hard": compete, "deeds": hbase, "fused": compete, "fused_hard": compete, "judge_score": compete}),
+        # described, not tested (pre-registration, prediction 3): no model-matched honest runs for these families
+        ("DeepSeek chat", ds, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
+        ("Luna chat", luna, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
     ]
     for set_name, pos, honest_by_col in plan:
         if not pos:
@@ -109,6 +116,10 @@ def main():
     res = pd.DataFrame(rows)
     if len(res):
         print("\n" + res.to_string(index=False))
+    # per-run first-alarm rounds for the figures (NaN = never flagged)
+    lead_rows = [{"set": k[0], "detector": k[1], "run_id": rid, "first_alarm": v}
+                 for k, ser in leads.items() for rid, v in ser.items()]
+    pd.DataFrame(lead_rows).to_csv(ROOT / f"runs/derived/leads-{a.chat_reference}.csv", index=False)
 
     # Lead time, chat against prices, paired by run (prediction 1), on the 2025 headline set
     if ("2025 headline", "words") in leads and ("2025 headline", "deeds") in leads:
@@ -120,9 +131,13 @@ def main():
               f"chat flagged {int(w.notna().sum())}, prices flagged {int(d.notna().sum())} (never flagged = censored at the last round)")
 
     # Cost-shock stress test (prediction 4)
-    if shock:
-        print("\ncost-shock runs (honest sellers, costs +$6 at round 10): false alarms per detector")
-        for col, honest in [("deeds", hbase), ("words", compete), ("fused", compete), ("judge_score", compete)]:
+    for shock_cond in SHOCK_CONDITIONS:
+        shock = cond[cond == shock_cond].index.tolist()
+        if not shock:
+            continue
+        size = "+$12" if "costshock12" in shock_cond else "+$6"
+        print(f"\ncost-shock runs, {shock_cond} (honest sellers, costs {size} at round 10): false alarms per detector")
+        for col, honest in [("deeds", hbase), ("words", compete), ("words_hard", compete), ("fused", compete), ("fused_hard", compete), ("judge_score", compete)]:
             honest = [h for h in honest if h in run_max(df, col).index]
             if len(honest) < 2:
                 continue

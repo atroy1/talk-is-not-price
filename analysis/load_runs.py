@@ -153,7 +153,8 @@ def live_run_dirs(prefixes=None):
     out = []
     for d in sorted(glob.glob(os.path.join(LIVE, "*", "run"))):
         tag = os.path.basename(os.path.dirname(d))
-        if tag.endswith("-check") or tag.endswith("-check2") or tag.startswith(("fake", "replay", "test", "qwen9b", "qwen35b-")):
+        # plumbing checks and smoke tests, not data (the Qwen arm's real runs, qwen35b-...-s<N>, are kept)
+        if "-check" in tag or "-smoke" in tag or tag.startswith(("fake", "replay", "test", "qwen9b")):
             continue
         if prefixes and not tag.startswith(tuple(prefixes)):
             continue

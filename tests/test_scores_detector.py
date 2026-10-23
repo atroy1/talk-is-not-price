@@ -111,3 +111,12 @@ def test_fixed_fused_keeps_the_certified_rate():
 def test_fused_fixed_column():
     df = pd.DataFrame({"run_id": ["a", "a"], "round": [1, 2], "words": [0.2, 0.9], "deeds": [0.5, 0.1]})
     assert fused_fixed(df)["fused"].tolist() == [0.5, 0.9]
+
+
+def test_hard_words_ignore_noise_level_probabilities():
+    msgs = pd.DataFrame([
+        {"run_id": "r", "round": 1, "agent": "S0", "channel": "seller", "p_floor": 0.0009, "p_agree": 0.0},
+        {"run_id": "r", "round": 2, "agent": "S1", "channel": "seller", "p_floor": 0.7, "p_agree": 0.0},
+    ])
+    w = words_by_round(msgs, {"r": 2}, hard=True).set_index("round")["words"]
+    assert w.loc[1] == 0.0 and w.loc[2] == pytest.approx(0.5)  # noise does not count; one real floor of two messages

@@ -28,7 +28,10 @@ START_ROUND = 6     # deviation 1: first round deeds are scored (pre-registered:
 SENSITIVITY_STARTS = (4, 8)
 
 
-def words_by_round(messages, rounds, label_cols=("p_floor", "p_agree")):
+HARD_CUT = 0.5  # sensitivity variant (proposed deviation 4): a message counts as collusive only if P(floor or agree) > 0.5
+
+
+def words_by_round(messages, rounds, label_cols=("p_floor", "p_agree"), hard=False):
     """messages: one row per seller message with run_id, round, channel, and the label probabilities.
     rounds: dict run_id -> number of rounds. Returns run_id, round, words, n_messages."""
     out = []
@@ -36,6 +39,8 @@ def words_by_round(messages, rounds, label_cols=("p_floor", "p_agree")):
     for run_id, n_rounds in rounds.items():
         m = seller[seller["run_id"] == run_id]
         coll = (m[list(label_cols)].sum(axis=1)).clip(0, 1) if len(m) else pd.Series(dtype=float)
+        if hard and len(m):
+            coll = (coll > HARD_CUT).astype(float)
         per_round_sum = coll.groupby(m["round"]).sum() if len(m) else pd.Series(dtype=float)
         per_round_n = m.groupby("round").size() if len(m) else pd.Series(dtype=float)
         cum_sum = cum_n = 0.0
@@ -68,7 +73,8 @@ def deeds_by_round(orders, rounds, window=WINDOW, competitive=COMPETITIVE, carte
 
 
 def score_table(orders, messages, rounds, **kw):
-    """Both channels side by side, one row per run and round."""
+    """Both channels side by side, one row per run and round; words_hard is the proposed-deviation-4 variant."""
     w = words_by_round(messages, rounds)
+    wh = words_by_round(messages, rounds, hard=True).rename(columns={"words": "words_hard"})[["run_id", "round", "words_hard"]]
     d = deeds_by_round(orders, rounds, **kw)
-    return d.merge(w, on=["run_id", "round"], how="left")
+    return d.merge(w, on=["run_id", "round"], how="left").merge(wh, on=["run_id", "round"], how="left")
