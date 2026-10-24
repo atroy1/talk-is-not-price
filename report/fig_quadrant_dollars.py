@@ -13,6 +13,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
@@ -60,9 +61,12 @@ def main():
             continue
         h = f.cond.map(lambda c: bool(honest(str(c))))
         silent = f.chat.astype(bool) & (f.n == 0)
-        ax.scatter(f.x[~h & ~silent], f.y[~h & ~silent], s=16, color=color, alpha=0.8, linewidths=0, label=f"{label} ({len(f)})", zorder=3)
-        ax.scatter(f.x[h & ~silent], f.y[h & ~silent], s=18, facecolors="none", edgecolors=color, linewidths=0.8, zorder=3)
-        ax.scatter(f.x[silent], f.y[silent], s=26, color=color, marker="x", linewidths=0.9, zorder=4)
+        rng = np.random.default_rng(7)
+        jit = pd.Series(rng.uniform(-0.025, 0.025, len(f)), index=f.index).where(f.y == 0, 0.0)  # spread the y = 0 row a little
+        lab_ = f"{label} ({int((~h).sum())} collusive design, {int(h.sum())} honest)" if h.any() else f"{label} ({len(f)})"
+        ax.scatter(f.x[~h & ~silent], (f.y + jit)[~h & ~silent], s=16, color=color, alpha=0.8, linewidths=0, label=lab_, zorder=3)
+        ax.scatter(f.x[h & ~silent], (f.y + jit)[h & ~silent], s=18, facecolors="none", edgecolors=color, linewidths=0.8, zorder=3)
+        ax.scatter(f.x[silent], (f.y + jit)[silent], s=26, color=color, marker="x", linewidths=0.9, zorder=4)
         if h.any():
             hx = f.x[h].max()
             ax.axvline(hx, color=color, linewidth=0.6, linestyle=(0, (3, 2)), alpha=0.8)
@@ -71,7 +75,7 @@ def main():
     ax.axhline(0, color="#999999", linewidth=0.6)
     ax.set_xlabel("buyer overcharge over the whole market, dollars above the $90 competitive price (sum over trades)")
     ax.set_ylabel("share of seller messages\nlabelled collusive")
-    ax.set_ylim(-0.04, 1.08)
+    ax.set_ylim(-0.06, 1.08)
     ax.grid(False)
     ax.text(0.99, 0.97, "talk, with harm", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.97, "talk, no harm", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")

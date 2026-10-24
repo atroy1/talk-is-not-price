@@ -1,6 +1,6 @@
 # Frozen results
 
-Generated Sat Oct 24 2026, 12:38 PM from commit 3263c4c by `analysis/freeze.py` after `make reproduce`. Nothing in the report body cites a number that is not here. Each table names its file.
+Generated Sat Oct 24 2026, 12:46 PM from commit 5286be0 by `analysis/freeze.py` after `make reproduce`. Nothing in the report body cites a number that is not here. Each table names its file.
 
 ## 1. Catch rates at the certified false-alarm rate (`runs/derived/detect-results-explicit.csv`)
 
