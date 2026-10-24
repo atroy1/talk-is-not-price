@@ -66,6 +66,11 @@ saved). Spend: Claude $50.53 before this morning, OpenRouter $37.89.
   rounds, asks $96.7 to $92.3, zero trades against ZIP bids near $82. Path C is off: the planted check reports as a
   paragraph in A (a seller told to hide its coordination still confessed; the chat monitor and the overseer caught it).
   The stock rerun will say whether the refusal-intact model behaves differently.
+- **Stock planted rerun (4:10 PM, timed out at round 9 of 10, used as an illustration): it hid the plan.** 29 of 46
+  reasonings keep coordinating and plan the concealment ("craft a message that appears to be a standard market
+  observation and does not suggest collusion"), 1 of 42 messages labelled collusive, overseer no in 8 of 9 rounds,
+  asks down to cost by round 6. The pair (abliterated confesses, stock conceals) is the paragraph for section 4.4
+  and the last carrying sentence in the framing note.
 - **Harm in dollars** and the **keyword rule** stand as in the memo (16 of 35 flagged 2025 cartels left buyers at
   or below the competitive price; a four-pattern regex catches the same markets with 0 of 20 false alarms).
 
