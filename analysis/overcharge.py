@@ -30,7 +30,7 @@ def group_of(c):
     if c in HEADLINE:
         return "2025 chat (headline)"
     if c in PANEL2:
-        return "2025 oversight or pressure"
+        return {"oversight": "2025 overseer only", "boss_pressure": "2025 CEO pressure only", "boss_pressure-oversight": "2025 overseer + CEO pressure"}.get(c, "2025 oversight or pressure")
     if c.startswith(("qwen35b-stock-chat", "qwen35b-abl-chat")):
         return "Qwen chat (ZIP buyers)"
     if c.startswith("qwen35b-stock-explicit"):

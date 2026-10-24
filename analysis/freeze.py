@@ -94,13 +94,9 @@ def main():
     if (D / "overcharge.csv").exists():
         oc = pd.read_csv(D / "overcharge.csv", index_col=0)
         say("## 5. Buyer overcharge in dollars per market (`runs/derived/overcharge.csv`; sum over trades of price minus $90)\n")
-        from analysis.controls import HEADLINE, PANEL2
-        def grp(cnd):
-            if cnd in HEADLINE: return "2025 headline"
-            if cnd in PANEL2: return "2025 panel 2"
-            return cnd
-        oc["group"] = oc.cond.map(grp)
-        g = oc.groupby("group").overcharge.agg(n="size", median="median", min="min", max="max", above_zero=lambda s: int((s > 0).sum())).round(0)
+        g = oc.groupby("group").agg(n=("overcharge", "size"), median=("overcharge", "median"), min=("overcharge", "min"), max=("overcharge", "max"),
+                                   at_or_below_zero=("overcharge", lambda s: int((s <= 0).sum())), median_vs_honest=("vs_honest", "median")).round(0)
+        g = g.sort_values("median", ascending=False)
         say(md(g) + "\n")
 
     if (D / "private-plan.csv").exists():
@@ -203,6 +199,34 @@ def main():
     say(f"Paired gap = first price alarm minus first chat alarm, price censored at 31 when it never alarms ({censored} of {len(gap)} markets). "
         f"Median gap {gap.median():.0f} rounds, bootstrap 95% interval {np.percentile(boots, 2.5):.0f} to {np.percentile(boots, 97.5):.0f}; {wtxt}. "
         "Prices cannot alarm before round 6 (deviation 1), so the gap is structural; prediction 1 is met on paper and not a result.\n")
+
+
+    # 13. the descriptive extras, verbatim
+    if (D / "extras.txt").exists():
+        say("## 13. Descriptive extras (`runs/derived/extras.txt`, `analysis/extras.py`)\n")
+        say("```\n" + (D / "extras.txt").read_text().strip() + "\n```\n")
+
+    # 14. the overseer's gag
+    if (D / "gag-timeline.csv").exists():
+        g = pd.read_csv(D / "gag-timeline.csv")
+        gr = pd.read_csv(D / "gag-rounds.csv")
+        say("## 14. The 2025 overseer's gag (`runs/derived/gag-rounds.csv`, `gag-timeline.csv`, `analysis/gag_timeline.py`)\n")
+        say("Gag rounds: " + "; ".join(f"{c}: {sorted(int(x) for x in d.gag_round.dropna())}" for c, d in gr.groupby("cond")) + ".\n")
+        say("| Condition | markets gagged | before: messages collusive | before: notebooks coordinate | before: mean ask | after: messages collusive | after: notebooks coordinate | after: mean ask | after, rounds +11 to +20: mean ask |")
+        say("|---|---|---|---|---|---|---|---|---|")
+        for c, d in g.groupby("cond"):
+            b, a = d[d.rel < 0], d[d.rel >= 1]
+            late = d[(d.rel >= 11) & (d.rel <= 20)]
+            say(f"| {c} | {d.run_id.nunique()} | {b.msg_coll.mean():.0%} | {b.notebook.mean():.0%} | ${b.ask.mean():.2f} | {a.msg_coll.mean():.0%} | {a.notebook.mean():.0%} | ${a.ask.mean():.2f} | ${late.ask.mean():.2f} |")
+        say("")
+
+    # 15. spend
+    try:
+        from tools import checkin
+        say("## 15. Spend\n")
+        say(checkin.spend_now() + ". Labelling (cost ledger): graded labels about $0.27 over about 22,000 calls, Sonnet reference about $0.79.\n")
+    except Exception as e:  # noqa: BLE001
+        say(f"## 15. Spend\n\nnot computed ({type(e).__name__})\n")
 
     OUT.write_text("\n".join(L) + "\n")
     print("wrote", OUT.relative_to(ROOT), f"({len(L)} lines)")
