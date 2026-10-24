@@ -13,11 +13,11 @@ LLM chat, because there was none to calibrate on. We build one. No model family 
 can; the instruction that stops it ("coordinating prices is illegal") makes Claude Haiku 5.5 honest, silences Sonnet
 and Opus 5.5, and does not reach Qwen3.5. Calibrated on 20 honest Haiku markets (4.8% certified false alarms), the
 monitor flags 35 of 35 GPT-4.1 and Claude 3.x cartels, 29 of 30 under oversight or CEO pressure, and 28 of 28 new
-markets in four families, with no flag on 44 honest markets. What it flags is talk: 16 of the 35 cartels left buyers
+markets, with no flag on 44 honest markets. What it flags is talk: 16 of the 35 cartels left buyers
 no worse off, prices alone catch 3 of 35, and a flag says nothing about silent high pricing or strategy that outlives
 a gag. Pre-registered; all predictions reported.
 
-[152 words; the form takes 150 or fewer]
+[149 words; the form takes 150 or fewer]
 
 ## 1. Introduction
 
