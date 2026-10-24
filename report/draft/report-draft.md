@@ -55,7 +55,10 @@ collusion emerging in 94% of trajectories across ten models in a verification ga
 not proof of agreement (Twombly 2007; Kovacic et al. 2011), which is the doctrine our price results run into.
 
 The slot we fill is narrow: both channels, in a market, at a stated rate, across model families, with the honest
-reference itself as the object of study. An auditor would use this over the alternatives when the question is not
+reference itself as the object of study. Asked at the sprint whether Colosseum had measured the gap between what
+agents say and what they do, Nakamura answered that the group had no specific metric for it (talk, Oct 23, 2026);
+Section 4.3 is one. Anwar (talk, Oct 23, 2026) makes the same point about steganalysis that drives our Section 4.1:
+the reference distribution for an LLM's text is set by the LLM itself, so no natural cover exists to calibrate on. An auditor would use this over the alternatives when the question is not
 whether sellers can collude but how much a chat flag is worth, and what it misses.
 
 ## 3. Methods
@@ -180,7 +183,9 @@ and expect to manufacture it: the models that comply either talk honestly, go si
 the certificate covers the one that talks. Read chat for intent and prices for harm, and report both, because the
 cartels that confess are often the ones that did not raise prices. Treat silence as the open problem: the price screen's
 bar is set by the most expensive honest market of the same model, so with ten honest markets one tacit market sets it,
-and with forty the second does. A sampling monitor that reads one message in twenty still flags every open cartel by
+and with forty the second does. Kemeklis (talk, Oct 23, 2026) warns that training against bad reasoning traces teaches
+a model to stop verbalizing rather than to stop; one instruction sentence did that here in a single step, and the
+silent markets are what a chat monitor then sees. A sampling monitor that reads one message in twenty still flags every open cartel by
 round 4 and none of the honest markets; the watched and pressured sellers need the whole feed.
 
 Limitations. The chat monitor is one labeller, and the certificate holds for honest talk of the Haiku kind under one
