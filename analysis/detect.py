@@ -28,6 +28,10 @@ from analysis.scores import START_ROUND, score_table  # noqa: E402
 ALPHA = 0.05
 # Honest chat reference. Pre-registered: the neutral compete runs. If the model sample confirms the switch, the
 # explicit-sentence runs (declared deviation 3). Both are reported; --chat-reference picks the headline one.
+# Headline scores (deviation 4, Fri Oct 23 ~7:05 PM): words_hard ("chat") and fused_hard ("chat + prices");
+# the graded words/fused stay in the table as the pre-registered versions.
+HEADLINE_LABELS = {"words_hard": "chat (headline)", "fused_hard": "chat + prices (headline)", "deeds": "prices",
+                   "judge_score": "2025 judge", "words": "chat, graded (pre-reg)", "fused": "chat + prices, graded (pre-reg)"}
 CHAT_REFERENCES = {"compete": "haiku55-compete", "explicit": "haiku55-explicit"}
 SHOCK_CONDITIONS = ["haiku55-costshock", "haiku55-costshock-explicit", "haiku55-costshock12-explicit"]
 
@@ -114,9 +118,10 @@ def main():
         ("2025 headline", head25, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
         ("2025 panel 2", pan25, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
         ("Haiku chat", hchat, {"words": compete, "words_hard": compete, "deeds": hbase, "fused": compete, "fused_hard": compete, "judge_score": compete}),
-        # described, not tested (pre-registration, prediction 3): no model-matched honest runs for these families
-        ("DeepSeek chat", ds, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
-        ("Luna chat", luna, {"words": compete, "words_hard": compete, "deeds": base25, "fused": compete, "fused_hard": compete, "judge_score": compete}),
+        # described, not tested (pre-registration, prediction 3): no model-matched honest runs for these families, so
+        # they use the 2026 references (same harness and template as the Haiku runs), as in analysis/flag_matrix.py
+        ("DeepSeek chat", ds, {"words": compete, "words_hard": compete, "deeds": hbase, "fused": compete, "fused_hard": compete, "judge_score": compete}),
+        ("Luna chat", luna, {"words": compete, "words_hard": compete, "deeds": hbase, "fused": compete, "fused_hard": compete, "judge_score": compete}),
     ]
     for set_name, pos, honest_by_col in plan:
         if not pos:
@@ -128,6 +133,7 @@ def main():
                 leads[(set_name, col)] = r[1]
     res = pd.DataFrame(rows)
     if len(res):
+        res.insert(2, "label", res["detector"].map(HEADLINE_LABELS))
         print("\n" + res.to_string(index=False))
     # per-run first-alarm rounds for the figures (NaN = never flagged)
     lead_rows = [{"set": k[0], "detector": k[1], "run_id": rid, "first_alarm": v}
@@ -135,8 +141,8 @@ def main():
     pd.DataFrame(lead_rows).to_csv(ROOT / f"runs/derived/leads-{a.chat_reference}.csv", index=False)
 
     # Lead time, chat against prices, paired by run (prediction 1), on the 2025 headline set
-    if ("2025 headline", "words") in leads and ("2025 headline", "deeds") in leads:
-        w, d = leads[("2025 headline", "words")], leads[("2025 headline", "deeds")]
+    if ("2025 headline", "words_hard") in leads and ("2025 headline", "deeds") in leads:
+        w, d = leads[("2025 headline", "words_hard")], leads[("2025 headline", "deeds")]
         last = df.groupby("run_id")["round"].max()
         wc, dc = w.fillna(last.reindex(w.index)), d.fillna(last.reindex(d.index))
         gap = (dc - wc)

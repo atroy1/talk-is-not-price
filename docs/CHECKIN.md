@@ -17,7 +17,7 @@ the whole brief. Arty is at work 7 AM to noon Saturday; the 10 AM run reaches hi
    `config/wave2/READY` exists, pulls results, labels new seller messages, runs the price check and both detector
    tables, totals spend, and ends with a SUMMARY block. Transcript: `runs/derived/checkin-<date>-<time>.txt`.
 3. Append one entry to `notes/log.md`: the time, the SUMMARY lines, and the headline numbers from the detector table
-   with the explicit reference (catch rates for words, deeds, fused and the judge on the 2025 headline set; the
+   with the explicit reference (catch rates for chat = words_hard, prices = deeds, chat + prices = fused_hard, and the judge on the 2025 headline set; the hard-label scores are the headline since deviation 4; the
    cost-shock false alarms; the price-check decision). Mark numbers PROVISIONAL while any queue is unfinished.
 4. Send Arty one push notification, under 200 characters, leading with anything he must act on, then progress,
    for example: "Sprint 5 AM: all queues healthy; Qwen 9/15 done; 0 failures; Claude $48 of $100. Nothing needed."
