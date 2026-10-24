@@ -4,10 +4,10 @@ Sprint work, Fri Oct 23 2026, for the post-results headline (declared in notes/p
 
     .venv/bin/python -m analysis.flag_matrix      -> runs/derived/flags.csv and a summary table
 
-Thresholds, each the largest honest run's whole-game maximum (k = 1 at a 5% target; certified rate 1/(n+1)):
+Thresholds by the detector's rule (k = floor(0.05 (n + 1)), at least 1; certified rate k/(n+1)), on whole-game maxima:
     chat (hard share, deviation 4)  Haiku explicit-sentence runs (n = 20, 4.8%)
     prices, 2025 runs               2025 no-chat runs (n = 10, 9.1%)
-    prices, 2026 runs               Haiku no-chat + explicit runs (n = 25, 3.8%; the explicit runs passed the price rule)
+    prices, 2026 runs               Haiku no-chat + explicit runs (n = 40, k = 2, 4.9%; the explicit runs passed the price rule)
     judge                           Haiku explicit-sentence runs
 A run that is itself part of a reference is scored against the others (leave one out), so honest groups show their own
 false alarms. The 20-round model-sample runs are scored the same way over their 20 rounds.
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from analysis.controls import HEADLINE, PANEL2  # noqa: E402
 from analysis.detect import live_scores  # noqa: E402
-from analysis.detector import run_max  # noqa: E402
+from analysis.detector import run_max, threshold  # noqa: E402
 
 # (section, label, condition test) in display order
 GROUPS = [
@@ -50,8 +50,9 @@ GROUPS = [
 
 
 def loo_threshold(maxima, ref, run):
+    """The detector's own rule (k = floor(0.05 (n + 1)), at least 1) on the reference without this run."""
     others = [r for r in ref if r != run and r in maxima.index]
-    return float(maxima.loc[others].max()) if others else np.inf
+    return threshold(maxima.loc[others].tolist())[0] if others else np.inf
 
 
 def main():

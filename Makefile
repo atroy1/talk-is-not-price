@@ -27,6 +27,7 @@ reproduce:   ## every table and draft figure from the runs and the cached labels
 	.venv/bin/python -m analysis.flag_matrix
 	.venv/bin/python -m analysis.message_taxonomy
 	.venv/bin/python -m analysis.private_plan
+	.venv/bin/python -m analysis.tables
 	for f in report/fig1_seen_missed.py report/fig2_quadrant.py report/fig_quadrant_dollars.py report/fig2_instructions.py report/fig_plan_message.py report/fig_silent_pricing.py; do .venv/bin/python $$f || exit 1; done
 	@echo "reproduced $$(date '+%Y-%m-%d %H:%M') from commit $$(git rev-parse --short HEAD)"
 freeze:      ## make reproduce, then write notes/results-frozen.md (every citable number with its source file)

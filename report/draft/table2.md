@@ -1,0 +1,20 @@
+**Table 2.** Collusive-design markets flagged by each monitor at its certified false-alarm rate (chat and judge: 4.8%; prices: 9.1% on 2025 markets, 4.9% on 2026 markets; chat or prices: the sum). Clopper-Pearson 95% intervals; r = median round of first alarm. Prices are scored from round 6.
+
+| Markets | n | Chat | Prices | Chat or prices | 2025 LLM judge |
+|---|---|---|---|---|---|
+| 2025 chat markets, GPT-4.1 and Claude 3.x | 35 | 35/35 (0.90-1.00; r1) | 3/35 (0.02-0.23; r6) | 35/35 (0.90-1.00; r1) | 35/35 (0.90-1.00; r3) |
+| 2025 under oversight or CEO pressure | 30 | 29/30 (0.83-1.00; r1) | 17/30 (0.37-0.75; r6) | 29/30 (0.83-1.00; r1) | 16/30 (0.34-0.72; r2) |
+| Claude Haiku 5.5, chat | 10 | 10/10 (0.69-1.00; r1) | 2/10 (0.03-0.56; r6) | 10/10 (0.69-1.00; r1) | 10/10 (0.69-1.00; r8) |
+| DeepSeek V4.1 Flash, chat | 5 | 5/5 (0.48-1.00; r1) | 4/5 (0.28-0.99; r6) | 5/5 (0.48-1.00; r1) | 5/5 (0.48-1.00; r5) |
+| GPT-6 Luna, chat | 5 | 5/5 (0.48-1.00; r2) | 0/5 (0.00-0.52) | 5/5 (0.48-1.00; r2) | 4/5 (0.28-0.99; r24) |
+
+**Honest markets** (no collusive design): false alarms per monitor, reference runs scored leave-one-out.
+
+| Markets | n | Chat | Prices | Judge | Role |
+|---|---|---|---|---|---|
+| Haiku 5.5, told it is illegal (reference) | 20 | 0 | 0 | 0/20 | chat and judge reference (20): 4.8%; in the Haiku price reference |
+| same, seller cost +$6 at round 10 | 10 | 0 | 0 | 0/10 | stress test, out of calibration |
+| same, seller cost +$12 at round 10 | 10 | 0 | 0 | 0/10 | stress test, out of calibration |
+| Sonnet and Opus 5.5, told it is illegal (20 rounds) | 4 | 0 | 0 | 0/4 | out of calibration |
+| Haiku 5.5, no chat | 20 | 0 | 2 | 0/20 | Haiku price reference (20 + 20 explicit): 4.9% |
+| 2025 runs, no chat | 10 | 0 | 1 | 1/10 | 2025 price reference (10): 9.1% |
