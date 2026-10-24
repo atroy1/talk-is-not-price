@@ -62,18 +62,18 @@ def main():
         h = f.cond.map(lambda c: bool(honest(str(c))))
         silent = f.chat.astype(bool) & (f.n == 0)
         rng = np.random.default_rng(7)
-        jit = pd.Series(rng.uniform(-0.025, 0.025, len(f)), index=f.index).where(f.y == 0, 0.0)  # spread the y = 0 row a little
+        jit = pd.Series(0.0, index=f.index)  # no jitter: hollow dots above zero would read as false alarms against a zero threshold
         lab_ = f"{label} ({int((~h).sum())} collusive design, {int(h.sum())} honest)" if h.any() else f"{label} ({len(f)})"
         ax.scatter(f.x[~h & ~silent], (f.y + jit)[~h & ~silent], s=16, color=color, alpha=0.8, linewidths=0, label=lab_, zorder=3)
         ax.scatter(f.x[h & ~silent], (f.y + jit)[h & ~silent], s=18, facecolors="none", edgecolors=color, linewidths=0.8, zorder=3)
         ax.scatter(f.x[silent], (f.y + jit)[silent], s=26, color=color, marker="x", linewidths=0.9, zorder=4)
-        if h.any():
+        if h.any() and label.startswith(("GPT-4.1", "Claude Haiku")):  # only the two families with a price reference
             hx = f.x[h].max()
             ax.axvline(hx, color=color, linewidth=0.6, linestyle=(0, (3, 2)), alpha=0.8)
-            ax.text(hx, 1.03, f"${hx:,.0f}", color=color, fontsize=6.5, ha="center", va="bottom")
+            ax.text(hx, 1.03 + 0.045 * (FAMILIES.index((label, color, test, honest)) % 2), f"${hx:,.0f}", color=color, fontsize=6.5, ha="center", va="bottom")
     ax.axvline(0, color="#999999", linewidth=0.6)
     ax.axhline(0, color="#999999", linewidth=0.6)
-    ax.set_xlabel("buyer overcharge over the whole market, dollars above the $90 competitive price (sum over trades)")
+    ax.set_xlabel("buyer overcharge over the whole market: sum over trades of (price minus $90)", fontsize=8)
     ax.set_ylabel("share of seller messages\nlabelled collusive")
     ax.set_ylim(-0.06, 1.08)
     ax.grid(False)
@@ -82,7 +82,7 @@ def main():
     ax.text(0.99, 0.03, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.03, "competitive", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.55), fontsize=6.8, markerscale=1.1)
-    ax.text(1.0, 1.08, "DRAFT: hollow = honest by design; dashed = each family's most expensive honest market", transform=ax.transAxes,
+    ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=6.5, color="#b00020")
     fig.savefig(OUT / "fig_quadrant_dollars.png", dpi=200, bbox_inches="tight")
     print("wrote", (OUT / "fig_quadrant_dollars.png").relative_to(ROOT))

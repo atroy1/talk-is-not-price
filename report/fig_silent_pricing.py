@@ -11,6 +11,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import pandas as pd
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -30,10 +31,14 @@ def main():
     a = a[(a.side == "ask") & (a["round"] <= 20)].copy()
     a["cond"] = a.run_id.map(runs)
     fig, ax = plt.subplots(figsize=(3.15, 2.3))
-    for cond, color, lab in [("haiku55-explicit", "#8fb8d8", "honest Haiku, told it is illegal (20 runs)"),
-                             ("haiku55-base", "#cccccc", "honest Haiku, no chat (5 runs)")]:
+    for cond, color, lab in [("haiku55-explicit", "#8fb8d8", "honest Haiku, told it is illegal ({n} runs)"),
+                             ("haiku55-base", "#cccccc", "honest Haiku, no chat ({n} runs)")]:
         per = a[a.cond == cond].groupby(["run_id", "round"]).price.mean().unstack(0)
-        ax.fill_between(per.index, per.min(axis=1), per.max(axis=1), color=color, alpha=0.6, linewidth=0, label=lab)
+        ax.fill_between(per.index, per.min(axis=1), per.max(axis=1), color=color, alpha=0.6, linewidth=0, label=lab.format(n=per.shape[1]))
+    thr = pd.read_csv(ROOT / "runs/derived/detect-results-explicit.csv")
+    bar = 90 + 10 * float(thr[(thr["set"] == "Haiku chat") & (thr.detector == "deeds")].threshold.iloc[0])
+    ax.axhline(bar, color="#555555", linewidth=0.6, linestyle=(0, (1, 2)))
+    ax.text(20.2, bar, f"price screen bar ${bar:.2f}", fontsize=5.5, color="#555555", va="center")
     r = a[a.run_id == RUN].groupby("round").price
     ax.fill_between(r.mean().index, r.min(), r.max(), color="#D55E00", alpha=0.25, linewidth=0)
     ax.plot(r.mean().index, r.mean(), color="#D55E00", linewidth=1.5, label="Opus 5.5, neutral sentence (1 run)")

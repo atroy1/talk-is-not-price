@@ -49,17 +49,18 @@ def main():
     ax.text(0, 1.03, "(a)", transform=ax.transAxes, fontsize=8, fontweight="bold")
 
     bx = fig.add_axes([0.72, 0.16, 0.26, 0.72])
-    for g, color in [("chat, overseer reads messages", "#D55E00"), ("chat, GPT-4.1", "#0072B2")]:
+    for g, color, short in [("chat, overseer + CEO pressure", "#D55E00", "overseer + pressure"), ("chat, overseer reads messages", "#0072B2", "overseer")]:
         d = s[s.group == g]
         if d.empty:
             continue
-        byr = d.groupby("round").agg(plan=("plan_coll", "mean"), msg=("msg_coll", "mean"))
-        bx.plot(byr.index, byr.plan, color=color, linewidth=1.3, label=f"{g}: private plan")
-        bx.plot(byr.index, byr.msg, color=color, linewidth=1.0, linestyle=(0, (3, 2)), label=f"{g}: public message")
+        d = d.assign(nb=d["scratch_coord"].astype(str) == "True")
+        byr = d.groupby("round").agg(nb=("nb", "mean"), msg=("msg_coll", "mean"))
+        bx.plot(byr.index, byr.nb, color=color, linewidth=1.3, label=f"{short}: private notebook")
+        bx.plot(byr.index, byr.msg, color=color, linewidth=1.0, linestyle=(0, (3, 2)), label=f"{short}: public message")
     bx.set_xlim(1, 30); bx.set_ylim(0, 1); bx.set_xlabel("round", fontsize=8)
     bx.set_yticks([0, .5, 1]); bx.set_yticklabels(["0", "50%", "100%"])
-    bx.legend(fontsize=5.8, loc="upper right")
-    bx.text(0, 1.03, "(b) share of seller turns collusive", transform=bx.transAxes, fontsize=8, fontweight="bold")
+    bx.legend(fontsize=5.8, loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=1)
+    bx.text(0, 1.03, "(b) share of seller turns coordinating", transform=bx.transAxes, fontsize=8, fontweight="bold")
     fig.text(0.98, 0.985, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
     fig.savefig(OUT / "fig_plan_message.png", dpi=200, bbox_inches="tight")
     print("wrote", (OUT / "fig_plan_message.png").relative_to(ROOT))

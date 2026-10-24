@@ -54,6 +54,8 @@ def main():
             ask = a[a.run_id.isin(ids)].price.mean()
             if len(mm) == 0:
                 ax.text(0.02, i, "silent", ha="left", va="center", fontsize=6.5, color="#555555", style="italic")
+            elif share == 0:
+                ax.text(0.02, i, "talks, 0%", ha="left", va="center", fontsize=6.5, color="#0072B2", style="italic")
             else:
                 ax.barh(i, share, color="#0072B2", height=0.6)
             hollow = "Qwen" in name
