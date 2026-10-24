@@ -41,7 +41,7 @@ Figure 1 is one real run on one clock: seller chat quotes along the top, the fiv
 
 ### 3. A boxed pre-registration (Execution, and the prior-work rule)
 
-A small box in Methods: "Predictions recorded Fri Oct 23, 4 PM ET (commit `abc123`): (1) ... (2) ... (3) ...", with a check or a cross beside each in Results. It costs a few lines. It shows rigour, separates sprint work from prior work cleanly, and makes a missed prediction look honest instead of embarrassing. The commit timestamp is the evidence.
+A small box in Methods: "Predictions recorded Fri Oct 23, 10:37 AM ET (commit `824c801`): (1) ... (2) ... (3) ... (4) ...", with a check or a cross beside each in Results. It costs a few lines. It shows rigour, separates sprint work from prior work cleanly, and makes a missed prediction look honest instead of embarrassing. The commit timestamp is the evidence.
 
 ### 4. The operating point up front (Execution)
 

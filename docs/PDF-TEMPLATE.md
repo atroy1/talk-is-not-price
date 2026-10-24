@@ -66,7 +66,7 @@ Two in the body, numbered, each with a caption that stands alone. Style file `re
 
 Native Doc tables, never images, so the text stays searchable and the numbers copy out. 9.5 pt. Header row bold. Rules: one above the header, one below it, one at the foot; no vertical rules, no fills (in Docs: select the table, set borders to 0 pt, then select the header row and give it a 0.5 pt bottom border, repeat for the top and the last row). Numbers right-aligned, text left. Intervals in brackets after the point estimate: `0.84 [0.76, 0.91]`. Bold the row the text calls best. Caption above the table: "**Table 1.** ..." 10 pt.
 
-The pre-registration box is a one-cell table: light grey fill `#f2f2f2`, 0.5 pt border, 8 pt cell padding, text 10.5 pt. First line bold: "Pre-registered Fri Oct 23, 4:00 PM ET (commit `abc1234`)." Then the three predictions as (1) (2) (3) in one paragraph. Results marks each with "held" or "did not hold" in the text, nothing fancier.
+The pre-registration box is a one-cell table: light grey fill `#f2f2f2`, 0.5 pt border, 8 pt cell padding, text 10.5 pt. First line bold: "Pre-registered Fri Oct 23, 10:37 AM ET (commit `824c801`)." Then the four predictions as (1) (2) (3) (4) in one paragraph, and one line naming the declared deviations (notes/preregistration.md). Results marks each with "held" or "did not hold" in the text, nothing fancier.
 
 ## 5. Title and abstract
 

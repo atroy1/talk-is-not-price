@@ -63,7 +63,7 @@ Our main contributions are:
 #slot(70, "Data: 75 runs from Agrawal et al. 2025, conditions and counts; the prior-work line verbatim from notes/PRIOR-WORK.md")
 #slot(90, "Detector: words score, deeds score, fusion rule, in one equation; threshold set on honest runs; permutation null; seeds")
 #block(width: 100%, fill: luma(245), stroke: 0.5pt + luma(150), inset: 8pt, radius: 2pt)[
-  *Pre-registered Fri Oct 23, 4:00 PM ET (commit* `abc1234`*).* (1) #mark[prediction, 15 words] (2) #mark[prediction] (3) #mark[prediction] Outcomes are marked in Section 4.
+  *Pre-registered Fri Oct 23, 10:37 AM ET (commit* `824c801`*).* (1) #mark[prediction, 15 words] (2) #mark[prediction] (3) #mark[prediction] (4) #mark[prediction] Outcomes are marked in Section 4.
 ]
 #slot(60, "Controls: positive, null, permutation; what did not work; the local-label validation kappa")
 
@@ -118,7 +118,7 @@ Code and a one-command reproduction: #mark[public repo URL]. Data: the 75 runs a
 + Nakamura, Bagdasarian et al. (2026). Colosseum: auditing collusion in multi-agent tasks. arXiv:2602.15198.
 + Audit the Whisper (2025). ColludeBench. arXiv:2510.04303.
 + Rose et al. (2026). NARCBench. arXiv:2604.01151.
-+ Berger et al. (2025). Plus factors and algorithmic collusion. ABA Antitrust.
++ Berger, L. F., Weiner, M. L. and Jiang, W. (2025). Coordination by Code: Rethinking Antitrust Liability in the Age of AI Pricing. Antitrust 40(1).
 + Mathew, Matthews, McCarthy, Velja, Schroeder de Witt et al. (2025). Hidden in Plain Text. arXiv:2410.03768.
 + Motwani et al. (2024). Secret Collusion among AI Agents. NeurIPS 2024. arXiv:2402.07510.
 + Anwar et al. (2026). A decision-theoretic formalisation of steganography. arXiv:2602.23163.

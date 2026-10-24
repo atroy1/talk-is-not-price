@@ -9,7 +9,7 @@ Abstracts for every arXiv paper the sprint page cites are in `abstracts.md` (pul
 3. **Bonjour, Aggarwal, Bhargava 2022** (UAI, PMLR 180:223) Information theoretic approach to detect collusion. Mutual information between actions as the statistic. https://proceedings.mlr.press/v180/bonjour22a.html
 4. **Xu et al. 2026, 2607.26385** Collusion with Competitive Marginals: price-level audits are blind by construction. The argument for why a words-plus-deeds detector matters.
 5. **Nakamura et al. 2026, 2602.15198** Colosseum. The speakers' framework; action-based collusion measured as regret.
-6. **Berger et al. 2025** (ABA Antitrust Magazine) Coordination by code: antitrust liability in the age of AI pricing. The plus-factors doctrine for Q2.3.
+6. **Berger et al. 2025** (ABA Antitrust Magazine) Coordination by Code: Rethinking Antitrust Liability in the Age of AI Pricing (Berger, Weiner and Jiang, Antitrust 40(1), Fall 2025; verified at abstract level 10/23: it is about shared AI pricing tools, not a plus-factor catalogue). For plus factors cite Kovacic, Marshall, Marx and White (2011), 110 Mich. L. Rev. 393.
 
 ## Read if time allows
 
