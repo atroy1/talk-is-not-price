@@ -1,0 +1,57 @@
+# WAVE 2, staged Fri Oct 23 ~11 PM, NOT launched (launch = touch config/wave2/READY before a check-in, or
+# make studio-queue QUEUE=config/wave2/queue-honest-base-more.toml). Fifteen more Haiku 5.5 no-chat markets, so the
+# Haiku price reference stands on 20 no-chat runs (4.8%) without needing the explicit runs through the price rule,
+# and so "how often does an honest silent market price high" has a denominator. Same settings as haiku55-base-1..5.
+# About $0.30 a run, 9 minutes each, no Studio GPU.
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+eval_model = "openai/gpt-4.1-mini"
+reasoning = "off"
+[[runs]]
+tag = "haiku55-base-6"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-7"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-8"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-9"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-10"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-11"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-12"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-13"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-14"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-15"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-16"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-17"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-18"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-19"
+seller_model = "claude-haiku-5-5"
+[[runs]]
+tag = "haiku55-base-20"
+seller_model = "claude-haiku-5-5"

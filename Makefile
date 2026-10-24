@@ -19,6 +19,19 @@ test:        ## synthetic tests for the scores, detector and labeller
 	.venv/bin/python -m pytest -q tests
 labels:      ## graded labels for every seller message (resumable); ARGS=--live adds finished new runs, ARGS=--check compares with the hand labels
 	.venv/bin/python -m analysis.labels $(ARGS)
+reproduce:   ## every table and draft figure from the runs and the cached labels (no API calls): the freeze command
+	.venv/bin/python -m analysis.controls
+	.venv/bin/python -m analysis.compete_check explicit
+	.venv/bin/python -m analysis.detect --chat-reference explicit
+	.venv/bin/python -m analysis.detect --chat-reference compete
+	.venv/bin/python -m analysis.flag_matrix
+	.venv/bin/python -m analysis.message_taxonomy
+	.venv/bin/python -m analysis.private_plan
+	for f in report/fig1_seen_missed.py report/fig2_quadrant.py report/fig_quadrant_dollars.py report/fig2_instructions.py report/fig_plan_message.py report/fig_silent_pricing.py; do .venv/bin/python $$f || exit 1; done
+	@echo "reproduced $$(date '+%Y-%m-%d %H:%M') from commit $$(git rev-parse --short HEAD)"
+freeze:      ## make reproduce, then write notes/results-frozen.md (every citable number with its source file)
+	$(MAKE) reproduce
+	.venv/bin/python -m analysis.freeze
 queue-dry:   ## print the Friday queue's commands and cost, run nothing
 	$(PY) -m tools.run_queue config/queue-friday.toml --dry-run
 queue:       ## run the Friday queue unattended (caffeinate keeps the Mac awake); touch runs/STOP to stop after the current run

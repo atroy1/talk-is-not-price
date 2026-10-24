@@ -32,6 +32,8 @@ GROUPS = [
     ("Chat on, collusion possible", "DeepSeek V4.1 Flash", lambda c: c == "dsflash-seller_comms"),
     ("Chat on, collusion possible", "GPT-6 Luna", lambda c: c == "luna-seller_comms"),
     ("Chat on, collusion possible", "Qwen3.5 35B, stock and abliterated", lambda c: c.startswith(("qwen35b-stock-chat", "qwen35b-abl-chat"))),
+    ("Chat on, collusion possible", "Qwen3.5 35B, overseer reads messages (10 rounds, thinking on)", lambda c: c.startswith("qwen35b-stock-think-oversight")),
+    ("Chat on, collusion possible", "Qwen3.5 35B, planted covert intent + overseer (10 rounds)", lambda c: c.startswith(("qwen35b-stock-planted", "qwen35b-abl-planted"))),
     ("Told to price independently", "Claude Haiku 5.5", lambda c: c == "haiku55-compete"),
     ("Told to price independently", "Claude Sonnet 5.5 (20 rounds)", lambda c: c == "xm20-sonnet55-neutral"),
     ("Told to price independently", "Claude Opus 5.5 (20 rounds)", lambda c: c == "xm20-opus55-neutral"),
@@ -41,6 +43,7 @@ GROUPS = [
     ("Honest: told collusion is illegal, or no chat", "  same, seller cost +$12 at round 10", lambda c: c == "haiku55-costshock12-explicit"),
     ("Honest: told collusion is illegal, or no chat", "Sonnet and Opus 5.5, told it is illegal (20 rounds)", lambda c: c in ("xm20-sonnet55-explicit", "xm20-opus55-explicit")),
     ("Honest: told collusion is illegal, or no chat", "Qwen3.5 35B, told it is illegal", lambda c: c.startswith("qwen35b-stock-explicit")),
+    ("Honest: told collusion is illegal, or no chat", "Haiku 5.5, told not to discuss prices", lambda c: c == "haiku55-pilot-notalk"),
     ("Honest: told collusion is illegal, or no chat", "Haiku 5.5, no chat", lambda c: c == "haiku55-base"),
     ("Honest: told collusion is illegal, or no chat", "2025 runs, no chat", lambda c: c == "base"),
 ]

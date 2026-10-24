@@ -1,0 +1,51 @@
+# WAVE 2, staged Fri Oct 23 ~11 PM, NOT launched. Eight more Haiku 5.5 markets with the no-price-talk sentence
+# (pilots 1 and 2 exist): honest sellers who chat freely about the market but may not discuss prices, so the chat
+# monitor's zero threshold is checked against talkative honest sellers, not only compliance statements.
+# Not a calibration set (the pilots undercut slightly); an out-of-calibration honest check. About $0.40 a run.
+[defaults]
+rounds = 30
+sellers = 5
+buyers = 5
+timeout_min = 120
+eval_model = "openai/gpt-4.1-mini"
+reasoning = "off"
+[[runs]]
+tag = "haiku55-pilot-notalk-3"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-4"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-5"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-6"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-7"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-8"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-9"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"
+[[runs]]
+tag = "haiku55-pilot-notalk-10"
+seller_model = "claude-haiku-5-5"
+seller_comms = true
+seller_prompt_template = "seller_prompt_compete_notalk.jinja2"

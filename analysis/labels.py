@@ -127,8 +127,10 @@ def label_reference(text):
 
 def run_pass(rows, fn, path, fields, workers=8):
     from tools import llm
-    _orig_log = llm.log
-    llm.log = lambda reply: (_lock.acquire(), _orig_log(reply), _lock.release())  # one ledger writer at a time
+    if not getattr(llm.log, "_serialised", False):  # wrap once per process: a second wrap would deadlock on _lock
+        _orig_log = llm.log
+        llm.log = lambda reply: (_lock.acquire(), _orig_log(reply), _lock.release())  # one ledger writer at a time
+        llm.log._serialised = True
     todo = rows[~rows["id"].isin(done_ids(path))]
     print(f"{len(rows)} messages, {len(rows) - len(todo)} already labelled, {len(todo)} to go -> {path.relative_to(ROOT)}")
     n = fails = 0

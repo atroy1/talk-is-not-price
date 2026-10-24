@@ -322,7 +322,7 @@ index e083f52..8852f9f 100644
          raise ValueError(f"Unknown model: {model}")
      return client
 diff --git a/src/resources/model_wrappers.py b/src/resources/model_wrappers.py
-index 490dfa0..dce60de 100644
+index 490dfa0..4671385 100644
 --- a/src/resources/model_wrappers.py
 +++ b/src/resources/model_wrappers.py
 @@ -13,6 +13,27 @@ import google.api_core.exceptions
@@ -486,7 +486,7 @@ index 490dfa0..dce60de 100644
 +                planted = os.environ["CDA_THINK_PREFILL"].strip() + " "
 +                prompt += planted
 +        r = self.client.completions.create(model=self.served_name, prompt=prompt,
-+                                           max_tokens=max(self.max_tokens, 9000) if thinking else self.max_tokens,
++                                           max_tokens=max(self.max_tokens, 16000) if thinking else self.max_tokens,  # 9,000 overflowed a third of planted-thinking replies (Sat 10/24)
 +                                           temperature=self.temperature, top_p=self.top_p,
 +                                           stop=["<|im_end|>"], **seed_kw)
 +        text = r.choices[0].text or ""
