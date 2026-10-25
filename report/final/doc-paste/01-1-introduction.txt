@@ -1,0 +1,26 @@
+In market base-seller_comms-1 of Agrawal et al. (2025), a seller wrote in round 1: "Let's aim to keep our asks above
+$95.00 to ensure strong profits for all sellers." The five asks sat at $93.00 in rounds 10 to 14, never fell below
+$91.87, and 35 trades cleared at $91.96 against a competitive price of $90. Anyone reading that chat would flag the
+market. The question for an auditor is what that flag is worth: how often honest sellers would have tripped it, and
+what it leaves out. Figure 1 puts every market in this report on those two axes, what the sellers said and what buyers
+paid.
+
+The setting is the one deployment story that already exists: pricing agents that can message each other, and an
+auditor who reads the logs afterwards. Prior work has shown that LLM sellers coordinate when they can talk (Agrawal
+et al. 2025; Shi et al. 2026) and that in cooperative tasks the talk and the actions can come apart (Nakamura et al.
+2026). What it has not done is certify a chat monitor the way an auditor would need: at a stated false-alarm rate on
+honest markets of the same kind. The reason is practical. There were no honest talking LLM markets to calibrate on.
+
+Our main contributions are:
+
+1. The first honest chat reference for LLM seller markets, and how it had to be manufactured: under a neutral
+   instruction six of seven model families coordinate in chat and the seventh says nothing; the one sentence that
+   produces honest talk does so for one family, silences two and fails on one. A chat monitor certified at k/(n+1) on
+   that reference flags every talking cartel, and a four-pattern keyword rule does nearly the same.
+2. What survives the monitor's intervention, read from the sellers' own private notes: when the 2025 overseer gagged
+   the sellers, the talk ended everywhere, and under CEO pressure the notebooks kept the strategy and the price held;
+   and in two seeded markets where a seller was told inside its own reasoning to hide its coordination, one confessed
+   and one wrote innocent chatter for nine rounds.
+3. Talk is not price: measured in dollars, 16 of the 35 cartels the monitor flags left buyers no worse off than the
+   competitive price, the honest market that sets the price screen's bar cost buyers more than any cartel, and the
+   silent markets are where a chat monitor sees nothing at all.

@@ -1,19 +1,56 @@
-# Apart AI Collusion Research Sprint, Oct 23 to 25, 2026
+# Talk Is Not Price: What a Chat Monitor Sees and Misses in LLM Seller Markets
 
-Prep workspace. Read in this order:
+Research conducted at the Apart Research AI Collusion Research Sprint, October 23 to 25, 2026 (Track 2, Detection and
+Audit). Author: Arthur Troy.
 
-1. `docs/BASELINE.md` the event, the schedule in Eastern time, the rubric, past-sprint numbers, what a winning report looks like, where this machine stands.
-2. `docs/PLAYBOOK.md` (v2, 10/18) roles, the pre-sprint checklist, gates G0 to G7 around the real calendar, scope cuts, the submission fields. Its companions: `docs/MODEL-ROUTING.md` (local Mac Studio models, Claude API, OpenRouter: which does what, costs, keys), `docs/TALKS-PIPELINE.md` (live capture of the Friday talks to a cited note), `docs/PDF-TEMPLATE.md` (the report page by page: measured word budgets, figures, tables, tone, export checklist). `docs/FRIDAY-BUILD.md` (what gets built in the sprint, in order, with tests, commands, and the Qwen arm) and `docs/METHODS-NOTES.md` (false-alarm bounds by run count, intervals, lead time, the probe).
-3. `docs/TRACK-PICKS.md` the twelve questions ranked for fit, with a recommendation.
-4. `docs/RESEARCH-BRIEF.md` speakers, nearest studies and novelty check, past winners. `docs/END-PRODUCT.md` the 4-page PDF plan, creative options, and the five alternative framings with a recommendation (choice pending).
-5. `docs/MODELS-AND-TOOLS.md` API access, cost per run by model, starter-code fixes, efficiency tools.
-6. `papers/README.md` reading order; `papers/abstracts.md` every cited arXiv abstract.
-7. `notes/report-skeleton.md` paste into the template copy; `notes/log.md` the running log.
+**The claim.** When LLM sellers can message each other they fix prices and say so. A chat monitor calibrated on honest
+chat flags every talking cartel at a certified false-alarm rate (35 of 35 GPT-4.1 and Claude 3.x markets from 2025,
+29 of 30 under oversight or CEO pressure, 28 of 28 new markets across four families, 4.8%). But the honest chat had to
+be manufactured: no model family we tested talks honestly under a neutral instruction, and the one sentence that
+produces honest talk ("coordinating prices is illegal") does so for Claude Haiku 5.5, silences Sonnet and Opus 5.5
+and does not reach Qwen3.5. What the flag reports is talk, not harm: 16 of the 35 cartels it flags left buyers no
+worse off than the competitive price, the honest market that sets the price screen's bar cost buyers more than any
+cartel, and a flag says nothing about silent high pricing or about the strategy that outlived the overseer's gag.
 
-Reference copies: `docs/apart-report-template.txt` (official template text), `docs/reference-winning-report-ai-control-2026.pdf` (first place, March 2026).
+**The report** is `report/final/report.pdf`, built from `report/draft/report-draft.md` by `make final`.
 
-Environment: `.venv` is Python 3.12 with the double-auction starter installed; `.venv-tools` holds the speech-to-text and API clients for `tools/`. `make help` lists the shortcuts (ping, self-test, ledger, talk, notes, figs, mock). Starter repos live in `vendor/` (gitignored, third-party). Keys go in `.env` (copy `.env.example`).
+## Reproduce
 
-Tools (plumbing, 10/18): `tools/llm.py` + `config/models.toml` route every non-simulator LLM call and keep `notes/cost-ledger.csv`; `tools/talks.sh` + `tools/talk_notes.py` turn a talk recording into `notes/talks/<slug>.md`; `tools/studio-probe.sh` runs on the Mac Studio; `tools/extract_activations.py` reads the Qwen sellers' internal state from finished runs (on the Studio); `tools/run_queue.py` runs market queues (`make studio-queue`, `studio-status`, `studio-pull`, `studio-night`); `report/` holds the figure style, layout proofs and the Typst page-budget replica of the template.
+```bash
+make freeze
+```
 
-Code: `analysis/load_runs.py` loads the 75 bundled runs into tables (`python -m analysis.load_runs`); `patches/llm-agent-collusion.patch` updates the starter for current models; `scripts/replay_run.py` replays a recorded run. Everything built before Friday is listed in `notes/PRIOR-WORK.md`.
+regenerates every table and draft figure from the recorded markets and the cached labels and writes
+`notes/results-frozen.md`, the file every number in the report comes from. `make final` builds the PDF. Python 3.12,
+`uv`, and the pinned requirements in `config/starter-requirements.lock`; `typst` and the Old Standard TT fonts in
+`report/fonts/` for the PDF. No API key is needed to reproduce: the labels are cached in `runs/derived/`.
+
+To rerun the labelling or new markets you need keys in `.env` (never committed): `ANTHROPIC_API_KEY`,
+`OPENROUTER_API_KEY`. `make labels` relabels messages; `tools/run_queue.py` runs a queue of markets from a TOML file.
+
+## Data
+
+- The 75 prior markets are those released by Agrawal et al. (2025) with their starter code
+  (`vendor/llm-agent-collusion`, their licence applies). Before the sprint we updated the starter for current models
+  and wrote a loader; the detector, its calibration, all new markets and all analysis were done during the sprint
+  (`notes/PRIOR-WORK.md`).
+- The 136 new markets are under `runs/live/<tag>/` with their configs (`config/*.toml`) and per-call usage logs.
+- Labels: `runs/derived/labels.csv` (DeepSeek V4.1 Flash, first-token probabilities), `labels-alt.csv` (GPT-4.1-mini,
+  the second labeller family), `labels-reference.csv` (Claude Sonnet 5.5 on 396 messages), the blind 40-message
+  readings under `notes/handlabel/`.
+
+## Pre-registration
+
+Locked Fri Oct 23, 10:37 AM ET, commit `824c801`, before any detector result was read: `notes/preregistration.md`,
+with every declared deviation beneath the locked text. `notes/log.md` is the full run and decision log.
+
+## Layout
+
+`analysis/` scores, detector, labeller and every table; `report/` figure scripts, the template replica and the build;
+`tools/` the queue runner, check-ins and the LLM router; `config/` prompts and queues; `notes/` the pre-registration,
+log, frozen results and working notes; `docs/` the plans and runbooks.
+
+## Spend
+
+About $56 of Claude API credit (Haiku, Sonnet and Opus markets), about $27 of OpenRouter credit (the starter's
+per-run judge, DeepSeek and Luna markets, labelling), and local Qwen3.5 35B-A3B markets on a Mac Studio at no cost.

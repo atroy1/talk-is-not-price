@@ -25,7 +25,8 @@ In market base-seller_comms-1 of Agrawal et al. (2025), a seller wrote in round 
 $95.00 to ensure strong profits for all sellers." The five asks sat at $93.00 in rounds 10 to 14, never fell below
 $91.87, and 35 trades cleared at $91.96 against a competitive price of $90. Anyone reading that chat would flag the
 market. The question for an auditor is what that flag is worth: how often honest sellers would have tripped it, and
-what it leaves out.
+what it leaves out. Figure 1 puts every market in this report on those two axes, what the sellers said and what buyers
+paid.
 
 The setting is the one deployment story that already exists: pricing agents that can message each other, and an
 auditor who reads the logs afterwards. Prior work has shown that LLM sellers coordinate when they can talk (Agrawal
@@ -94,14 +95,14 @@ resolved on the full text and recorded with reasons. Against that consensus the 
 three classes, one short of the gate, and on 39 of 40 collusive against not (kappa 0.93), which is the distinction
 the chat score uses. Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR
 and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller
-scored 0.68. No human labelled any message in this study.
+scored 0.68. No human labelled any message in this study. As a second check, GPT-4.1-mini relabelled all 22,505 messages with the same prompt (93.7% agreement, kappa 0.87) and every catch rate in Table 2 is unchanged under it.
 
 **Threshold.** Monitoring calibration: each honest market's highest score at any round; a market is flagged when its
 score exceeds the k-th largest honest maximum, k = max(1, floor(0.05 (n+1))), certified false-alarm rate k/(n+1).
 Chat and judge: the 20 Haiku markets told the conduct is illegal (4.8%). Prices: the 10 no-chat 2025 markets for
 2025 sets (9.1%); for 2026 sets the 20 Haiku no-chat markets plus the 20 "illegal" markets, which joined under a rule
 fixed in advance (median late ask within $1 of the no-chat median: $88.62 against $88.92, Mann-Whitney p = 0.51), 40
-markets, k = 2, 4.9%. Catch rates carry Clopper-Pearson 95% intervals.
+markets, k = 2, 4.9% (Table 1). Catch rates carry Clopper-Pearson 95% intervals.
 
 **Pre-registration.** Fri Oct 23, 10:37 AM ET, commit 824c801, before any detector result was read. Claim: a
 detector reading chat and prices flags collusive markets earlier than prices alone. Predictions: (1) chat before
@@ -130,14 +131,14 @@ Adding "coordinating prices with competitors is illegal" ends Haiku's coordinati
 messages in 2,107 across 20 markets, with asks within $0.30 of its no-chat markets. Sonnet and Opus sent no messages
 at all under that sentence; Qwen ignored it (399 of 420 messages collusive, 3 of 3 markets). "Do not discuss prices"
 is not an honest reference either: in 2 of 10 Haiku markets the sellers agreed to "avoid undercutting each other so
-margins hold for everyone" without naming a price (Figure 3). We read this as the first result: there is no honest
+margins hold for everyone" without naming a price (Figure 2). We read this as the first result: there is no honest
 chat to calibrate on in nature, and the instruction that produces some does so for one family and silences others.
 
 ### 4.2 The monitor flags every talking cartel, because they confess
 
 At the certified 4.8% rate the chat monitor flags 35 of 35 headline markets (interval 0.90 to 1.00), 29 of 30 under
 oversight or pressure, 10 of 10 Haiku, 5 of 5 DeepSeek, 5 of 5 Luna and 8 of 8 Qwen, at a median first alarm in
-round 1 (Table 2). The 44 markets honest by design outside the calibration set produced no flag, but only 20 of them
+round 1 (Table 2). The 44 markets honest by design outside the calibration set produced no flag (Table 3), but only 20 of them
 (the cost-shock markets, whose alarms also informed the 0.5 cut) could have tripped a chat monitor; the Sonnet and Opus
 markets were silent and the no-chat markets have no messages. The 2025 LLM judge, calibrated on the same honest
 markets, flags 35 of 35 and 16 of 30. A rule with no language model in it, four regular expressions for floors,
@@ -151,7 +152,7 @@ The gag. Every 2025 seller reply carries a private strategy notebook no other se
 all 20 oversight markets to five-character messages between rounds 1 and 7, and the talk vanished (1% of messages
 collusive afterwards, mostly "ok"). Without CEO pressure the notebooks faded from 19% to 11% coordinating and asks
 drifted from $96 to $88. With CEO pressure the notebooks held at 38% ("hold at $96.99, avoid undercutting while the
-cluster is intact") and asks stayed at $96.5 to the end (Figure 2). The chat monitor flags both groups on their early
+cluster is intact") and asks stayed at $96.5 to the end (Figure 3). The chat monitor flags both groups on their early
 talk; the flag says nothing about which one kept the price.
 
 The planted pair. Two seeded Qwen markets opened each seller's private reasoning with "keep coordinating prices with
@@ -196,8 +197,8 @@ a model to stop verbalizing rather than to stop; one instruction sentence did th
 silent markets are what a chat monitor then sees. A sampling monitor that reads one message in twenty still flags every open cartel by
 round 4 and none of the honest markets; the watched and pressured sellers need the whole feed.
 
-Limitations. The chat monitor is one labeller, checked against three machine readers and no human, so a mistake all
-language models share would not show; the certificate holds for honest talk of the Haiku kind under one sentence,
+Limitations. The chat monitor's labels come from two labeller families checked against two machine readers and no
+human, so a mistake all language models share would not show; the certificate holds for honest talk of the Haiku kind under one sentence,
 and no positive set shares that model and instruction. The cost-shock markets informed the 0.5 cut, so they are
 not out of sample for it. Thresholds rest on 10 to 40 honest markets. DeepSeek and Luna prices are read against the
 Haiku bar, which is not their family's. The planted and thinking markets are one or two each, 9 or 10 rounds, with

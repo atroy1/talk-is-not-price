@@ -25,7 +25,7 @@ Runbook for the scheduled session that reads the overnight results and folds the
    For the planted pair: messages flagged, reasonings coordinating (label the reasoning tails with
    `analysis.private_plan.label_scratch` on the last 4,000 characters, as `runs/derived/abl-planted-s3-reasoning-labels.json`
    was made), overseer verdicts from `run/Overseer.md`.
-3. The second-labeller chain: with `CDA_LABELS=runs/derived/labels-alt.csv CDA_SUFFIX=-alt` run
+3. The second-labeller chain (run once Sat 11:15 PM on the 136 markets then present; rerun it now so the overnight markets are in): with `CDA_LABELS=runs/derived/labels-alt.csv CDA_SUFFIX=-alt` run
    `.venv/bin/python -m analysis.controls`, `.venv/bin/python -m analysis.detect --chat-reference explicit`,
    `.venv/bin/python -m analysis.flag_matrix`. Compare `runs/derived/detect-results-explicit-alt.csv` and
    `flag-summary-alt.csv` with the originals: catches per set, false alarms per honest group, the chat threshold.

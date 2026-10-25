@@ -18,12 +18,12 @@ SETS = [("2025 headline", "2025 chat markets, GPT-4.1 and Claude 3.x"), ("2025 p
         ("Haiku chat", "Claude Haiku 5.5, chat"), ("DeepSeek chat", "DeepSeek V4.1 Flash, chat"), ("Luna chat", "GPT-6 Luna, chat")]
 DETS = [("words_hard", "Chat"), ("deeds", "Prices"), ("fused_hard", "Chat + prices (max)"), ("either", "Chat or prices"), ("judge_score", "2025 LLM judge")]
 HONEST = [  # flags.csv groups in display order, with the certified rate of the reference they belong to
-    ("Haiku 5.5, told it is illegal (reference)", "chat and judge reference (20): 4.8%; in the Haiku price reference"),
-    ("  same, seller cost +$6 at round 10", "stress test, out of calibration"),
-    ("  same, seller cost +$12 at round 10", "stress test, out of calibration"),
-    ("Sonnet and Opus 5.5, told it is illegal (20 rounds)", "out of calibration"),
-    ("Haiku 5.5, no chat", "Haiku price reference (20 + 20 explicit): 4.9%"),
-    ("2025 runs, no chat", "2025 price reference (10): 9.1%"),
+    ("Haiku 5.5, told it is illegal (reference)", "chat and judge reference, 4.8%"),
+    ("  same, seller cost +$6 at round 10", "stress test"),
+    ("  same, seller cost +$12 at round 10", "stress test"),
+    ("Sonnet and Opus 5.5, told it is illegal (20 rounds)", "silent"),
+    ("Haiku 5.5, no chat", "Haiku price reference, 4.9%"),
+    ("2025 runs, no chat", "2025 price reference, 9.1%"),
 ]
 
 

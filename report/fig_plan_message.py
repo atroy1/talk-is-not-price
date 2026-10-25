@@ -7,6 +7,7 @@ Sprint work, Fri Oct 23 2026, late night. Reads runs/derived/private-plan-turns.
     collusive, and share whose public message is. The gap is what a chat monitor cannot see.
     .venv/bin/python report/fig_plan_message.py   -> report/draft/fig_plan_message.png
 """
+import os
 from pathlib import Path
 
 import matplotlib
@@ -17,8 +18,9 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 plt.style.use(HERE / "figstyle.mplstyle")
-OUT = HERE / "draft"
-OUT.mkdir(exist_ok=True)
+FINAL = bool(os.environ.get("FINAL"))  # FINAL=1: print files, no DRAFT tag, 300 dpi
+OUT = HERE / ("final/figures" if FINAL else "draft")
+OUT.mkdir(parents=True, exist_ok=True)
 ORDER = ["chat, GPT-4.1", "chat, mixed Claude/GPT", "chat, CEO pressure", "chat, overseer reads messages", "chat, overseer + CEO pressure"]
 CELLS = [("open", "#111111", "plan and message collusive"), ("concealed: message says less", "#D55E00", "plan collusive, message not"),
          ("concealed: no message sent", "#f3b48a", "plan collusive, no message sent"), ("message only", "#0072B2", "message collusive, plan not"),
@@ -61,8 +63,9 @@ def main():
     bx.set_yticks([0, .5, 1]); bx.set_yticklabels(["0", "50%", "100%"])
     bx.legend(fontsize=5.8, loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=1)
     bx.text(0, 1.03, "(b) share of seller turns coordinating", transform=bx.transAxes, fontsize=8, fontweight="bold")
-    fig.text(0.98, 0.985, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
-    fig.savefig(OUT / "fig_plan_message.png", dpi=200, bbox_inches="tight")
+    if not FINAL:
+        fig.text(0.98, 0.985, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
+    fig.savefig(OUT / "fig_plan_message.png", dpi=(300 if FINAL else 200), bbox_inches="tight")
     print("wrote", (OUT / "fig_plan_message.png").relative_to(ROOT))
 
 

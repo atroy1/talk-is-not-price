@@ -36,6 +36,13 @@ reproduce:   ## every table and draft figure from the runs and the cached labels
 	.venv/bin/python -m analysis.tables
 	for f in report/fig1_seen_missed.py report/fig2_quadrant.py report/fig_quadrant_dollars.py report/fig2_instructions.py report/fig_plan_message.py report/fig_silent_pricing.py report/fig_gag.py; do .venv/bin/python $$f || exit 1; done
 	@echo "reproduced $$(date '+%Y-%m-%d %H:%M') from commit $$(git rev-parse --short HEAD)"
+figures-final: ## the print figures: no DRAFT tag, 300 dpi, into report/final/figures/
+	for f in report/fig_quadrant_dollars.py report/fig_gag.py report/fig2_instructions.py report/fig_silent_pricing.py report/fig_plan_message.py; do FINAL=1 .venv/bin/python $$f || exit 1; done
+final:       ## the submission PDF: figures, report.typ from the draft, typst compile, page and font checks
+	$(MAKE) figures-final
+	.venv/bin/python report/build_final.py
+	typst compile --font-path report/fonts report/final/report.typ report/final/report.pdf
+	@pdfinfo report/final/report.pdf | grep -E "Pages|File size"; pdffonts report/final/report.pdf | grep -c "OldStandard" | xargs echo "Old Standard TT faces embedded:"
 freeze:      ## make reproduce, then write notes/results-frozen.md (every citable number with its source file)
 	$(MAKE) reproduce
 	.venv/bin/python -m analysis.freeze

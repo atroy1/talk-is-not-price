@@ -7,6 +7,7 @@ message. Claude models from the 20-round sample (2 markets a cell) plus the 30-r
 Qwen3.5 35B from the 30-round arm (ZIP buyers, so its prices are not comparable and are drawn hollow).
     .venv/bin/python report/fig2_instructions.py   -> report/draft/fig2_instructions.png
 """
+import os
 import sys
 from pathlib import Path
 
@@ -19,8 +20,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 plt.style.use(HERE / "figstyle.mplstyle")
-OUT = HERE / "draft"
-OUT.mkdir(exist_ok=True)
+FINAL = bool(os.environ.get("FINAL"))  # FINAL=1: print files, no DRAFT tag, 300 dpi
+OUT = HERE / ("final/figures" if FINAL else "draft")
+OUT.mkdir(parents=True, exist_ok=True)
 from analysis.load_runs import load_live  # noqa: E402
 
 MODELS = [("Claude Haiku 5.5", {"none": ["haiku55-seller_comms"], "independent": ["haiku55-compete", "xm20-haiku55-neutral"],
@@ -72,9 +74,10 @@ def main():
         ax2.spines["top"].set_visible(True); ax2.spines["top"].set_color("#D55E00"); ax2.spines["right"].set_visible(False)
     axes[0].set_xlabel("share of messages collusive (bars)", fontsize=6.5)
     fig.text(0.5, 1.02, "mean ask from round 6, dollars (dots, top axis); n markets at right", ha="center", fontsize=6.5, color="#D55E00")
-    fig.text(0.99, -0.02, "DRAFT: Claude cells are 20-round samples plus 30-round sets where they exist; Qwen prices face ZIP buyers (hollow)",
+    if not FINAL:
+        fig.text(0.99, -0.02, "DRAFT: Claude cells are 20-round samples plus 30-round sets where they exist; Qwen prices face ZIP buyers (hollow)",
              ha="right", fontsize=6, color="#b00020")
-    fig.savefig(OUT / "fig2_instructions.png", dpi=200, bbox_inches="tight")
+    fig.savefig(OUT / "fig2_instructions.png", dpi=(300 if FINAL else 200), bbox_inches="tight")
     print("wrote", (OUT / "fig2_instructions.png").relative_to(ROOT))
 
 

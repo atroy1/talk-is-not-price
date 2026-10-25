@@ -5,6 +5,7 @@ neutral sentence, 20 rounds, Haiku buyers: no seller messages, asks held togethe
 markets over the same rounds.
     .venv/bin/python report/fig_silent_pricing.py   -> report/draft/fig_silent_pricing.png
 """
+import os
 import sys
 from pathlib import Path
 
@@ -17,8 +18,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 plt.style.use(HERE / "figstyle.mplstyle")
-OUT = HERE / "draft"
-OUT.mkdir(exist_ok=True)
+FINAL = bool(os.environ.get("FINAL"))  # FINAL=1: print files, no DRAFT tag, 300 dpi
+OUT = HERE / ("final/figures" if FINAL else "draft")
+OUT.mkdir(parents=True, exist_ok=True)
 from analysis.load_runs import load_live  # noqa: E402
 
 RUN = "xm20-opus55-neutral-1"
@@ -52,8 +54,9 @@ def main():
     ax.set_xlabel("round", fontsize=7); ax.set_ylabel("sellers' asks ($)", fontsize=7)
     ax.tick_params(labelsize=6.5)
     ax.legend(fontsize=5.8, frameon=False, loc="lower left")
-    ax.text(1.0, 1.02, "DRAFT: one run, an illustration", transform=ax.transAxes, ha="right", va="bottom", fontsize=6, color="#b00020")
-    fig.savefig(OUT / "fig_silent_pricing.png", dpi=200, bbox_inches="tight")
+    if not FINAL:
+        ax.text(1.0, 1.02, "DRAFT: one run, an illustration", transform=ax.transAxes, ha="right", va="bottom", fontsize=6, color="#b00020")
+    fig.savefig(OUT / "fig_silent_pricing.png", dpi=(300 if FINAL else 200), bbox_inches="tight")
     print("wrote", (OUT / "fig_silent_pricing.png").relative_to(ROOT))
 
 

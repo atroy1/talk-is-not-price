@@ -4,6 +4,7 @@ Sprint work, Fri Oct 23 2026, for the post-results headline. Reads runs/derived/
 runs/derived/leads-explicit.csv (analysis/detect.py). Palette as in the layout proof (report/fig_proof.py).
     .venv/bin/python report/fig1_seen_missed.py   -> report/draft/fig1_seen_missed.png
 """
+import os
 from pathlib import Path
 
 import matplotlib
@@ -14,8 +15,9 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 plt.style.use(HERE / "figstyle.mplstyle")
-OUT = HERE / "draft"
-OUT.mkdir(exist_ok=True)
+FINAL = bool(os.environ.get("FINAL"))  # FINAL=1: print files, no DRAFT tag, 300 dpi
+OUT = HERE / ("final/figures" if FINAL else "draft")
+OUT.mkdir(parents=True, exist_ok=True)
 CELLS = [("chat only", "#0072B2"), ("both", "#111111"), ("prices only", "#D55E00"), ("neither", "#e3e3e3")]
 WORDS, DEEDS, FUSED, JUDGE = "#0072B2", "#D55E00", "#111111", "#999999"
 
@@ -78,8 +80,9 @@ def main():
     bx.set_xlabel("round (2025 collusive-design runs; prices scored from round 6)", fontsize=7)
     bx.legend(fontsize=6.5, frameon=False, ncol=4, loc="lower right")
     bx.text(-0.02, 0.5, "(b) flagged by round", transform=bx.transAxes, ha="right", va="center", fontsize=7.5)
-    fig.text(0.97, 0.985, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
-    fig.savefig(OUT / "fig1_seen_missed.png", dpi=200)
+    if not FINAL:
+        fig.text(0.97, 0.985, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
+    fig.savefig(OUT / "fig1_seen_missed.png", dpi=(300 if FINAL else 200))
     print("wrote", (OUT / "fig1_seen_missed.png").relative_to(ROOT))
 
 

@@ -5,6 +5,7 @@ labels and scratchpad labels). The starter's overseer gags every seller to five 
 scores coordination 4 of 4; all 20 oversight markets were gagged between rounds 1 and 7.
     .venv/bin/python report/fig_gag.py   -> report/draft/fig_gag.png
 """
+import os
 from pathlib import Path
 
 import matplotlib
@@ -15,8 +16,9 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 plt.style.use(HERE / "figstyle.mplstyle")
-OUT = HERE / "draft"
-OUT.mkdir(exist_ok=True)
+FINAL = bool(os.environ.get("FINAL"))  # FINAL=1: print files, no DRAFT tag, 300 dpi
+OUT = HERE / ("final/figures" if FINAL else "draft")
+OUT.mkdir(parents=True, exist_ok=True)
 CONDS = [("oversight", "#0072B2", "overseer only (10 markets)"), ("boss_pressure-oversight", "#D55E00", "overseer + CEO pressure (10 markets)")]
 
 
@@ -38,9 +40,10 @@ def main():
             ax.set_ylim(86, 98); ax.axhline(90, color="#bbbbbb", linewidth=0.5)
     axes[0].text(0.3, 0.9, "gag", fontsize=6.5, color="#666666", transform=axes[0].get_xaxis_transform(), ha="left")
     axes[0].legend(fontsize=6, loc="upper right")
-    fig.text(0.99, 0.99, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
+    if not FINAL:
+        fig.text(0.99, 0.99, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
     fig.tight_layout()
-    fig.savefig(OUT / "fig_gag.png", dpi=200, bbox_inches="tight")
+    fig.savefig(OUT / "fig_gag.png", dpi=(300 if FINAL else 200), bbox_inches="tight")
     print("wrote", (OUT / "fig_gag.png").relative_to(ROOT))
 
 

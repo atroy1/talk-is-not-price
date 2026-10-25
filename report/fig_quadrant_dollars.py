@@ -7,6 +7,7 @@ the conduct is illegal); crosses = chat on, no message sent. Dashed verticals = 
 family, which is where a price screen with k = 1 puts its bar.
     .venv/bin/python report/fig_quadrant_dollars.py   -> report/draft/fig_quadrant_dollars.png
 """
+import os
 import sys
 from pathlib import Path
 
@@ -20,8 +21,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 plt.style.use(HERE / "figstyle.mplstyle")
-OUT = HERE / "draft"
-OUT.mkdir(exist_ok=True)
+FINAL = bool(os.environ.get("FINAL"))  # FINAL=1: print files, no DRAFT tag, 300 dpi
+OUT = HERE / ("final/figures" if FINAL else "draft")
+OUT.mkdir(parents=True, exist_ok=True)
 from analysis.controls import HEADLINE, PANEL2  # noqa: E402
 from analysis.load_runs import load_all, load_live  # noqa: E402
 
@@ -54,7 +56,7 @@ def main():
     d = pd.DataFrame({"cond": runs, "x": oc.reindex(runs.index), "y": share.reindex(runs.index).fillna(0.0),
                       "n": nmsg.reindex(runs.index).fillna(0).astype(int), "chat": chat_on.reindex(runs.index).fillna(False)})
     d = d.dropna(subset=["x"])
-    fig, ax = plt.subplots(figsize=(6.5, 3.9))
+    fig, ax = plt.subplots(figsize=(6.5, 3.4))
     for label, color, test, honest in FAMILIES:
         f = d[d.cond.map(lambda c: bool(test(str(c))))]
         if f.empty:
@@ -82,9 +84,10 @@ def main():
     ax.text(0.99, 0.03, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.03, "competitive", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.55), fontsize=6.8, markerscale=1.1)
-    ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,
+    if not FINAL:
+        ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=6.5, color="#b00020")
-    fig.savefig(OUT / "fig_quadrant_dollars.png", dpi=200, bbox_inches="tight")
+    fig.savefig(OUT / "fig_quadrant_dollars.png", dpi=(300 if FINAL else 200), bbox_inches="tight")
     print("wrote", (OUT / "fig_quadrant_dollars.png").relative_to(ROOT))
     print(d.groupby("cond").agg(n=("x", "size"), oc_med=("x", "median"), oc_max=("x", "max"), share_med=("y", "median")).round(2).to_string())
 
