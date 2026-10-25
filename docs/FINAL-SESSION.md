@@ -39,17 +39,20 @@ Runbook for the scheduled afternoon session and for Arty beside it. The deadline
 1. **Freeze.** `make freeze`; read `notes/results-frozen.md` end to end; note any number that moved since the draft
    was written (the morning session's log entry lists them) and fix the draft's sentences to match. The freeze is
    final at this point; log the commit hash.
-2. **Figures at print size.** Figure 1 at 6.5 inches wide, Figures 2 and 3 at 6.5 inches, appendix figures at 3.15;
-   type never below 8 pt (figstyle); remove every "DRAFT" tag; captions from the draft, each standing alone; export
-   PNG at 300 dpi into `report/final/figures/`. Open each at 100 percent and read every label.
+2. **Figures at print size.** `make figures-final` writes them (FINAL=1 in each figure script: no DRAFT tag, 300 dpi,
+   into `report/final/figures/`). Open each at 100 percent and read every label; fix the script, never the PNG.
 3. **Tables.** Table 1 (honest references, three rows: chat and judge, prices 2025, prices 2026, with n and rate) and
    Table 2 from `report/draft/table2.md` (the honest block beneath). Best row bold where there is one.
-4. **Typeset.** Copy `report/mock/report.typ` to `report/final/report.typ`, replace the filler with the draft's text,
-   figures and tables, keep the template's geometry and type exactly; `typst compile --font-path report/fonts
-   report/final/report.typ report/final/report.pdf`. Check `pdfinfo` (page count), `pdffonts` (Old Standard TT
-   embedded), size under 25 MB. Body must end by page 5; references and appendix follow.
-5. **The Doc path, in parallel.** Write `report/final/doc-paste/` with one Markdown file per section, the captions, the
-   table text as tab-separated rows, and the figure PNGs, so that if Arty chooses the official Google Doc he can paste
+4. **Typeset.** `make final` does it: `report/build_final.py` converts the draft to `report/final/report.typ` in the
+   template's form (figures placed after their first citation and numbered in that order: 1 dollars quadrant in the
+   Introduction, 2 instruction grid, 3 gag; Table 1 from the detector results, Tables 2 and 3 from table2.md; the grey
+   box from the Pre-registration paragraph; the appendix reordered so Limitations and Dual-Use is A and the usage
+   statement B; bracket notes shown as orange marks), then compiles and prints the page count and the embedded fonts.
+   Never edit report.typ by hand; edit the draft or the captions dict in build_final.py and rebuild. Saturday's build:
+   11 pages, body through page 8 (the sprint allows 8 excluding references and appendix; tighten toward 6), Old
+   Standard TT embedded, 730 KB. Check that no orange mark remains in the PDF before hand-over.
+5. **The Doc path, in parallel.** `.venv/bin/python report/build_doc_pack.py` writes `report/final/doc-paste/` (one file
+   per section, captions, table2.tsv, the figure PNGs), so that if the fallback is needed Arty can paste
    with Command-Shift-V section by section. DECIDED by Arty, Sat Oct 24, 10:40 PM: the typeset PDF from the template
    replica is the submitted file; the Doc paste pack is the fallback only. So the replica must match the template's
    type and geometry exactly (section 0), carry footnote 1 and the "With / Apart Research" block, and embed Old
