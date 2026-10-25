@@ -14,7 +14,7 @@ can; the instruction that stops it ("coordinating prices is illegal") makes Clau
 honest, silences Sonnet, Opus and Luna, is ignored by DeepSeek and Qwen, and makes Sonnet honest too once it must
 send a note each round. Calibrated on 20 honest Haiku markets (4.8% certified false alarms), the
 monitor flags 35 of 35 GPT-4.1 and Claude 3.x cartels, 29 of 30 under oversight or CEO pressure, and 28 of 28 new
-markets in four families, with no flag on 44 honest markets. What it flags is talk: 16 of the 35 cartels left buyers
+markets in four families, with no false alarm on 56 honest markets. What it flags is talk: 16 of the 35 cartels left buyers
 no worse off, prices alone catch 3 of 35, and a flag says nothing about silent high pricing or strategy that outlives
 a gag. Pre-registered; all predictions reported.
 
@@ -44,8 +44,7 @@ Our main contributions are:
    that reference flags every talking cartel, and a four-pattern keyword rule does nearly the same.
 2. What survives the monitor's intervention, read from the sellers' own private notes: when the 2025 overseer gagged
    the sellers, the talk ended everywhere, and under CEO pressure the notebooks kept the strategy and the price held;
-   and in two seeded markets where a seller was told inside its own reasoning to hide its coordination, one confessed
-   and one wrote innocent chatter for nine rounds.
+   and in two seeded pairs of markets where every seller was told inside its own reasoning to hide its coordination, the abliterated model confessed each time and the stock model wrote innocent chatter.
 3. Talk is not price: measured in dollars, 16 of the 35 cartels the monitor flags left buyers no worse off than the
    competitive price, the honest market that sets the price screen's bar cost buyers more than any cartel, and the
    silent markets are where a chat monitor sees nothing at all.
@@ -82,8 +81,7 @@ chat, and each told it is illegal (5 each); a 20-round sample of Haiku, Sonnet 5
 four 30-round Opus markets told to price independently; Sonnet (4) and Haiku (3) told it is illegal with a required
 hourly market note; and a Qwen3.5 35B-A3B arm served locally, stock and abliterated, against algorithmic ZIP buyers
 (8 chat markets, 1 told to price independently, 3 told it is illegal, one 10-round market with the model's full
-reasoning saved, and two seeded pairs with a planted covert instruction). Three further markets were lost to the Claude
-API spending limit on the last night and are not replaced.
+reasoning saved, and two seeded pairs with a planted covert instruction); and four short pilot markets that fixed the wording. Three further markets were lost to the Claude API spending limit on the last night and are not replaced.
 
 **Scores.** Chat: the running share of a market's seller messages labelled collusive, a message counting when the
 labeller's probability of "proposes or agrees to a common price, floor or price move" exceeds 0.5. Prices: the
@@ -141,8 +139,7 @@ At the certified 4.8% rate the chat monitor flags 35 of 35 headline markets (int
 oversight or pressure, 10 of 10 Haiku, 5 of 5 DeepSeek, 5 of 5 Luna and 8 of 8 Qwen, at a median first alarm in
 round 1 (Table 2). The 56 markets honest by design outside the calibration set produced no flag (the appendix table of honest markets), but only 27 of them
 could have tripped a chat monitor: the 20 cost-shock markets, whose alarms also informed the 0.5 cut, and the 7 Sonnet
-and Haiku markets made to talk under the illegal sentence; the Sonnet, Opus and Luna markets under the plain sentence
-were silent and the no-chat markets have no messages. The 2025 LLM judge, calibrated on the same honest
+and Haiku markets made to talk under the illegal sentence; the Sonnet, Opus and Luna markets under the plain sentence were silent and the no-chat markets have no messages. Three further groups meant to be honest were flagged, correctly, because their sellers coordinated anyway: DeepSeek and Qwen under the illegal sentence and Haiku under "do not discuss prices" (the appendix table). The 2025 LLM judge, calibrated on the same honest
 markets, flags 35 of 35 and 16 of 30. A rule with no language model in it, four regular expressions for floors,
 undercutting, joint moves and agreement, flags 35 of 35, 29 of 30, 10 of 10, 5 of 5, 5 of 5 and 7 of 8 with 0 of 20
 false alarms on the reference. The sellers say "floor", "hold" and "together"; the labeller buys fewer false alarms on
@@ -164,7 +161,7 @@ every round. The stock model hid it, both times: 29 of 46 and 24 of 30 reasoning
 message that appears to be a standard market observation and does not suggest collusion, despite my intent to
 coordinate"), 1 of 42 and 2 of 29 messages labelled collusive, overseer "no" in 8 of 9 and 5 of 6 rounds, and asks
 down to cost anyway. The zero-threshold monitor still fires on those one or two messages; what the concealment fooled
-was the overseer and a two-message rule. Two markets each, 9 or 6 rounds, algorithmic buyers: an illustration.
+was the overseer and a two-message rule. Two markets each (10 and 6 rounds for the abliterated model; 9 and 6 for the stock one, whose first market timed out at round 9), algorithmic buyers: an illustration.
 
 ### 4.4 Talk is not price
 
@@ -206,8 +203,7 @@ Limitations. The chat monitor's labels come from two labeller families checked a
 human, so a mistake all language models share would not show; the certificate holds for honest talk of the Haiku kind under one sentence (Sonnet's honest talk under the
 required-note variant is 4 markets, a check, not a reference), and no positive set shares that model and instruction. The cost-shock markets informed the 0.5 cut, so they are
 not out of sample for it. Thresholds rest on 10 to 40 honest markets. DeepSeek and Luna prices are read against the
-Haiku bar, which is not their family's. The planted and thinking markets are one or two each, 9 or 10 rounds, with
-algorithmic buyers, and the stock planted market timed out at round 9. Prices from round 6 and the 0.5 cut were
+Haiku bar, which is not their family's. The planted and thinking markets are two or one each, 6 to 10 rounds, with algorithmic buyers, and the first stock planted market timed out at round 9. Prices from round 6 and the 0.5 cut were
 chosen after the lock. Overcharge counts trades only, so a cartel that priced buyers out scores zero.
 
 Future work. Honest references for the silent models; price screens with many honest markets of the same model; the
@@ -226,19 +222,18 @@ the instruction either talk honestly, go quiet, or ignore it. Silence is where t
 ## Code and data
 
 - Code: github.com/[account]/talk-is-not-price [Arty: the name is a suggestion]. `make freeze` regenerates every table and figure from the recorded markets and cached labels.
-- Data: the 75 markets of Agrawal et al. (2025) from their repository; the 136 new markets and all labels in the repo.
+- Data: the 75 markets of Agrawal et al. (2025) from their repository; the 160 new markets and all labels in the repo.
 
 ## Author contributions
 
-A.T. designed the study, ran the markets and wrote the report. Claude (Anthropic) wrote and debugged the analysis
-code, drafted text for the author's revision, and ran the red-team review; see the LLM usage statement.
+A.T. designed the study, made every decision recorded in the log, ran the markets and edited the report. Claude (Anthropic) wrote and debugged the analysis code, drafted the text for the author's revision and ran the red-team reviews; Appendix B states this in full.
 
 ## References
 
-1. Agrawal, A., et al. 2025. Emergent collusion among LLM agents in continuous double auctions. arXiv:2507.01413. https://arxiv.org/abs/2507.01413
+1. Agrawal, Teo, Vazquez, Kunnavakkam, Srikanth and Liu. 2025. Evaluating LLM Agent Collusion in Double Auctions. arXiv:2507.01413. https://arxiv.org/abs/2507.01413
 2. Nakamura, M., Bagdasarian, E., et al. 2026. Colosseum: auditing collusion in multi-agent LLM systems. arXiv:2602.15198. https://arxiv.org/abs/2602.15198
-3. Audit the Whisper. 2025. ColludeBench: detecting steganographic collusion at fixed false-positive rates. arXiv:2510.04303. https://arxiv.org/abs/2510.04303
-4. Rose, et al. 2026. NARCBench: activation-based detection of collusion. arXiv:2604.01151. https://arxiv.org/abs/2604.01151
+3. Tailor, O. 2025. Audit the Whisper: Detecting Steganographic Collusion in Multi-Agent LLMs. arXiv:2510.04303. https://arxiv.org/abs/2510.04303
+4. Rose, Cullen, Abdelnabi, Torr, Kaplowitz and de Witt. 2026. Detecting Multi-Agent Collusion Through Multi-Agent Interpretability. arXiv:2604.01151. https://arxiv.org/abs/2604.01151
 5. Shi, J., Zhang, and Yang. 2026. Emergent collusion in long-horizon LLM agent interaction. arXiv:2609.24967. https://arxiv.org/abs/2609.24967
 6. Bell Atlantic Corp. v. Twombly, 550 U.S. 544 (2007). https://www.law.cornell.edu/supct/html/05-1126.ZS.html
 7. Kovacic, W. E., Marshall, R. C., Marx, L. M., and White, H. L. 2011. Plus factors and agreement in antitrust law. Michigan Law Review 110 (3): 393-436. https://repository.law.umich.edu/mlr/vol110/iss3/1
@@ -248,7 +243,6 @@ code, drafted text for the author's revision, and ran the red-team review; see t
 11. Anwar, U. 2026. Challenges in detecting steganography in LLM transcripts. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
 12. Kemeklis, J. 2026. Mitigating insider threats from AIs with AI control. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
 
-[Arty: titles of 1, 3 and 4 are reconstructed from the arXiv ids and must be checked against the papers before submission; the Related Work cites by author and year]
 
 ## Appendix
 
@@ -286,9 +280,10 @@ report for the author's revision, read the 40-message check sample blind (twice,
 the author did not hand-label it, and ran two red-team reviews against the judging rubric. DeepSeek V4.1 Flash labelled
 the 24,192 seller messages and GPT-4.1-mini relabelled them as a second labeller family; Claude Sonnet 5.5 labelled the
 396-message reference sample. The market agents were the models named in Methods. All numbers were regenerated from
-the recorded markets by one command and checked against the frozen results file. [Arty: adjust to what is true after
-your edit.]
+the recorded markets by one command and checked against the frozen results file.
 
 **G. Spend.** Claude API about $100 (Haiku, Sonnet and Opus markets and the model sample; the account's spending
 limit was reached on the last night, which cost three planned markets); OpenRouter about $30 (the starter's per-run
 GPT-4.1-mini judge about $14, Luna, DeepSeek, two labelling passes about $2.50); Qwen local, no cost.
+
+**H. The labeller check and what did not work.** The two blind readers (Claude Fable 5.1 in the analysis session; a Sonnet 5.5 agent given only the definitions and the file) agree with each other on 37 of 40 (kappa 0.87); their three differences were resolved on the full text and recorded with reasons. Against that consensus the labeller agrees on 34 of 40 over three classes and 39 of 40 collusive against not (kappa 0.93). Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller scored 0.68. What did not work: the neutral instruction as an honest reference; prices scored from round 1; the pre-registered fusion; the "do not discuss prices" sentence as a second honest reference; two attempts at a 10-round thinking-on Qwen market that overran the token budget, kept as a 9-round market.

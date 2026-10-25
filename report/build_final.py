@@ -113,9 +113,9 @@ HEAD = r'''// Built by report/build_final.py from report/draft/report-draft.md. 
 #set page(paper: "us-letter", margin: 1in, numbering: "1", number-align: center)
 #set text(font: "Old Standard TT", size: 11pt, lang: "en")
 #set par(justify: true, leading: 0.52em, spacing: 0.85em)
-#set heading(numbering: "1.")
+#set heading(numbering: (..n) => if n.pos().len() == 1 { str(n.pos().at(0)) + "." } else { n.pos().map(str).join(".") })
 #show heading.where(level: 1): it => block(above: 1.3em, below: 0.7em)[#text(size: 14pt, weight: "bold")[#if it.numbering != none [#counter(heading).display() ] #it.body]]
-#show heading.where(level: 2): it => block(above: 1em, below: 0.5em)[#text(size: 11pt, weight: "bold")[#it.body]]
+#show heading.where(level: 2): it => block(above: 1em, below: 0.5em)[#text(size: 11pt, weight: "bold")[#if it.numbering != none [#counter(heading).display() ] #it.body]]
 #show figure.caption: it => context [#align(left)[#text(size: 10pt)[*#it.supplement #it.counter.display(it.numbering).* #it.body]]]
 #set figure(gap: 6pt)
 #show table: set text(size: 8.5pt)

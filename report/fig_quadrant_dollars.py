@@ -44,6 +44,8 @@ def main():
     old, new = load_all(), load_live()
     runs = pd.concat([old["runs"], new["runs"]], ignore_index=True).set_index("run_id")["condition"]
     runs = runs[~runs.index.str.contains("check|smoke|fake|replay")]
+    rounds = pd.concat([old["runs"], new["runs"]], ignore_index=True).set_index("run_id")["rounds"]
+    runs = runs[rounds.reindex(runs.index) >= 20]  # the 6- to 10-round planted and thinking markets and the 8-round pilots stay out
     m = pd.concat([old["messages"], new["messages"]], ignore_index=True)
     m = m[(m.channel == "seller") & m.text.notna() & (m.text.astype(str).str.strip() != "")].copy()
     lab = pd.read_csv(ROOT / "runs/derived/labels.csv").drop_duplicates("id").set_index("id")
