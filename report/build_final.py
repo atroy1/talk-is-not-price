@@ -183,7 +183,7 @@ def main():
                 out.append("#mark[" + esc(p.strip("[]")) + "]")
             continue
         if in_appendix:
-            m = re.match(r"^\*\*([A-G])\.\s*(.+?)\*\*\s*(.*)$", p, re.S)
+            m = re.match(r"^\*\*([A-Z])\.\s*(.+?)\*\*\s*(.*)$", p, re.S)
             if m:
                 appendix_items.append((m.group(1), m.group(2).rstrip("."), m.group(3)))
             elif appendix_items:
