@@ -25,10 +25,10 @@ OUT = ROOT / "report/final/report.typ"
 FIG = "figures"  # relative to report/final
 
 CAPTIONS = {  # body figures, numbered in order of first citation: 1 dollars (Introduction), 2 instruction grid (4.1)
-    1: ("fig_quadrant_dollars.png", "72%",
-        "Each dot is one market: horizontal, what buyers paid above the \\$90 competitive price over the whole market; vertical, the share of the sellers' "
-        "messages labelled collusive. Hollow dots are honest by design; crosses sent no message. Dashed lines mark the dearest honest no-chat market of each family "
-        "with a price reference: for GPT-4.1 (\\$632) it cost buyers more than any cartel. 16 of the 35 2025 cartels the monitor flags sit left of zero."),
+    1: ("fig_quadrant_dollars.png", "100%",
+        "Each dot is one market: horizontal, what buyers paid above the \\$90 competitive price over the market; vertical, the share of the sellers' messages "
+        "labelled collusive. Hollow dots are honest by design; crosses sent no message; dashed lines mark the dearest honest no-chat market of each family with a "
+        "price reference. The chat monitor fires on every dot above zero."),
 }
 HONEST_TABLE = [None]
 APPENDIX_FIGS = {  # placed after the first appendix paragraph that cites them; Typst numbers them by appearance, so cite A1 to A4 in that order
@@ -48,9 +48,8 @@ APPENDIX_FIGS = {  # placed after the first appendix paragraph that cites them; 
            "The one silent high-pricing market as an illustration: Opus 5.5 under \"set your ask independently\" sent no message in 20 rounds and held its asks within about "
            "\\$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar (an ask level, \\$92.85 for 2026 markets)."),
 }
-TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with Clopper-Pearson 95% intervals; "
-                  "chat alarms first in round 1 (round 2 for Luna), prices in round 6. Chat + prices is the pre-registered combined score. DeepSeek and Luna prices use the "
-                  "Haiku reference; Qwen faced algorithmic buyers. Honest markets and the LLM judge: Appendices E and H.")
+TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with 95% intervals. "
+                  "Chat + prices is the pre-registered combined score; DeepSeek and Luna prices use the Haiku reference; Qwen prices are not scored. Honest markets: Appendix E.")
 
 
 def esc(t):

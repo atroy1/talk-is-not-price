@@ -58,7 +58,7 @@ def main():
     d = pd.DataFrame({"cond": runs, "x": oc.reindex(runs.index), "y": share.reindex(runs.index).fillna(0.0),
                       "n": nmsg.reindex(runs.index).fillna(0).astype(int), "chat": chat_on.reindex(runs.index).fillna(False)})
     d = d.dropna(subset=["x"])
-    fig, ax = plt.subplots(figsize=(4.7, 2.0))  # printed at 72% of the text width, so 1:1
+    fig, ax = plt.subplots(figsize=(6.5, 2.45))  # printed at the full text width, so 1:1
     for label, color, test, honest in FAMILIES:
         f = d[d.cond.map(lambda c: bool(test(str(c))))]
         if f.empty:
@@ -74,18 +74,23 @@ def main():
         if h.any() and label.startswith(("GPT-4.1", "Claude Haiku")):  # only the two families with a price reference
             hx = f.x[h].max()
             ax.axvline(hx, color=color, linewidth=0.6, linestyle=(0, (3, 2)), alpha=0.8)
-            ax.text(hx, 1.03 + 0.045 * (FAMILIES.index((label, color, test, honest)) % 2), f"${hx:,.0f}", color=color, fontsize=6.5, ha="center", va="bottom")
+            who = "honest GPT-4.1, no chat" if label.startswith("GPT") else "honest Haiku, no chat"
+            ax.text(hx, 1.03 + 0.05 * (FAMILIES.index((label, color, test, honest)) % 2), f"${hx:,.0f} {who}", color=color, fontsize=6.3, ha="center", va="bottom")
     ax.axvline(0, color="#999999", linewidth=0.6)
     ax.axhline(0, color="#999999", linewidth=0.6)
     ax.set_xlabel("buyer overcharge: sum over trades of (price minus $90)", fontsize=8)
     ax.set_ylabel("share of seller messages\nlabelled collusive")
     ax.set_ylim(-0.06, 1.08)
     ax.grid(False)
-    ax.text(0.99, 0.88, "talk, with harm", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#333333")
-    ax.text(0.01, 0.97, "talk, no harm", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")
-    ax.text(0.99, 0.13, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
-    ax.text(0.01, 0.09, "competitive, silent or honest", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
-    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.50), fontsize=6.2, markerscale=1.0, labelspacing=0.3)
+    # quadrant counts for the 35 free-chat 2025 cartels, the set the text's "16 of 35" refers to
+    hl = d[d.cond.isin(HEADLINE)]
+    n_left, n_right = int((hl.x <= 0).sum()), int((hl.x > 0).sum())
+    assert n_left + n_right == 35, (n_left, n_right)
+    ax.text(0.01, 0.97, f"talk, no harm\n{n_left} of the 35 2025 cartels", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")
+    ax.text(0.99, 0.86, f"talk, with harm\n{n_right} of 35", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#333333")
+    ax.text(0.99, 0.17, "quiet, prices high: silent markets (x)\nor honest talk; a chat monitor sees nothing", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
+    ax.text(0.01, 0.17, "quiet, competitive", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3, fontsize=6.5, markerscale=1.0, columnspacing=1.4, handletextpad=0.4, frameon=False)
     if not FINAL:
         ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=6.5, color="#b00020")
