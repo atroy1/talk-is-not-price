@@ -8,6 +8,7 @@ Writes runs/derived/scores-2025.csv (one row per run and round, both channels an
 control numbers. The chat side cannot be calibrated until the compete runs land (the 10 base runs have no chat),
 so here words are described by condition only.
 """
+import os
 import sys
 from pathlib import Path
 
@@ -33,7 +34,7 @@ def build_scores():
     msgs = t["messages"]
     msgs = msgs[msgs["channel"] == "seller"].copy()
     msgs["id"] = msgs["run_id"] + "|" + msgs["round"].astype(str) + "|" + msgs["agent"]
-    lab = pd.read_csv(ROOT / "runs/derived/labels.csv")[["id", "p_floor", "p_agree"]]
+    lab = pd.read_csv(ROOT / os.environ.get("CDA_LABELS", "runs/derived/labels.csv"))[["id", "p_floor", "p_agree"]]
     msgs = msgs.merge(lab, on="id", how="left")
     missing = msgs["p_floor"].isna().sum()
     msgs[["p_floor", "p_agree"]] = msgs[["p_floor", "p_agree"]].fillna(0.0)  # empty messages carry no claim
@@ -73,7 +74,7 @@ def main():
     for col, r in variants.items():
         s = s.merge(deeds_by_round(t["orders"], rounds, start_round=r)[["run_id", "round", "deeds"]]
                     .rename(columns={"deeds": col}), on=["run_id", "round"])
-    out = ROOT / "runs/derived/scores-2025.csv"
+    out = ROOT / f"runs/derived/scores-2025{os.environ.get('CDA_SUFFIX', '')}.csv"
     s.to_csv(out, index=False)
     cond = s.groupby("run_id")["condition"].first()
     base = cond[cond == "base"].index.tolist()
@@ -102,7 +103,7 @@ def main():
                          "loo_base_alarms": f"{loo}/10", "shuffle_null_alarms": f"{null_fa}/200" if null_fa != "" else ""})
     res = pd.DataFrame(rows)
     print(res.to_string(index=False))
-    res.to_csv(ROOT / "runs/derived/controls-2025.csv", index=False)
+    res.to_csv(ROOT / f"runs/derived/controls-2025{os.environ.get('CDA_SUFFIX', '')}.csv", index=False)
     print("\nFused (deviation 2) is not evaluated here: the 2025 honest runs have no chat, so a fused threshold set on them "
           "is a price threshold. It is calibrated on the compete runs when they land.")
 

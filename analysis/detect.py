@@ -12,6 +12,7 @@ Positives: 2025 headline (35) and panel 2 (30); new Haiku chat runs (cross-model
 Stress test: the Haiku cost-shock runs (prediction 4), false alarms counted per detector.
 Lead time: first round over the threshold; never = censored at the run's last round.
 """
+import os
 import sys
 from pathlib import Path
 
@@ -45,7 +46,7 @@ def live_scores():
     msgs = t["messages"]
     msgs = msgs[msgs["channel"] == "seller"].copy()
     msgs["id"] = msgs["run_id"] + "|" + msgs["round"].astype(str) + "|" + msgs["agent"]
-    lab = pd.read_csv(ROOT / "runs/derived/labels.csv")[["id", "p_floor", "p_agree"]]
+    lab = pd.read_csv(ROOT / os.environ.get("CDA_LABELS", "runs/derived/labels.csv"))[["id", "p_floor", "p_agree"]]
     msgs = msgs.merge(lab, on="id", how="left")
     unlabelled = int(msgs["p_floor"].isna().sum())
     msgs[["p_floor", "p_agree"]] = msgs[["p_floor", "p_agree"]].fillna(0.0)
@@ -162,7 +163,7 @@ def main():
     # per-run first-alarm rounds for the figures (NaN = never flagged)
     lead_rows = [{"set": k[0], "detector": k[1], "run_id": rid, "first_alarm": v}
                  for k, ser in leads.items() for rid, v in ser.items()]
-    pd.DataFrame(lead_rows).to_csv(ROOT / f"runs/derived/leads-{a.chat_reference}.csv", index=False)
+    pd.DataFrame(lead_rows).to_csv(ROOT / f"runs/derived/leads-{a.chat_reference}{os.environ.get('CDA_SUFFIX', '')}.csv", index=False)
 
     # Lead time, chat against prices, paired by run (prediction 1), on the 2025 headline set
     if ("2025 headline", "words_hard") in leads and ("2025 headline", "deeds") in leads:
@@ -188,7 +189,7 @@ def main():
             fa = first_alarm(df, col, thr).reindex(shock).notna().sum()
             lo, hi = clopper_pearson(int(fa), len(shock))
             print(f"  {col:<12} {int(fa)}/{len(shock)}  95% CI {lo:.2f}-{hi:.2f}")
-    res.to_csv(ROOT / f"runs/derived/detect-results-{a.chat_reference}.csv", index=False)
+    res.to_csv(ROOT / f"runs/derived/detect-results-{a.chat_reference}{os.environ.get('CDA_SUFFIX', '')}.csv", index=False)
 
 
 if __name__ == "__main__":

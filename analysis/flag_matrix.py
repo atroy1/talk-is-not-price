@@ -12,6 +12,7 @@ Thresholds by the detector's rule (k = floor(0.05 (n + 1)), at least 1; certifie
 A run that is itself part of a reference is scored against the others (leave one out), so honest groups show their own
 false alarms. The 20-round model-sample runs are scored the same way over their 20 rounds.
 """
+import os
 import sys
 from pathlib import Path
 
@@ -56,7 +57,7 @@ def loo_threshold(maxima, ref, run):
 
 
 def main():
-    old = pd.read_csv(ROOT / "runs/derived/scores-2025.csv")
+    old = pd.read_csv(ROOT / f"runs/derived/scores-2025{os.environ.get('CDA_SUFFIX', '')}.csv")
     old["era"] = "2025"
     new = live_scores()
     new["era"] = "2026"
@@ -79,7 +80,7 @@ def main():
                          "judge": judge, "chat_max": round(float(mx["words_hard"].get(run, np.nan)), 3),
                          "price_max": round(float(mx["deeds"].get(run, np.nan)), 3)})
     flags = pd.DataFrame(rows)
-    flags.to_csv(ROOT / "runs/derived/flags.csv", index=False)
+    flags.to_csv(ROOT / f"runs/derived/flags{os.environ.get('CDA_SUFFIX', '')}.csv", index=False)
     flags["cell"] = np.select([flags.chat & flags.prices, flags.chat & ~flags.prices, ~flags.chat & flags.prices],
                               ["both", "chat only", "prices only"], "neither")
     summ = flags.groupby(["section", "group"], sort=False)["cell"].value_counts().unstack(fill_value=0)
@@ -89,7 +90,7 @@ def main():
         lambda s: f"{int(s.fillna(False).sum())}/{int(s.notna().sum())}")
     print("Runs flagged by chat (hard share, 4.8%) and by prices (9.1% for 2025 runs, 3.8% for 2026 runs):")
     print(summ.to_string())
-    summ.to_csv(ROOT / "runs/derived/flag-summary.csv")
+    summ.to_csv(ROOT / f"runs/derived/flag-summary{os.environ.get('CDA_SUFFIX', '')}.csv")
 
 
 if __name__ == "__main__":

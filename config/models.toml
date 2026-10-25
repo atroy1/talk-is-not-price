@@ -73,6 +73,13 @@ purpose = "Graded words score: P(FLOOR), P(AGREE), P(NEITHER) from the first ans
 # Jev is NOT used: OpenRouter's only listing, typesafe/jev-router, forwards each request to a model it chooses,
 # so the labeller would change under us and could not be named in Methods. Checked 2026-10-21.
 
+[tasks.label_alt]
+lane = "openrouter"
+model = "openai/gpt-4.1-mini"   # second labeller family for the robustness row (Sat 10/24 night); hard answer, probabilities if the host returns them
+max_tokens = 3
+temperature = 0
+# no top_logprobs: OpenRouter has no gpt-4.1-mini endpoint that returns them (404, Sat 10/24); hard answer only
+
 [tasks.judge_sample]
 lane = "claude"
 model = "claude-sonnet-5-5"

@@ -108,8 +108,11 @@ def _retry(task, user, note, tries=7):
             time.sleep(min(90, 5 * 2 ** i))
 
 
+TASK = "label_scored"
+
+
 def label_graded(text):
-    r = _retry("label_scored", PROMPT.format(text=str(text)[:2000]), "labels.py graded")
+    r = _retry(TASK, PROMPT.format(text=str(text)[:2000]), f"labels.py graded ({TASK})")
     p = probs_from_top(r.top_logprobs, r.text)
     return {"p_floor": round(p["FLOOR"], 4), "p_agree": round(p["AGREE"], 4), "p_neither": round(p["NEITHER"], 4),
             "answer": (r.text or "").strip()[:12], "provider": r.provider, "usd": r.usd}
@@ -173,7 +176,13 @@ def main():
     ap.add_argument("--live", action="store_true", help="include seller messages from finished runs in runs/live")
     ap.add_argument("--check", action="store_true", help="agreement with the hand labels")
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--task", default="label_scored", help="router task for the graded pass (label_alt = the second labeller family)")
+    ap.add_argument("--out", default=None, help="output file for the graded pass (default runs/derived/labels.csv)")
     a = ap.parse_args()
+    global TASK, OUT
+    TASK = a.task
+    if a.out:
+        OUT = ROOT / a.out
     if a.check:
         return check()
     rows = seller_messages(a.live)
