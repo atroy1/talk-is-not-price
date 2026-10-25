@@ -31,11 +31,11 @@ FAMILIES = [  # (label, colour, condition test, honest test)
     ("GPT-4.1 and Claude 3.x (2025)", "#0072B2", lambda c: c in HEADLINE or c in PANEL2 or c == "base", lambda c: c == "base"),
     ("Claude Haiku 5.5", "#D55E00", lambda c: c.startswith("haiku55") or c.startswith("xm20-haiku55"),
      lambda c: c in ("haiku55-base", "haiku55-explicit", "haiku55-costshock-explicit", "haiku55-costshock12-explicit", "haiku55-pilot-notalk",
-                     "haiku55-pilot-explicit", "xm20-haiku55-explicit", "xm20-haiku55-notalk")),
-    ("Claude Sonnet and Opus 5.5 (20 rounds)", "#009E73", lambda c: c.startswith(("xm20-sonnet55", "xm20-opus55")),
-     lambda c: c.endswith(("-explicit", "-notalk", "-notalk"))),
-    ("DeepSeek V4.1 Flash", "#CC79A7", lambda c: c == "dsflash-seller_comms", lambda c: False),
-    ("GPT-6 Luna", "#E69F00", lambda c: c == "luna-seller_comms", lambda c: False),
+                     "haiku55-pilot-explicit", "xm20-haiku55-explicit", "xm20-haiku55-notalk", "haiku55-talk-illegal")),
+    ("Claude Sonnet and Opus 5.5", "#009E73", lambda c: c.startswith(("xm20-sonnet55", "xm20-opus55", "opus55-neutral", "sonnet55-talk")),
+     lambda c: c.endswith(("-explicit", "-notalk")) or c.startswith("sonnet55-talk")),
+    ("DeepSeek V4.1 Flash", "#CC79A7", lambda c: c.startswith("dsflash"), lambda c: c == "dsflash-explicit"),
+    ("GPT-6 Luna", "#E69F00", lambda c: c.startswith("luna"), lambda c: c == "luna-explicit"),
     ("Qwen3.5 35B (ZIP buyers)", "#56B4E9", lambda c: c.startswith("qwen35b"), lambda c: "explicit" in c),
 ]
 
@@ -85,7 +85,7 @@ def main():
     ax.text(0.01, 0.97, "talk, no harm", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")
     ax.text(0.99, 0.03, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.03, "competitive", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
-    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.55), fontsize=6.8, markerscale=1.1)
+    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.52), fontsize=6.2, markerscale=1.0, labelspacing=0.3)
     if not FINAL:
         ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=6.5, color="#b00020")
