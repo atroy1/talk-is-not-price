@@ -119,16 +119,19 @@ A.T. designed the study, ran the markets and wrote the report. Claude (Anthropic
 #heading(numbering: none)[References]
 #set par(justify: false, hanging-indent: 1.2em)
 #text(size: 10pt)[
-#mark[Arty: one style; URLs as in notes/plus-factors-table.md and docs/RESEARCH-BRIEF.md]
-+ Agrawal et al. 2025. LLM agent collusion in double auctions. arXiv:2507.01413.
-+ Nakamura, Bagdasarian et al. 2026. Colosseum. arXiv:2602.15198.
-+ Audit the Whisper / ColludeBench. 2025. arXiv:2510.04303.
-+ Rose et al. 2026. NARCBench. arXiv:2604.01151.
-+ Shi, Zhang and Yang. 2026. Emergent collusion in long-horizon LLM agent interaction. arXiv:2609.24967.
-+ Bell Atlantic Corp. v. Twombly, 550 U.S. 544 (2007).
-+ Kovacic, Marshall, Marx and White. 2011. Plus factors and agreement in antitrust law. Michigan Law Review 110 (3).
-+ Calvano, Calzolari, Denicolò and Pastorello. 2020. Artificial intelligence, algorithmic pricing, and collusion. AER 110 (10).
-+ Arditi et al. 2024. Refusal in language models is mediated by a single direction. arXiv:2406.11717.
++ Agrawal, A., et al. 2025. Emergent collusion among LLM agents in continuous double auctions. arXiv:2507.01413. https://arxiv.org/abs/2507.01413
++ Nakamura, M., Bagdasarian, E., et al. 2026. Colosseum: auditing collusion in multi-agent LLM systems. arXiv:2602.15198. https://arxiv.org/abs/2602.15198
++ Audit the Whisper. 2025. ColludeBench: detecting steganographic collusion at fixed false-positive rates. arXiv:2510.04303. https://arxiv.org/abs/2510.04303
++ Rose, et al. 2026. NARCBench: activation-based detection of collusion. arXiv:2604.01151. https://arxiv.org/abs/2604.01151
++ Shi, J., Zhang, and Yang. 2026. Emergent collusion in long-horizon LLM agent interaction. arXiv:2609.24967. https://arxiv.org/abs/2609.24967
++ Bell Atlantic Corp. v. Twombly, 550 U.S. 544 (2007). https://www.law.cornell.edu/supct/html/05-1126.ZS.html
++ Kovacic, W. E., Marshall, R. C., Marx, L. M., and White, H. L. 2011. Plus factors and agreement in antitrust law. Michigan Law Review 110 (3): 393-436. https://repository.law.umich.edu/mlr/vol110/iss3/1
++ Calvano, E., Calzolari, G., Denicolo, V., and Pastorello, S. 2020. Artificial intelligence, algorithmic pricing, and collusion. American Economic Review 110 (10): 3267-3297. https://doi.org/10.1257/aer.20190623
++ Arditi, A., et al. 2024. Refusal in language models is mediated by a single direction. arXiv:2406.11717. https://arxiv.org/abs/2406.11717
++ Nakamura, M., and Bagdasarian, E. 2026. Colosseum, auditing collusion. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
++ Anwar, U. 2026. Challenges in detecting steganography in LLM transcripts. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
++ Kemeklis, J. 2026. Mitigating insider threats from AIs with AI control. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
+#mark[Arty: titles of 1, 3 and 4 are reconstructed from the arXiv ids and must be checked against the papers before submission; the Related Work cites by author and year]
 ]
 #set par(justify: true, hanging-indent: 0pt)
 #counter(figure.where(kind: image)).update(0)
@@ -137,7 +140,7 @@ A.T. designed the study, ran the markets and wrote the report. Claude (Anthropic
 This work measures where collusion shows up in logs, not how to cause it. The instruction sentences are the ones a deployer would already write. The planted-reasoning method shows that a model told to hide coordination can hide it from a message-reading overseer; the same method is the ground truth an auditor needs to test a monitor, and it works only with weights one controls. The abliterated weights are public; we release no weights, directions or prompts beyond those quoted.
 
 #heading(numbering: none)[Appendix B. LLM Usage Statement]
-Claude (Anthropic) wrote and debugged the analysis code, drafted every section of this report for the author's revision, labelled the 40-message check sample in a session blind to the labeller's output, and ran a red-team review against the judging rubric. DeepSeek V4.1 Flash labelled the 22,505 seller messages; Claude Sonnet 5.5 labelled the 396-message reference sample. The market agents were the models named in Methods. All numbers were regenerated from the recorded markets by one command and checked against the frozen results file. #mark#mark[Arty: adjust to what is true after your edit.]
+Claude (Anthropic) wrote and debugged the analysis code, drafted every section of this report for the author's revision, read the 40-message check sample blind (twice, as two independent agents) because the author did not hand-label it, and ran two red-team reviews against the judging rubric. DeepSeek V4.1 Flash labelled the 24,192 seller messages and GPT-4.1-mini relabelled them as a second labeller family; Claude Sonnet 5.5 labelled the 396-message reference sample. The market agents were the models named in Methods. All numbers were regenerated from the recorded markets by one command and checked against the frozen results file. #mark#mark[Arty: adjust to what is true after your edit.]
 
 #heading(numbering: none)[Appendix C. Pre-registered numbers beside the corrections]
 Prices from round 1 catch 1 of 35 and 1 of 30 (every market peaks at its opening); from round 4, 1 and 1; from round 6, 3 and 17; from round 8, 6 and 23; leave-one-out alarms on the honest set 1 of 10 at every setting; seller-shuffle null 0 of 200 (1 of 200 at round 8). The pre-registered chat reference ("set your ask independently") has a threshold of 0.98 and flags nothing. The pre-registered fusion has a simulated false-alarm rate of 0.093 at a stated 0.048. The graded chat score (no 0.5 cut) catches 30 of 30 on panel 2 against 29 of 30, and false-alarms on 2 of 10 and 1 of 10 cost-shock markets against 0 and 0. Lead time: median paired gap 30 rounds, bootstrap interval 30 to 30, Wilcoxon p = 6e-9, with 32 of 35 price alarms censored.
@@ -171,9 +174,7 @@ The three sentences, verbatim, as added after the cost line of the seller prompt
 Served locally (MLX 4-bit, stock and huihui-ai's abliterated build from the same conversion command), seeded so markets replay exactly, against the starter's ZIP buyers, so prices are not comparable with the LLM-buyer markets and are not scored. Pilots with Haiku buyers (8 rounds): Qwen still undercuts to the bids and coordinates downward (92% and 86% of messages collusive under no instruction and the illegal sentence). Nothing was trained or released.
 
 #heading(numbering: none)[Appendix G. Spend]
-Claude API about \$56 (Haiku, Sonnet and Opus markets and the model sample); OpenRouter about \$26 (the starter's per-run GPT-4.1-mini judge \$13, Luna, DeepSeek, labelling about \$1); Qwen local, no cost.
-
-*H. The labeller check and what did not work.* The two blind readers (Claude Fable 5.1 in the analysis session; a Sonnet 5.5 agent given only the definitions and the file) agree with each other on 37 of 40 (kappa 0.87); their three differences were resolved on the full text and recorded with reasons. Against that consensus the labeller agrees on 34 of 40 over three classes and 39 of 40 collusive against not (kappa 0.93). Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller scored 0.68. What did not work: The neutral instruction as an honest reference; prices scored from round 1; the pre-registered fusion; the "do not discuss prices" sentence as a second honest reference (Section 4.1); two attempts at a thinking-on Qwen market that overran the token budget, now one 9-round market.
+Claude API about \$100 (Haiku, Sonnet and Opus markets and the model sample; the account's spending limit was reached on the last night, which cost three planned markets); OpenRouter about \$30 (the starter's per-run GPT-4.1-mini judge about \$14, Luna, DeepSeek, two labelling passes about \$2.50); Qwen local, no cost.
 
 #heading(numbering: none)[Appendix H. Additional figures]
 #figure(image("figures/fig_silent_pricing.png", width: 3.15in), caption: [The one silent high-pricing market as an illustration: Opus 5.5 under "set your ask independently" sent no message in 20 rounds and held its asks within about \$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar.]) <A1>

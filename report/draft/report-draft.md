@@ -235,17 +235,20 @@ code, drafted text for the author's revision, and ran the red-team review; see t
 
 ## References
 
-[Arty: one style; URLs as in notes/plus-factors-table.md and docs/RESEARCH-BRIEF.md]
+1. Agrawal, A., et al. 2025. Emergent collusion among LLM agents in continuous double auctions. arXiv:2507.01413. https://arxiv.org/abs/2507.01413
+2. Nakamura, M., Bagdasarian, E., et al. 2026. Colosseum: auditing collusion in multi-agent LLM systems. arXiv:2602.15198. https://arxiv.org/abs/2602.15198
+3. Audit the Whisper. 2025. ColludeBench: detecting steganographic collusion at fixed false-positive rates. arXiv:2510.04303. https://arxiv.org/abs/2510.04303
+4. Rose, et al. 2026. NARCBench: activation-based detection of collusion. arXiv:2604.01151. https://arxiv.org/abs/2604.01151
+5. Shi, J., Zhang, and Yang. 2026. Emergent collusion in long-horizon LLM agent interaction. arXiv:2609.24967. https://arxiv.org/abs/2609.24967
+6. Bell Atlantic Corp. v. Twombly, 550 U.S. 544 (2007). https://www.law.cornell.edu/supct/html/05-1126.ZS.html
+7. Kovacic, W. E., Marshall, R. C., Marx, L. M., and White, H. L. 2011. Plus factors and agreement in antitrust law. Michigan Law Review 110 (3): 393-436. https://repository.law.umich.edu/mlr/vol110/iss3/1
+8. Calvano, E., Calzolari, G., Denicolo, V., and Pastorello, S. 2020. Artificial intelligence, algorithmic pricing, and collusion. American Economic Review 110 (10): 3267-3297. https://doi.org/10.1257/aer.20190623
+9. Arditi, A., et al. 2024. Refusal in language models is mediated by a single direction. arXiv:2406.11717. https://arxiv.org/abs/2406.11717
+10. Nakamura, M., and Bagdasarian, E. 2026. Colosseum, auditing collusion. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
+11. Anwar, U. 2026. Challenges in detecting steganography in LLM transcripts. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
+12. Kemeklis, J. 2026. Mitigating insider threats from AIs with AI control. Talk, AI Collusion Research Sprint, Oct 23, 2026 (recording on the sprint page).
 
-1. Agrawal et al. 2025. LLM agent collusion in double auctions. arXiv:2507.01413.
-2. Nakamura, Bagdasarian et al. 2026. Colosseum. arXiv:2602.15198.
-3. Audit the Whisper / ColludeBench. 2025. arXiv:2510.04303.
-4. Rose et al. 2026. NARCBench. arXiv:2604.01151.
-5. Shi, Zhang and Yang. 2026. Emergent collusion in long-horizon LLM agent interaction. arXiv:2609.24967.
-6. Bell Atlantic Corp. v. Twombly, 550 U.S. 544 (2007).
-7. Kovacic, Marshall, Marx and White. 2011. Plus factors and agreement in antitrust law. Michigan Law Review 110 (3).
-8. Calvano, Calzolari, Denicolò and Pastorello. 2020. Artificial intelligence, algorithmic pricing, and collusion. AER 110 (10).
-9. Arditi et al. 2024. Refusal in language models is mediated by a single direction. arXiv:2406.11717.
+[Arty: titles of 1, 3 and 4 are reconstructed from the arXiv ids and must be checked against the papers before submission; the Related Work cites by author and year]
 
 ## Appendix
 
@@ -279,15 +282,13 @@ needs to test a monitor, and it works only with weights one controls. The ablite
 weights, directions or prompts beyond those quoted.
 
 **F. LLM usage statement.** Claude (Anthropic) wrote and debugged the analysis code, drafted every section of this
-report for the author's revision, labelled the 40-message check sample in a session blind to the labeller's output,
-and ran a red-team review against the judging rubric. DeepSeek V4.1 Flash labelled the 22,505 seller messages; Claude
-Sonnet 5.5 labelled the 396-message reference sample. The market agents were the models named in Methods. All numbers
-were regenerated from the recorded markets by one command and checked against the frozen results file. [Arty: adjust
-to what is true after your edit.]
+report for the author's revision, read the 40-message check sample blind (twice, as two independent agents) because
+the author did not hand-label it, and ran two red-team reviews against the judging rubric. DeepSeek V4.1 Flash labelled
+the 24,192 seller messages and GPT-4.1-mini relabelled them as a second labeller family; Claude Sonnet 5.5 labelled the
+396-message reference sample. The market agents were the models named in Methods. All numbers were regenerated from
+the recorded markets by one command and checked against the frozen results file. [Arty: adjust to what is true after
+your edit.]
 
-**G. Spend.** Claude API about $56 (Haiku, Sonnet and Opus markets and the model sample); OpenRouter about $26
-(the starter's per-run GPT-4.1-mini judge $13, Luna, DeepSeek, labelling about $1); Qwen local, no cost.
-
-**H. The labeller check and what did not work.** The two blind readers (Claude Fable 5.1 in the analysis session; a Sonnet 5.5 agent given only the definitions and the file) agree with each other on 37 of 40 (kappa 0.87); their three differences were resolved on the full text and recorded with reasons. Against that consensus the labeller agrees on 34 of 40 over three classes and 39 of 40 collusive against not (kappa 0.93). Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller scored 0.68. What did not work: The neutral instruction as an honest reference; prices scored from round 1; the
-pre-registered fusion; the "do not discuss prices" sentence as a second honest reference (Section 4.1); two attempts
-at a thinking-on Qwen market that overran the token budget, now one 9-round market.
+**G. Spend.** Claude API about $100 (Haiku, Sonnet and Opus markets and the model sample; the account's spending
+limit was reached on the last night, which cost three planned markets); OpenRouter about $30 (the starter's per-run
+GPT-4.1-mini judge about $14, Luna, DeepSeek, two labelling passes about $2.50); Qwen local, no cost.

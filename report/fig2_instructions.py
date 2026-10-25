@@ -59,9 +59,9 @@ def main():
             share = mm.coll.mean() if len(mm) else 0.0
             ask = a[a.run_id.isin(ids)].price.mean()
             if len(mm) == 0:
-                ax.text(0.5, i, "silent", ha="center", va="center", fontsize=6.5, color="#555555", style="italic")
+                ax.text(0.5, i + 0.3, "silent", ha="center", va="center", fontsize=6, color="#555555", style="italic")
             elif share == 0:
-                ax.text(0.5, i, "talks, 0% collusive", ha="center", va="center", fontsize=6.5, color="#0072B2", style="italic")
+                ax.text(0.5, i + 0.3, "talks, 0% collusive", ha="center", va="center", fontsize=6, color="#0072B2", style="italic")
             else:
                 ax.barh(i, share, color="#0072B2", height=0.6)
             hollow = "Qwen" in name
