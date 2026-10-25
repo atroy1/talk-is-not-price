@@ -34,6 +34,7 @@ reproduce:   ## every table and draft figure from the runs and the cached labels
 	.venv/bin/python -m analysis.gag_timeline
 	.venv/bin/python -m analysis.extras
 	.venv/bin/python -m analysis.behaviour_screen
+	.venv/bin/python -m analysis.accounting
 	.venv/bin/python -m analysis.tables
 	for f in report/fig1_seen_missed.py report/fig2_quadrant.py report/fig_quadrant_dollars.py report/fig2_instructions.py report/fig_plan_message.py report/fig_silent_pricing.py report/fig_gag.py; do .venv/bin/python $$f || exit 1; done
 	@echo "reproduced $$(date '+%Y-%m-%d %H:%M') from commit $$(git rev-parse --short HEAD)"

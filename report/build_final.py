@@ -48,8 +48,9 @@ APPENDIX_FIGS = {  # placed after the first appendix paragraph that cites them; 
            "The one silent high-pricing market as an illustration: Opus 5.5 under \"set your ask independently\" sent no message in 20 rounds and held its asks within about "
            "\\$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar (an ask level, \\$92.85 for 2026 markets)."),
 }
-TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with 95% intervals. "
-                  "Chat + prices is the pre-registered combined score; DeepSeek and Luna prices use the Haiku reference; Qwen prices are not scored. Honest markets: Appendix E.")
+TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with Clopper-Pearson 95% intervals. "
+                  "Chat + prices is the combined score (Appendix C). "
+                  "Qwen prices face algorithmic buyers and are not scored. Honest markets: Appendix F.")
 
 
 def esc(t):
@@ -108,7 +109,7 @@ def draft_table(p, label):
     cap, tab = p.split("\n|", 1)
     cap = re.sub(r"^\*\*Table [A-Z]?\d*\.?\*\*\s*", "", cap.replace("\n", " "))
     ncol = tab.split("\n")[0].count("|")  # the leading pipe was consumed by the split
-    cols = {3: "1.6fr, 0.3fr, 3.6fr", 4: "1.45fr, 0.8fr, 0.3fr, 3.6fr"}.get(ncol)
+    cols = {3: "3fr, 0.4fr, 2.6fr", 4: "1.45fr, 0.8fr, 0.3fr, 3.6fr"}.get(ncol)
     return md_table_to_typst("|" + tab, esc(cap), label, cols=cols)
 
 
@@ -225,7 +226,7 @@ def main():
             t2 = (ROOT / "report/draft/table2.md").read_text()
             main_tab = t2[:t2.index("**Honest markets**")]
             honest_tab = t2[t2.index("**Honest markets**"):]
-            out.append(md_table_to_typst(main_tab, esc(TABLE2_CAPTION), "tab2", drop=("Chat or prices", "2025 LLM judge"), strip_alarm=True, cols="2.4fr, 0.35fr, 1.25fr, 1.25fr, 1.25fr")); out.append("")
+            out.append(md_table_to_typst(main_tab, esc(TABLE2_CAPTION), "tab2", drop=("Chat or prices", "2025 LLM judge"), strip_alarm=True, cols="2.4fr, 0.35fr, 1.25fr, 1.25fr, 1.25fr", float_=True)); out.append("")
             placed.add("tab2")
             HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b", float_=True)
         for n, (path, width, cap) in CAPTIONS.items():

@@ -36,7 +36,7 @@ FAMILIES = [  # (label, colour, condition test, honest test)
      lambda c: c.endswith(("-explicit", "-notalk")) or c.startswith("sonnet55-talk")),
     ("DeepSeek V4.1 Flash", "#CC79A7", lambda c: c.startswith("dsflash"), lambda c: c == "dsflash-explicit"),
     ("GPT-6 Luna", "#E69F00", lambda c: c.startswith("luna"), lambda c: c == "luna-explicit"),
-    ("Qwen3.5 35B (ZIP buyers)", "#56B4E9", lambda c: c.startswith("qwen35b"), lambda c: "explicit" in c),
+    ("Qwen3.5 35B (algorithmic buyers)", "#7f7f7f", lambda c: c.startswith("qwen35b"), lambda c: "explicit" in c),
 ]
 
 
@@ -58,7 +58,7 @@ def main():
     d = pd.DataFrame({"cond": runs, "x": oc.reindex(runs.index), "y": share.reindex(runs.index).fillna(0.0),
                       "n": nmsg.reindex(runs.index).fillna(0).astype(int), "chat": chat_on.reindex(runs.index).fillna(False)})
     d = d.dropna(subset=["x"])
-    fig, ax = plt.subplots(figsize=(6.5, 2.3))  # printed at the full text width, so 1:1
+    fig, ax = plt.subplots(figsize=(6.5, 1.8))  # printed at the full text width, so 1:1
     for label, color, test, honest in FAMILIES:
         f = d[d.cond.map(lambda c: bool(test(str(c))))]
         if f.empty:
