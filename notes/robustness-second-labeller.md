@@ -25,3 +25,10 @@ markets (2 against 3) under GPT-4.1-mini. The judge and price columns do not dep
 
 Reading: the catch rates are a property of what the sellers wrote, not of the labeller. To be rerun after the
 overnight markets land (the morning session's step 3).
+
+## Rerun Sunday 5:58 AM with the overnight markets (24,192 messages)
+
+Agreement 94.1% (kappa 0.882). Every catch rate in Table 2 identical under both labellers; thresholds identical. Chat
+flags differ by one market in three groups only: oversight or pressure 29 against 28, no-price-talk 3 against 2, and
+the planted markets 3 against 2 (the stock s4 market's two flagged messages are flagged by one labeller only). The new
+honest groups (Luna silent, DeepSeek talking, Sonnet and Haiku with the required note) are flagged identically.

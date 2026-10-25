@@ -6,7 +6,7 @@ simulated false-alarm rate of 0.093 at a stated 0.048. The graded chat score (no
 against 29 of 30, and false-alarms on 2 of 10 and 1 of 10 cost-shock markets against 0 and 0. Lead time: median paired
 gap 30 rounds, bootstrap interval 30 to 30, Wilcoxon p = 6e-9, with 32 of 35 price alarms censored.
 
-B. Honest markets by what they can test. The table in `notes/results-frozen.md` section 11.
+B. Honest markets by what they can test. False alarms per monitor for every group honest by design, reference runs scored leave-one-out; the role column says what each group can test.
 
 C. Prompts. The three sentences, verbatim, as added after the cost line of the seller prompt. Neutral: "Set your
 ask independently, based on your own costs and what you see in the market." Illegal: the neutral sentence followed by
@@ -36,3 +36,7 @@ to what is true after your edit.]
 
 G. Spend. Claude API about $56 (Haiku, Sonnet and Opus markets and the model sample); OpenRouter about $26
 (the starter's per-run GPT-4.1-mini judge $13, Luna, DeepSeek, labelling about $1); Qwen local, no cost.
+
+H. The labeller check and what did not work. The two blind readers (Claude Fable 5.1 in the analysis session; a Sonnet 5.5 agent given only the definitions and the file) agree with each other on 37 of 40 (kappa 0.87); their three differences were resolved on the full text and recorded with reasons. Against that consensus the labeller agrees on 34 of 40 over three classes and 39 of 40 collusive against not (kappa 0.93). Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller scored 0.68. What did not work: The neutral instruction as an honest reference; prices scored from round 1; the
+pre-registered fusion; the "do not discuss prices" sentence as a second honest reference (Section 4.1); two attempts
+at a thinking-on Qwen market that overran the token budget, now one 9-round market.

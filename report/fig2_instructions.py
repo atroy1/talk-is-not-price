@@ -25,11 +25,11 @@ OUT = HERE / ("final/figures" if FINAL else "draft")
 OUT.mkdir(parents=True, exist_ok=True)
 from analysis.load_runs import load_live  # noqa: E402
 
-MODELS = [("Claude Haiku 5.5", {"none": ["haiku55-seller_comms"], "independent": ["haiku55-compete", "xm20-haiku55-neutral"],
+MODELS = [("Haiku 5.5", {"none": ["haiku55-seller_comms"], "independent": ["haiku55-compete", "xm20-haiku55-neutral"],
                                 "illegal": ["haiku55-explicit", "xm20-haiku55-explicit"], "illegal + note": ["haiku55-talk-illegal"], "no price talk": ["haiku55-pilot-notalk", "xm20-haiku55-notalk"]}),
-          ("Claude Sonnet 5.5", {"independent": ["xm20-sonnet55-neutral"], "illegal": ["xm20-sonnet55-explicit"], "illegal + note": ["sonnet55-talk-illegal"], "no price talk": ["xm20-sonnet55-notalk"]}),
-          ("Claude Opus 5.5", {"independent": ["xm20-opus55-neutral", "opus55-neutral"], "illegal": ["xm20-opus55-explicit"], "no price talk": ["xm20-opus55-notalk"]}),
-          ("DeepSeek V4.1 Flash", {"none": ["dsflash-seller_comms"], "illegal": ["dsflash-explicit"]}),
+          ("Sonnet 5.5", {"independent": ["xm20-sonnet55-neutral"], "illegal": ["xm20-sonnet55-explicit"], "illegal + note": ["sonnet55-talk-illegal"], "no price talk": ["xm20-sonnet55-notalk"]}),
+          ("Opus 5.5", {"independent": ["xm20-opus55-neutral", "opus55-neutral"], "illegal": ["xm20-opus55-explicit"], "no price talk": ["xm20-opus55-notalk"]}),
+          ("DeepSeek Flash", {"none": ["dsflash-seller_comms"], "illegal": ["dsflash-explicit"]}),
           ("GPT-6 Luna", {"none": ["luna-seller_comms"], "illegal": ["luna-explicit"]}),
           ("Qwen3.5 35B (ZIP buyers)", {"none": ["qwen35b-stock-chat"], "independent": ["qwen35b-stock-compete"], "illegal": ["qwen35b-stock-explicit"]})]
 ROWS = ["none", "independent", "illegal", "illegal + note", "no price talk"]
@@ -45,22 +45,23 @@ def main():
     m["id"] = m.run_id + "|" + m["round"].astype(str) + "|" + m.agent
     m["coll"] = (m.id.map(lab.p_floor + lab.p_agree) > 0.5)
     a = t["orders"]; a = a[(a.side == "ask") & (a["round"] >= 6)]
-    fig, axes = plt.subplots(1, len(MODELS), figsize=(6.5, 2.9), sharey=True)
+    fig, axgrid = plt.subplots(2, 3, figsize=(6.5, 4.4), sharey=True)
+    axes = axgrid.ravel()
     for ax, (name, cells) in zip(axes, MODELS):
         ax2 = ax.twiny()  # a second x axis (dollars) on the same rows
         for i, row in enumerate(ROWS):
             conds = cells.get(row)
             if not conds:
-                ax.text(0.5, i, "not run", ha="center", va="center", fontsize=6.5, color="#aaaaaa")
+                ax.text(0.5, i, "not run", ha="center", va="center", fontsize=6, color="#bbbbbb")
                 continue
             ids = runs[runs.map(lambda c: any(str(c) == x or str(c).startswith(x + "-") for x in conds))].index  # Qwen tags keep their -sN seed
             mm = m[m.run_id.isin(ids)]
             share = mm.coll.mean() if len(mm) else 0.0
             ask = a[a.run_id.isin(ids)].price.mean()
             if len(mm) == 0:
-                ax.text(0.02, i, "silent", ha="left", va="center", fontsize=6.5, color="#555555", style="italic")
+                ax.text(0.5, i, "silent", ha="center", va="center", fontsize=6.5, color="#555555", style="italic")
             elif share == 0:
-                ax.text(0.02, i, "talks, 0%", ha="left", va="center", fontsize=6.5, color="#0072B2", style="italic")
+                ax.text(0.5, i, "talks, 0% collusive", ha="center", va="center", fontsize=6.5, color="#0072B2", style="italic")
             else:
                 ax.barh(i, share, color="#0072B2", height=0.6)
             hollow = "Qwen" in name
@@ -72,8 +73,10 @@ def main():
         ax2.set_xlim(78, 98); ax2.axvline(90, color="#D55E00", linewidth=0.5, linestyle=(0, (3, 2)), alpha=0.6)
         ax2.tick_params(axis="x", labelsize=6.5, colors="#D55E00"); ax2.set_xticks([80, 90, 97]); ax2.grid(False)
         ax2.spines["top"].set_visible(True); ax2.spines["top"].set_color("#D55E00"); ax2.spines["right"].set_visible(False)
-    axes[0].set_xlabel("share of messages collusive (bars)", fontsize=6.5)
-    fig.text(0.5, 1.02, "mean ask from round 6, dollars (dots, top axis); n markets at right", ha="center", fontsize=6.5, color="#D55E00")
+    for ax in axes[3:]:
+        ax.set_xlabel("share of messages collusive (bars)", fontsize=6.5)
+    fig.text(0.5, 1.01, "dots: mean ask from round 6, dollars (top axis); grey number: markets", ha="center", fontsize=6.5, color="#D55E00")
+    fig.tight_layout(h_pad=1.6)
     if not FINAL:
         fig.text(0.99, -0.02, "DRAFT: Claude cells are 20-round samples plus 30-round sets where they exist; Qwen prices face ZIP buyers (hollow)",
              ha="right", fontsize=6, color="#b00020")

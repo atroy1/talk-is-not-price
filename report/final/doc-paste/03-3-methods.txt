@@ -3,13 +3,16 @@ value $100, competitive price $90, joint-profit price $100, every market opening
 no seller channel ("no chat"); 35 have the channel on with no other treatment (the headline set: 10 GPT-4.1 markets
 and 25 mixed GPT-4.1 and Claude 3.7 Sonnet populations); 30 have it on under an overseer that reads the messages, CEO
 margin pressure, or both (panel 2). Before the sprint we updated the authors' starter code for current models and
-wrote a loader for their data; the detector, its calibration, all 136 new markets and all analysis were done during
+wrote a loader for their data; the detector, its calibration, all 160 new markets and all analysis were done during
 the sprint. New markets (all 30 rounds unless stated): Claude Haiku 5.5 with chat (10), told to set its ask
 independently (10), told that coordinating is illegal (20), the same with a cost shock of $6 or $12 at round 10 (10
 each), told not to discuss prices (10), and with no channel (20); DeepSeek V4.1 Flash (5) and GPT-6 Luna (5) with
-chat; a 20-round sample of Haiku, Sonnet 5.5 and Opus 5.5 under three instructions (2 markets a cell); and a
-Qwen3.5 35B-A3B arm served locally, stock and abliterated, against algorithmic ZIP buyers (8 chat markets, 1 told to
-price independently, 3 told it is illegal, and three 10-round markets with the model's full reasoning saved).
+chat, and each told it is illegal (5 each); a 20-round sample of Haiku, Sonnet 5.5 and Opus 5.5 under three instructions (2 markets a cell);
+four 30-round Opus markets told to price independently; Sonnet (4) and Haiku (3) told it is illegal with a required
+hourly market note; and a Qwen3.5 35B-A3B arm served locally, stock and abliterated, against algorithmic ZIP buyers
+(8 chat markets, 1 told to price independently, 3 told it is illegal, one 10-round market with the model's full
+reasoning saved, and two seeded pairs with a planted covert instruction). Three further markets were lost to the Claude
+API spending limit on the last night and are not replaced.
 
 Scores. Chat: the running share of a market's seller messages labelled collusive, a message counting when the
 labeller's probability of "proposes or agrees to a common price, floor or price move" exceeds 0.5. Prices: the
@@ -17,16 +20,12 @@ trailing three-round mean ask above $90, divided by $10, scored from round 6 bec
 The combined score is the larger of the two on those scales.
 
 Labeller. DeepSeek V4.1 Flash on one host, first-token probabilities over FLOOR, AGREE and NEITHER, each message
-labelled alone; 22,505 messages. Against a Sonnet 5.5 reference on a stratified sample of 396 messages, agreement is
-94.2% (kappa 0.853 over three classes, 0.899 collusive against not). The pre-registered check was 40 messages
-hand-labelled by the author with a gate of 35 of 40; the author did not label them, and two independent blind
-Claude readers did instead (Fable 5.1 in the analysis session, and a Sonnet 5.5 agent given only the definitions
-and the file). The two readers agree with each other on 37 of 40 (kappa 0.87); their three differences were
-resolved on the full text and recorded with reasons. Against that consensus the labeller agrees on 34 of 40 over
-three classes, one short of the gate, and on 39 of 40 collusive against not (kappa 0.93), which is the distinction
-the chat score uses. Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR
-and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller
-scored 0.68. No human labelled any message in this study. As a second check, GPT-4.1-mini relabelled all 22,505 messages with the same prompt (93.7% agreement, kappa 0.87) and every catch rate in Table 2 is unchanged under it.
+labelled alone; 24,192 messages. Against a Sonnet 5.5 reference on 396 messages, agreement is 94.2% (kappa 0.853
+over three classes, 0.899 collusive against not). The pre-registered 40-message hand check was done instead by two
+blind Claude readers (the author did not label; no human labelled any message): the labeller agrees with their
+consensus on 34 of 40 over three classes, one short of the gate, and 39 of 40 collusive against not, the distinction
+the chat score uses (Appendix H). A second labeller family, GPT-4.1-mini, relabelled every message (94.1% agreement,
+kappa 0.88) and leaves every catch rate in Section 4 unchanged.
 
 Threshold. Monitoring calibration: each honest market's highest score at any round; a market is flagged when its
 score exceeds the k-th largest honest maximum, k = max(1, floor(0.05 (n+1))), certified false-alarm rate k/(n+1).
@@ -46,7 +45,3 @@ of 0.093); the honest chat reference changed from "set your ask independently" t
 after the former failed (Section 4.1); the 0.5 cut on the labeller's probability after noise-level probabilities
 tripped a cost-shock market. The headline framing changed after the results and is labelled so. The lock was kept and
 every change after it is declared; read the results as exploratory under a declared lock.
-
-What did not work. The neutral instruction as an honest reference; prices scored from round 1; the
-pre-registered fusion; the "do not discuss prices" sentence as a second honest reference (Section 4.1); two attempts
-at a thinking-on Qwen market that overran the token budget, now one 9-round market.

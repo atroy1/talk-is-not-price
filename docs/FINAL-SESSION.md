@@ -48,7 +48,8 @@ Runbook for the scheduled afternoon session and for Arty beside it. The deadline
    Introduction, 2 instruction grid, 3 gag; Table 1 from the detector results, Tables 2 and 3 from table2.md; the grey
    box from the Pre-registration paragraph; the appendix reordered so Limitations and Dual-Use is A and the usage
    statement B; bracket notes shown as orange marks), then compiles and prints the page count and the embedded fonts.
-   Never edit report.typ by hand; edit the draft or the captions dict in build_final.py and rebuild. Saturday's build:
+   Never edit report.typ by hand; edit the draft or the captions dict in build_final.py and rebuild. Sunday 6:30 AM build: 11 pages, body exactly 8 pages, which is the limit, so every cut in prose is welcome and nothing may be added to the body without a matching cut;
+   Saturday's build:
    11 pages, body through page 8 (the sprint allows 8 excluding references and appendix; tighten toward 6), Old
    Standard TT embedded, 730 KB. Check that no orange mark remains in the PDF before hand-over.
 5. **The Doc path, in parallel.** `.venv/bin/python report/build_doc_pack.py` writes `report/final/doc-paste/` (one file

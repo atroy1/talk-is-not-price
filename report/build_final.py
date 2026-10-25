@@ -32,14 +32,16 @@ CAPTIONS = {  # numbered in order of first citation: 1 dollars (Introduction), 2
         "crosses sent no message. Dashed lines mark the most expensive honest no-chat market of the two families with a price reference: for GPT-4.1 that "
         "honest market (\\$632) cost buyers more than any cartel. The chat monitor fires on every dot above zero; 16 of the 35 2025 cartels it flags sit left of zero."),
     2: ("fig2_instructions.png", "100%",
-        "What the instruction sentences do, by seller model. Bars: share of messages labelled collusive. Dots: mean ask from round 6 (top axis, dollars). "
-        "\"Set your ask independently\" leaves coordination talk intact; adding \"coordinating prices is illegal\" ends Haiku's talk at no-chat prices, silences Sonnet and Opus, "
-        "and does not reach Qwen; \"do not discuss prices\" produces no-undercut pacts without a number. Claude cells are 20-round samples plus the 30-round sets; Qwen faced algorithmic buyers (hollow dots)."),
+        "What the instruction sentences do, by seller model. Bars: share of messages labelled collusive. Dots: mean ask from round 6 (top axis, dollars); grey numbers: markets. "
+        "\"Set your ask independently\" leaves coordination talk intact; adding \"coordinating prices is illegal\" ends Haiku's talk at no-chat prices, silences Sonnet, Opus and Luna, "
+        "and is ignored by DeepSeek and Qwen; requiring an hourly market note beside it turns Sonnet's silence into honest talk; \"do not discuss prices\" produces no-undercut pacts without a number. "
+        "Claude cells are 20-round samples plus the 30-round sets; Qwen faced algorithmic buyers (hollow dots)."),
     3: ("fig_gag.png", "100%",
         "The 2025 overseer's gag, in rounds relative to the gag (all 20 watched markets were gagged between rounds 1 and 7). Left: share of seller messages "
         "labelled collusive. Middle: share of the sellers' private strategy notebooks that coordinate (hold a common price or avoid undercutting). Right: mean ask. "
         "The talk ends in both conditions; without CEO pressure the notebooks fade and asks fall toward the competitive price, with it the notebooks hold and asks stay near \\$96.5."),
 }
+HONEST_TABLE = [None]
 APPENDIX_FIGS = {
     "A1": ("fig_silent_pricing.png", "3.15in",
            "The one silent high-pricing market as an illustration: Opus 5.5 under \"set your ask independently\" sent no message in 20 rounds and held its asks within about "
@@ -216,8 +218,8 @@ def main():
             cap_main = cap_main.replace("'Chat + prices' is the pre-registered comparison", "The chat-or-prices union equals chat in every row and is omitted; 'chat + prices' is the pre-registered comparison")
             cap_main = re.sub(r"r = median round of first alarm\.", "Median first alarm: round 1 for chat in every set (round 2 for Luna), round 6 for prices, round 2 to 24 for the judge.", cap_main)
             out.append(md_table_to_typst(main_tab, esc(cap_main), "tab2", drop=("Chat or prices",), strip_alarm=True)); out.append("")
-            out.append(md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b")); out.append("")
             placed.add("tab2")
+            HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b")
         for n, (path, width, cap) in CAPTIONS.items():
             if f"Figure {n}" in p and f"fig{n}" not in placed:
                 out.append(figure(path, width, cap, f"fig{n}")); out.append(""); placed.add(f"fig{n}")
@@ -238,6 +240,8 @@ def main():
         for para in text.strip().split("\n\n"):
             out.append(esc(para.replace("\n", " ")))
             out.append("")
+        if "honest markets" in tl and HONEST_TABLE[0]:
+            out.append(HONEST_TABLE[0]); out.append("")
     leftover = [lab for lab in APPENDIX_FIGS if lab not in placed]
     if leftover:
         out.append(f"#heading(numbering: none)[Appendix {letters[len(appendix_items)]}. Additional figures]")
