@@ -1,6 +1,6 @@
 # Frozen results
 
-Generated Sat Oct 24 2026, 07:08 PM from commit f3a96b9 by `analysis/freeze.py` after `make reproduce`. Nothing in the report body cites a number that is not here. Each table names its file.
+Generated Sat Oct 24 2026, 09:30 PM from commit 151c611 by `analysis/freeze.py` after `make reproduce`. Nothing in the report body cites a number that is not here. Each table names its file.
 
 ## 1. Catch rates at the certified false-alarm rate (`runs/derived/detect-results-explicit.csv`)
 
@@ -110,7 +110,9 @@ DECISION: these runs JOIN the price reference
 
 n = 396 messages; agreement 94.2%; kappa 0.853 (3-class), 0.899 (collusive vs not).
 
-Hand labels: not yet done (`make labels ARGS=--check` after `notes/handlabel/sample-40.csv` is filled in).
+Hand labels by the author: not done; the 40-message sample was read blind by two Claude agents instead.
+
+Three-way check on the 40 (`runs/derived/handlabel-three-way.csv`; pass1 = Fable 5.1 in session, pass2 = a Sonnet agent with the definitions only): pass1 vs pass2 37/40 three-class, 39/40 collusive-or-not; labeller vs pass1 32/40 and 38/40; labeller vs pass2 33/40 and 39/40; unanimous 31/40 and 38/40. Every three-class miss is AGREE (reader) against FLOOR (labeller).
 
 ## 8. The keyword rule in place of the labeller (`runs/derived/keyword-rule.csv`, `analysis/keyword_rule.py`)
 
@@ -251,5 +253,5 @@ Gag rounds: boss_pressure-oversight: [1, 2, 2, 3, 3, 3, 3, 4, 4, 6]; oversight: 
 
 ## 15. Spend
 
-Claude this month about $56.39 of the $100 limit; OpenRouter $34.24 left. Labelling (cost ledger): graded labels about $0.27 over about 22,000 calls, Sonnet reference about $0.79.
+Claude this month about $56.39 of the $100 limit; OpenRouter $34.22 left. Labelling (cost ledger): graded labels about $0.27 over about 22,000 calls, Sonnet reference about $0.79.
 

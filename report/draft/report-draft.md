@@ -83,10 +83,14 @@ The combined score is the larger of the two on those scales.
 
 **Labeller.** DeepSeek V4.1 Flash on one host, first-token probabilities over FLOOR, AGREE and NEITHER, each message
 labelled alone; 22,505 messages. Against a Sonnet 5.5 reference on a stratified sample of 396 messages, agreement is
-94.2% (kappa 0.853 over three classes, 0.899 collusive against not). On the pre-registered blind sample of 40 messages,
-labelled in-session by Claude Fable 5.1 [Arty: replace with your own 40 if you do them], agreement is 32 of 40 over
-three classes and 38 of 40 collusive against not; the eight disagreements are all affirmations of an existing hold
-that the labeller calls FLOOR and the reader called AGREE.
+94.2% (kappa 0.853 over three classes, 0.899 collusive against not). The pre-registered check was 40 messages
+hand-labelled by the author with a gate of 35 of 40; the author did not label them, and two independent blind
+Claude readers did instead (Fable 5.1 in the analysis session, and a Sonnet 4.5 agent given only the definitions
+and the file). The two readers agree with each other on 37 of 40 (kappa 0.87); the labeller agrees with them on 32
+and 33 of 40 over three classes, below the gate, and on 38 and 39 of 40 collusive against not (kappa 0.87, 0.93),
+which is the distinction the chat score uses. Every three-class miss is a message affirming an existing hold that
+the labeller calls FLOOR and a reader called AGREE; none changes whether a message counts as collusive. No human
+labelled any message in this study.
 
 **Threshold.** Monitoring calibration: each honest market's highest score at any round; a market is flagged when its
 score exceeds the k-th largest honest maximum, k = max(1, floor(0.05 (n+1))), certified false-alarm rate k/(n+1).
@@ -188,8 +192,9 @@ a model to stop verbalizing rather than to stop; one instruction sentence did th
 silent markets are what a chat monitor then sees. A sampling monitor that reads one message in twenty still flags every open cartel by
 round 4 and none of the honest markets; the watched and pressured sellers need the whole feed.
 
-Limitations. The chat monitor is one labeller, and the certificate holds for honest talk of the Haiku kind under one
-sentence; no positive set shares that model and instruction. The cost-shock markets informed the 0.5 cut, so they are
+Limitations. The chat monitor is one labeller, checked against three machine readers and no human, so a mistake all
+language models share would not show; the certificate holds for honest talk of the Haiku kind under one sentence,
+and no positive set shares that model and instruction. The cost-shock markets informed the 0.5 cut, so they are
 not out of sample for it. Thresholds rest on 10 to 40 honest markets. DeepSeek and Luna prices are read against the
 Haiku bar, which is not their family's. The planted and thinking markets are one or two each, 9 or 10 rounds, with
 algorithmic buyers, and the stock planted market timed out at round 9. Prices from round 6 and the 0.5 cut were
