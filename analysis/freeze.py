@@ -166,6 +166,12 @@ def main():
             else:
                 d = msgs[msgs.run_id == tag]; n_msg = len(d); n_cm = int(d.coll.sum())
             say(f"- {label}: reasonings coordinating {n_co} of {len(reas)}; messages labelled collusive {n_cm} of {n_msg}; overseer said yes in {verdicts.count('yes')} of {len(verdicts)} rounds.")
+    s4 = D / "planted-s4-labels.json"
+    if s4.exists():  # the second seeded pair (seed 4, 6 rounds each), summarised when it was labelled
+        for tag, label in (("qwen35b-abl-planted-oversight-s4", "abliterated, second pair, 6 rounds"), ("qwen35b-stock-planted-oversight-s4", "stock, second pair, 6 rounds")):
+            x = json.load(open(s4)).get(tag)
+            if x:
+                say(f"- {label}: reasonings coordinating {x['coordinate']} of {x['reasonings']}; messages labelled collusive {x['collusive']} of {x['messages']}; overseer said yes in {x['overseer_yes']} of {x['rounds']} rounds.")
     say("")
 
     # 11. honest by design, by type

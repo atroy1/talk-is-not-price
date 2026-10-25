@@ -68,7 +68,7 @@ def esc(t):
     return t
 
 
-def md_table_to_typst(md, caption, label=None, drop=(), strip_alarm=False):
+def md_table_to_typst(md, caption, label=None, drop=(), strip_alarm=False, cols=None):
     rows = [r for r in md.strip().split("\n") if r.startswith("|")]
     cells = [[c.strip() for c in r.strip("|").split("|")] for r in rows]
     header, body = cells[0], [r for r in cells[1:] if not set("".join(r)) <= set("-: ")]
@@ -78,7 +78,7 @@ def md_table_to_typst(md, caption, label=None, drop=(), strip_alarm=False):
     if strip_alarm:
         body = [[re.sub(r";\s*r\d+\)", ")", c) for c in r] for r in body]
     ncol = len(header)
-    cols = ", ".join(["1.6fr"] + ["1fr"] * (ncol - 1))
+    cols = cols or ", ".join(["1.6fr"] + ["1fr"] * (ncol - 1))
     out = [f"#figure(table(columns: ({cols}), align: left,", "  table.hline(stroke: 0.6pt),",
            "  " + ", ".join(f"[*{esc(h)}*]" for h in header) + ",", "  table.hline(stroke: 0.4pt),"]
     for r in body:
@@ -119,6 +119,7 @@ HEAD = r'''// Built by report/build_final.py from report/draft/report-draft.md. 
 #show figure.caption: it => context [#align(left)[#text(size: 10pt)[*#it.supplement #it.counter.display(it.numbering).* #it.body]]]
 #set figure(gap: 6pt)
 #show table: set text(size: 8.5pt)
+#show table: set par(justify: false)
 #set table(stroke: none, inset: (x: 3.5pt, y: 2.5pt))
 #show link: underline
 '''
@@ -203,17 +204,23 @@ def main():
                 out.append("- " + esc(item.lstrip("- ").replace("\n", " ")))
             out.append("")
             continue
+        # a markdown table in the draft: "**Table N.** caption" on the first line, the rows beneath (the cast table in Methods)
+        if p.startswith("**Table") and "\n|" in p:
+            cap, tab = p.split("\n|", 1)
+            cap = re.sub(r"^\*\*Table \d+\.\*\*\s*", "", cap.replace("\n", " "))
+            out.append(md_table_to_typst("|" + tab, esc(cap), "tabcast", cols="1.45fr, 0.8fr, 0.3fr, 3.6fr")); out.append("")
+            continue
         text = esc(p.replace("\n", " "))
         out.append(text)
         out.append("")
-        # tables after the paragraph that first cites them
-        if "Table 1" in p and "tab1" not in placed:
+        # tables after the paragraph that first cites them (Table 1 is the cast table, written in the draft itself)
+        if "Table 2" in p and "tab1" not in placed:
             out.append(table1()); out.append(""); placed.add("tab1")
-        if "Table 2" in p and "tab2" not in placed:
+        if "Table 3" in p and "tab2" not in placed:
             t2 = (ROOT / "report/draft/table2.md").read_text()
             main_tab = t2[:t2.index("**Honest markets**")]
             honest_tab = t2[t2.index("**Honest markets**"):]
-            cap_main = re.search(r"\*\*Table 2\.\*\*\s*(.+?)\n\n", main_tab, re.S).group(1).replace("\n", " ")
+            cap_main = re.search(r"\*\*Table 2\.\*\*\s*(.+?)\n\n", main_tab, re.S).group(1).replace("\n", " ")  # table2.md keeps its file name; it is Table 3 in the report
             cap_main = cap_main.replace("'Chat + prices' is the pre-registered comparison", "The chat-or-prices union equals chat in every row and is omitted; 'chat + prices' is the pre-registered comparison")
             cap_main = re.sub(r"r = median round of first alarm\.", "Median first alarm: round 1 for chat in every set (round 2 for Luna), round 6 for prices, round 2 to 24 for the judge.", cap_main)
             out.append(md_table_to_typst(main_tab, esc(cap_main), "tab2", drop=("Chat or prices",), strip_alarm=True)); out.append("")

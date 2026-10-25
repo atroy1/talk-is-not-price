@@ -81,9 +81,9 @@ def main():
     ax.set_ylabel("share of seller messages\nlabelled collusive")
     ax.set_ylim(-0.06, 1.08)
     ax.grid(False)
-    ax.text(0.99, 0.97, "talk, with harm", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#333333")
+    ax.text(0.99, 0.88, "talk, with harm", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.97, "talk, no harm", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")
-    ax.text(0.99, 0.03, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
+    ax.text(0.99, 0.13, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.03, "competitive", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.52), fontsize=6.2, markerscale=1.0, labelspacing=0.3)
     if not FINAL:
