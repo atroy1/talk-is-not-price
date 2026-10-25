@@ -84,7 +84,7 @@ def main():
     ax.text(0.99, 0.88, "talk, with harm", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.97, "talk, no harm", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")
     ax.text(0.99, 0.13, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
-    ax.text(0.01, 0.03, "competitive", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
+    ax.text(0.01, 0.09, "competitive, silent or honest", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.52), fontsize=6.2, markerscale=1.0, labelspacing=0.3)
     if not FINAL:
         ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,

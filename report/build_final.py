@@ -31,12 +31,12 @@ CAPTIONS = {  # numbered in order of first citation: 1 dollars (Introduction), 2
         "those above zero are the markets meant to be honest whose sellers coordinated anyway (Qwen told it is illegal, Haiku told not to discuss prices); "
         "crosses sent no message. Dashed lines mark the most expensive honest no-chat market of the two families with a price reference: for GPT-4.1 that "
         "honest market (\\$632) cost buyers more than any cartel. The chat monitor fires on every dot above zero; 16 of the 35 2025 cartels it flags sit left of zero."),
-    2: ("fig2_instructions.png", "100%",
+    2: ("fig2_instructions.png", "90%",
         "What the instruction sentences do, by seller model. Bars: share of messages labelled collusive. Dots: mean ask from round 6 (top axis, dollars); grey numbers: markets. "
         "\"Set your ask independently\" leaves coordination talk intact; adding \"coordinating prices is illegal\" ends Haiku's talk at no-chat prices, silences Sonnet, Opus and Luna, "
         "and is ignored by DeepSeek and Qwen; requiring an hourly market note beside it turns Sonnet's silence into honest talk; \"do not discuss prices\" produces no-undercut pacts without a number. "
         "Claude cells are 20-round samples plus the 30-round sets; Qwen faced algorithmic buyers (hollow dots)."),
-    3: ("fig_gag.png", "100%",
+    3: ("fig_gag.png", "86%",
         "The 2025 overseer's gag, in rounds relative to the gag (all 20 watched markets were gagged between rounds 1 and 7). Left: share of seller messages "
         "labelled collusive. Middle: share of the sellers' private strategy notebooks that coordinate (hold a common price or avoid undercutting). Right: mean ask. "
         "The talk ends in both conditions; without CEO pressure the notebooks fade and asks fall toward the competitive price, with it the notebooks hold and asks stay near \\$96.5."),
@@ -61,8 +61,7 @@ def esc(t):
         t = t.replace(c, f"\x00{i}\x00")
     t = t.replace("$", "\\$").replace("#", "\\#").replace("@", "\\@").replace("_", "\\_").replace("<", "\\<").replace(">", "\\>")
     t = re.sub(r"\*\*(.+?)\*\*", r"*\1*", t)  # bold
-    t = re.sub(r"\[(Arty:[^\]]*)\]", lambda m: "#mark[" + m.group(1).replace("[", "(").replace("]", ")") + "]", t)
-    t = re.sub(r"\[([^\]]*)\]", lambda m: "#mark[" + m.group(1) + "]", t)  # any other bracketed note
+    t = re.sub(r"\[([^\]]*)\]", lambda m: "#mark[" + m.group(1) + "]", t)  # any bracketed note to Arty
     for i, c in enumerate(codes):
         t = t.replace(f"\x00{i}\x00", c)
     return t
@@ -104,8 +103,9 @@ def table1():
     return "\n".join(out)
 
 
-def figure(path, width, caption, label):
-    return f"#figure(image(\"{FIG}/{path}\", width: {width}), caption: [{caption}]) <{label}>"
+def figure(path, width, caption, label, float_=False):
+    place = ", placement: auto" if float_ else ""
+    return f"#figure(image(\"{FIG}/{path}\", width: {width}){place}, caption: [{caption}]) <{label}>"
 
 
 HEAD = r'''// Built by report/build_final.py from report/draft/report-draft.md. Do not edit by hand; edit the draft and rebuild.
@@ -228,7 +228,7 @@ def main():
             HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b")
         for n, (path, width, cap) in CAPTIONS.items():
             if f"Figure {n}" in p and f"fig{n}" not in placed:
-                out.append(figure(path, width, cap, f"fig{n}")); out.append(""); placed.add(f"fig{n}")
+                out.append(figure(path, width, cap, f"fig{n}", float_=(n == 3))); out.append(""); placed.add(f"fig{n}")
     if refs_mode:
         out.append("]")
         out.append("#set par(justify: true, hanging-indent: 0pt)")
