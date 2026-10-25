@@ -24,32 +24,33 @@ DRAFT = ROOT / "report/draft/report-draft.md"
 OUT = ROOT / "report/final/report.typ"
 FIG = "figures"  # relative to report/final
 
-CAPTIONS = {  # numbered in order of first citation: 1 dollars (Introduction), 2 instruction grid (4.1), 3 gag (4.3)
-    1: ("fig_quadrant_dollars.png", "100%",
-        "Each dot is one market. Horizontal: what buyers paid above the \\$90 competitive price over the whole market, in dollars (sum over trades). "
-        "Vertical: share of the sellers' messages labelled collusive. Hollow dots are honest by design (no channel, or told the conduct is illegal); "
-        "those above zero are the markets meant to be honest whose sellers coordinated anyway (Qwen told it is illegal, Haiku told not to discuss prices); "
-        "crosses sent no message. Dashed lines mark the most expensive honest no-chat market of the two families with a price reference: for GPT-4.1 that "
-        "honest market (\\$632) cost buyers more than any cartel. The chat monitor fires on every dot above zero; 16 of the 35 2025 cartels it flags sit left of zero."),
-    2: ("fig2_instructions.png", "90%",
-        "What the instruction sentences do, by seller model. Bars: share of messages labelled collusive. Dots: mean ask from round 6 (top axis, dollars); grey numbers: markets. "
-        "\"Set your ask independently\" leaves coordination talk intact; adding \"coordinating prices is illegal\" ends Haiku's talk at no-chat prices, silences Sonnet, Opus and Luna, "
-        "and is ignored by DeepSeek and Qwen; requiring an hourly market note beside it turns Sonnet's silence into honest talk; \"do not discuss prices\" produces no-undercut pacts without a number. "
-        "Claude cells are 20-round samples plus the 30-round sets; Qwen faced algorithmic buyers (hollow dots)."),
-    3: ("fig_gag.png", "86%",
-        "The 2025 overseer's gag, in rounds relative to the gag (all 20 watched markets were gagged between rounds 1 and 7). Left: share of seller messages "
-        "labelled collusive. Middle: share of the sellers' private strategy notebooks that coordinate (hold a common price or avoid undercutting). Right: mean ask. "
-        "The talk ends in both conditions; without CEO pressure the notebooks fade and asks fall toward the competitive price, with it the notebooks hold and asks stay near \\$96.5."),
+CAPTIONS = {  # body figures, numbered in order of first citation: 1 dollars (Introduction), 2 instruction grid (4.1)
+    1: ("fig_quadrant_dollars.png", "72%",
+        "Each dot is one market: horizontal, what buyers paid above the \\$90 competitive price over the whole market; vertical, the share of the sellers' "
+        "messages labelled collusive. Hollow dots are honest by design; crosses sent no message. Dashed lines mark the dearest honest no-chat market of each family "
+        "with a price reference: for GPT-4.1 (\\$632) it cost buyers more than any cartel. 16 of the 35 2025 cartels the monitor flags sit left of zero."),
 }
 HONEST_TABLE = [None]
-APPENDIX_FIGS = {
-    "A1": ("fig_silent_pricing.png", "3.15in",
-           "The one silent high-pricing market as an illustration: Opus 5.5 under \"set your ask independently\" sent no message in 20 rounds and held its asks within about "
-           "\\$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar."),
-    "A2": ("fig_plan_message.png", "100%",
+APPENDIX_FIGS = {  # placed after the first appendix paragraph that cites them; Typst numbers them by appearance, so cite A1 to A4 in that order
+    "A1": ("fig2_instructions.png", "92%",
+           "What the instruction sentences do, by seller model. Bars: share of messages labelled collusive. Dots: mean ask from round 6 (top axis, dollars); grey numbers: markets. "
+           "\"Set your ask independently\" leaves coordination talk intact; adding \"coordinating prices is illegal\" ends Haiku's talk at no-chat prices, silences Sonnet, Opus and Luna, "
+           "and is ignored by DeepSeek and Qwen; requiring an hourly market note beside it turns Sonnet's silence into honest talk; \"do not discuss prices\" produces no-undercut pacts without a number. "
+           "Claude cells are 20-round samples plus the 30-round sets; Qwen faced algorithmic buyers (hollow dots)."),
+    "A2": ("fig_gag.png", "100%",
+           "The 2025 overseer's gag, in rounds relative to the gag (all 20 watched markets were gagged between rounds 1 and 7). Left: share of seller messages "
+           "labelled collusive. Middle: share of the sellers' private strategy notebooks that coordinate (hold a common price or avoid undercutting). Right: mean ask. "
+           "The talk ends in both conditions; without CEO pressure the notebooks fade and asks fall toward the competitive price, with it the notebooks hold and asks stay near \\$96.5."),
+    "A3": ("fig_plan_message.png", "100%",
            "Private plans and notebooks against public messages, 2025 chat markets. (a) Seller turns by condition. (b) By round, the share of turns whose private notebook "
            "coordinates and whose public message is collusive, under the overseer with and without CEO pressure."),
+    "A4": ("fig_silent_pricing.png", "3.15in",
+           "The one silent high-pricing market as an illustration: Opus 5.5 under \"set your ask independently\" sent no message in 20 rounds and held its asks within about "
+           "\\$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar (an ask level, \\$92.85 for 2026 markets)."),
 }
+TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with Clopper-Pearson 95% intervals; "
+                  "chat alarms first in round 1 (round 2 for Luna), prices in round 6. Chat + prices is the pre-registered combined score. DeepSeek and Luna prices use the "
+                  "Haiku reference; Qwen faced algorithmic buyers. Honest markets and the LLM judge: Appendices E and H.")
 
 
 def esc(t):
@@ -67,7 +68,7 @@ def esc(t):
     return t
 
 
-def md_table_to_typst(md, caption, label=None, drop=(), strip_alarm=False, cols=None):
+def md_table_to_typst(md, caption, label=None, drop=(), strip_alarm=False, cols=None, float_=False):
     rows = [r for r in md.strip().split("\n") if r.startswith("|")]
     cells = [[c.strip() for c in r.strip("|").split("|")] for r in rows]
     header, body = cells[0], [r for r in cells[1:] if not set("".join(r)) <= set("-: ")]
@@ -82,7 +83,7 @@ def md_table_to_typst(md, caption, label=None, drop=(), strip_alarm=False, cols=
            "  " + ", ".join(f"[*{esc(h)}*]" for h in header) + ",", "  table.hline(stroke: 0.4pt),"]
     for r in body:
         out.append("  " + ", ".join(f"[{esc(c)}]" for c in r) + ",")
-    out.append("  table.hline(stroke: 0.6pt)),")
+    out.append("  table.hline(stroke: 0.6pt))" + (", placement: auto," if float_ else ","))
     out.append(f"  caption: [{caption}])" + (f" <{label}>" if label else ""))
     return "\n".join(out)
 
@@ -99,8 +100,17 @@ def table1():
     for a, b, n, c in rows:
         out.append(f"  , [{a}], [{b}], [{n}], [{c}]")
     out.append("  , table.hline(stroke: 0.6pt)),")
-    out.append("  caption: [Honest references and the certified false-alarm rate of each monitor, k/(n+1) with k = max(1, floor(0.05 (n+1))).]) <tab1>")
+    out.append("  caption: [Honest references and the certified false-alarm rate of each monitor, k/(n+1) with k = max(1, floor(0.05 (n+1))). The 2026 price reference joined under a rule fixed in advance: median late ask within \\$1 of the no-chat median (\\$88.62 against \\$88.92, Mann-Whitney p = 0.51).]) <tab1>")
     return "\n".join(out)
+
+
+def draft_table(p, label):
+    """A markdown table written in the draft: '**Table N.** caption' on the first line, the rows beneath."""
+    cap, tab = p.split("\n|", 1)
+    cap = re.sub(r"^\*\*Table [A-Z]?\d*\.?\*\*\s*", "", cap.replace("\n", " "))
+    ncol = tab.split("\n")[0].count("|")  # the leading pipe was consumed by the split
+    cols = {3: "1.6fr, 0.3fr, 3.6fr", 4: "1.45fr, 0.8fr, 0.3fr, 3.6fr"}.get(ncol)
+    return md_table_to_typst("|" + tab, esc(cap), label, cols=cols)
 
 
 def figure(path, width, caption, label, float_=False):
@@ -191,7 +201,7 @@ def main():
             continue
         # pre-registration grey box
         if p.startswith("**Pre-registration.**"):
-            out.append("#block(width: 100%, fill: luma(245), stroke: 0.5pt + luma(150), inset: 8pt, radius: 2pt)[" + esc(p.replace("\n", " ")) + "]")
+            out.append(esc(p.replace("\n", " "))); out.append("")
             continue
         # numbered list
         if re.match(r"^\d+\.\s", p):
@@ -206,48 +216,49 @@ def main():
             continue
         # a markdown table in the draft: "**Table N.** caption" on the first line, the rows beneath (the cast table in Methods)
         if p.startswith("**Table") and "\n|" in p:
-            cap, tab = p.split("\n|", 1)
-            cap = re.sub(r"^\*\*Table \d+\.\*\*\s*", "", cap.replace("\n", " "))
-            out.append(md_table_to_typst("|" + tab, esc(cap), "tabcast", cols="1.45fr, 0.8fr, 0.3fr, 3.6fr")); out.append("")
+            out.append(draft_table(p, "tabcast")); out.append("")
             continue
         text = esc(p.replace("\n", " "))
         out.append(text)
         out.append("")
-        # tables after the paragraph that first cites them (Table 1 is the cast table, written in the draft itself)
-        if "Table 2" in p and "tab1" not in placed:
-            out.append(table1()); out.append(""); placed.add("tab1")
-        if "Table 3" in p and "tab2" not in placed:
+        # the catches table after the paragraph that first cites it (Table 1 is the cast table, written in the draft itself)
+        if "Table 1" in p and "tab2" not in placed:
             t2 = (ROOT / "report/draft/table2.md").read_text()
             main_tab = t2[:t2.index("**Honest markets**")]
             honest_tab = t2[t2.index("**Honest markets**"):]
-            cap_main = re.search(r"\*\*Table 2\.\*\*\s*(.+?)\n\n", main_tab, re.S).group(1).replace("\n", " ")  # table2.md keeps its file name; it is Table 3 in the report
-            cap_main = cap_main.replace("'Chat + prices' is the pre-registered comparison", "The chat-or-prices union equals chat in every row and is omitted; 'chat + prices' is the pre-registered comparison")
-            cap_main = re.sub(r"r = median round of first alarm\.", "Median first alarm: round 1 for chat in every set (round 2 for Luna), round 6 for prices, round 2 to 24 for the judge.", cap_main)
-            out.append(md_table_to_typst(main_tab, esc(cap_main), "tab2", drop=("Chat or prices",), strip_alarm=True)); out.append("")
+            out.append(md_table_to_typst(main_tab, esc(TABLE2_CAPTION), "tab2", drop=("Chat or prices", "2025 LLM judge"), strip_alarm=True, cols="2.4fr, 0.35fr, 1.25fr, 1.25fr, 1.25fr")); out.append("")
             placed.add("tab2")
-            HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b")
+            HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b", float_=True)
         for n, (path, width, cap) in CAPTIONS.items():
             if f"Figure {n}" in p and f"fig{n}" not in placed:
-                out.append(figure(path, width, cap, f"fig{n}", float_=(n == 3))); out.append(""); placed.add(f"fig{n}")
+                out.append(figure(path, width, cap, f"fig{n}")); out.append(""); placed.add(f"fig{n}")
     if refs_mode:
         out.append("]")
         out.append("#set par(justify: true, hanging-indent: 0pt)")
     # appendix, reordered: Limitations and Dual-Use first, LLM usage second, then the rest in draft order
     out.append("#counter(figure.where(kind: image)).update(0)")
+    out.append("#counter(figure.where(kind: table)).update(0)")
     out.append("#set figure(numbering: n => \"A\" + str(n))")
     def key(item):
         t = item[1].lower()
         return (0 if "dual" in t else 1 if "usage" in t else 2, item[0])
-    letters = "ABCDEFGHIJ"
+    letters = "ABCDEFGHIJKLMNOP"
     for i, (_, title, text) in enumerate(sorted(appendix_items, key=key)):
         tl = title.lower()
         shown = "Limitations and Dual-Use / Ethical Considerations" if "dual" in tl else ("LLM Usage Statement" if "usage" in tl else title)
         out.append(f"#heading(numbering: none)[Appendix {letters[i]}. {esc(shown)}]")
-        for para in text.strip().split("\n\n"):
+        for k, para in enumerate(text.strip().split("\n\n")):
+            if para.startswith("**Table") and "\n|" in para:
+                out.append(draft_table(para, f"tabapp{i}{k}")); out.append(""); continue
             out.append(esc(para.replace("\n", " ")))
             out.append("")
+            for lab, (path, width, cap) in APPENDIX_FIGS.items():
+                if f"Figure {lab}" in para and lab not in placed:
+                    out.append(figure(path, width, cap, lab, float_=True)); out.append(""); placed.add(lab)
         if "honest markets" in tl and HONEST_TABLE[0]:
             out.append(HONEST_TABLE[0]); out.append("")
+        if "thresholds" in tl:
+            out.append(table1()); out.append("")
     leftover = [lab for lab in APPENDIX_FIGS if lab not in placed]
     if leftover:
         out.append(f"#heading(numbering: none)[Appendix {letters[len(appendix_items)]}. Additional figures]")

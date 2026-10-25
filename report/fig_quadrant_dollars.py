@@ -58,7 +58,7 @@ def main():
     d = pd.DataFrame({"cond": runs, "x": oc.reindex(runs.index), "y": share.reindex(runs.index).fillna(0.0),
                       "n": nmsg.reindex(runs.index).fillna(0).astype(int), "chat": chat_on.reindex(runs.index).fillna(False)})
     d = d.dropna(subset=["x"])
-    fig, ax = plt.subplots(figsize=(6.5, 2.8))
+    fig, ax = plt.subplots(figsize=(4.7, 2.0))  # printed at 72% of the text width, so 1:1
     for label, color, test, honest in FAMILIES:
         f = d[d.cond.map(lambda c: bool(test(str(c))))]
         if f.empty:
@@ -67,7 +67,7 @@ def main():
         silent = f.chat.astype(bool) & (f.n == 0)
         rng = np.random.default_rng(7)
         jit = pd.Series(0.0, index=f.index)  # no jitter: hollow dots above zero would read as false alarms against a zero threshold
-        lab_ = f"{label} ({int((~h).sum())} collusive design, {int(h.sum())} honest)" if h.any() else f"{label} ({len(f)})"
+        lab_ = label  # counts per family are in the appendix table; short labels keep the legend clear of the data at print size
         ax.scatter(f.x[~h & ~silent], (f.y + jit)[~h & ~silent], s=16, color=color, alpha=0.8, linewidths=0, label=lab_, zorder=3)
         ax.scatter(f.x[h & ~silent], (f.y + jit)[h & ~silent], s=18, facecolors="none", edgecolors=color, linewidths=0.8, zorder=3)
         ax.scatter(f.x[silent], (f.y + jit)[silent], s=26, color=color, marker="x", linewidths=0.9, zorder=4)
@@ -77,7 +77,7 @@ def main():
             ax.text(hx, 1.03 + 0.045 * (FAMILIES.index((label, color, test, honest)) % 2), f"${hx:,.0f}", color=color, fontsize=6.5, ha="center", va="bottom")
     ax.axvline(0, color="#999999", linewidth=0.6)
     ax.axhline(0, color="#999999", linewidth=0.6)
-    ax.set_xlabel("buyer overcharge over the whole market: sum over trades of (price minus $90)", fontsize=8)
+    ax.set_xlabel("buyer overcharge: sum over trades of (price minus $90)", fontsize=8)
     ax.set_ylabel("share of seller messages\nlabelled collusive")
     ax.set_ylim(-0.06, 1.08)
     ax.grid(False)
@@ -85,7 +85,7 @@ def main():
     ax.text(0.01, 0.97, "talk, no harm", transform=ax.transAxes, ha="left", va="top", fontsize=7.5, color="#333333")
     ax.text(0.99, 0.13, "silent or honest talk, high prices\n(x = sent no message)", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color="#333333")
     ax.text(0.01, 0.09, "competitive, silent or honest", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color="#333333")
-    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.52), fontsize=6.2, markerscale=1.0, labelspacing=0.3)
+    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.50), fontsize=6.2, markerscale=1.0, labelspacing=0.3)
     if not FINAL:
         ax.text(1.0, 1.08, "DRAFT: hollow = honest by design (those above zero coordinated anyway: Qwen told it is illegal, Haiku told not to discuss prices); dashed = most expensive honest no-chat market in dollars", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=6.5, color="#b00020")
