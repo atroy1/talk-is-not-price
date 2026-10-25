@@ -33,8 +33,8 @@ def main():
     a = a[(a.side == "ask") & (a["round"] <= 20)].copy()
     a["cond"] = a.run_id.map(runs)
     fig, ax = plt.subplots(figsize=(3.15, 2.3))
-    for cond, color, lab in [("haiku55-explicit", "#8fb8d8", "honest Haiku, told it is illegal ({n} runs)"),
-                             ("haiku55-base", "#cccccc", "honest Haiku, no chat ({n} runs)")]:
+    for cond, color, lab in [("haiku55-explicit", "#5b9bd5", "honest Haiku, told it is illegal ({n} runs)"),
+                             ("haiku55-base", "#b0b0b0", "honest Haiku, no chat ({n} runs)")]:
         per = a[a.cond == cond].groupby(["run_id", "round"]).price.mean().unstack(0)
         ax.fill_between(per.index, per.min(axis=1), per.max(axis=1), color=color, alpha=0.6, linewidth=0, label=lab.format(n=per.shape[1]))
     thr = pd.read_csv(ROOT / "runs/derived/detect-results-explicit.csv")

@@ -84,7 +84,7 @@ def main():
         if d.empty:
             continue
         j = d.judge.dropna()
-        L.append(f"| {g.strip()} | {len(d)} | {int(d.chat.sum())} | {int(d.prices.sum())} | {int(j.sum()) if len(j) else '-'}/{len(j)} | {role} |")
+        L.append(f"| {g.strip()} | {len(d)} | {int(d.chat.sum())}/{len(d)} | {int(d.prices.sum())}/{len(d)} | {int(j.sum()) if len(j) else '-'}/{len(j)} | {role} |")
     txt = "\n".join(L) + "\n"
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(txt)

@@ -23,7 +23,7 @@ OUT = HERE / ("final/figures" if FINAL else "draft")
 OUT.mkdir(parents=True, exist_ok=True)
 ORDER = ["chat, GPT-4.1", "chat, mixed Claude/GPT", "chat, CEO pressure", "chat, overseer reads messages", "chat, overseer + CEO pressure"]
 CELLS = [("open", "#111111", "plan and message collusive"), ("concealed: message says less", "#D55E00", "plan collusive, message not"),
-         ("concealed: no message sent", "#f3b48a", "plan collusive, no message sent"), ("message only", "#0072B2", "message collusive, plan not"),
+         ("concealed: no message sent", "#CC79A7", "plan collusive, no message sent"), ("message only", "#0072B2", "message collusive, plan not"),
          ("neither", "#e3e3e3", "neither")]
 
 

@@ -49,7 +49,7 @@ APPENDIX_FIGS = {  # placed after the first appendix paragraph that cites them; 
            "\\$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar (an ask level, \\$92.85 for 2026 markets)."),
 }
 TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with Clopper-Pearson 95% intervals. "
-                  "Chat + prices is the combined score (Appendix C). "
+                  "Rows sum to 105 markets, 104 flagged; the miss is a watched 2025 market that never sent a collusive message. Chat + prices is the combined score (Appendix C). "
                   "Qwen prices face algorithmic buyers and are not scored. Honest markets: Appendix F.")
 
 
@@ -228,7 +228,7 @@ def main():
             honest_tab = t2[t2.index("**Honest markets**"):]
             out.append(md_table_to_typst(main_tab, esc(TABLE2_CAPTION), "tab2", drop=("Chat or prices", "2025 LLM judge"), strip_alarm=True, cols="2.4fr, 0.35fr, 1.25fr, 1.25fr, 1.25fr", float_=True)); out.append("")
             placed.add("tab2")
-            HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): false alarms per monitor, reference runs scored leave-one-out."), "tab2b", float_=True)
+            HONEST_TABLE[0] = md_table_to_typst(honest_tab, esc("Honest markets (no collusive design): flags per monitor, false alarms except where the role column says the sellers coordinated despite the instruction; reference runs scored leave-one-out."), "tab2b", float_=True)
         for n, (path, width, cap) in CAPTIONS.items():
             if f"Figure {n}" in p and f"fig{n}" not in placed:
                 out.append(figure(path, width, cap, f"fig{n}")); out.append(""); placed.add(f"fig{n}")
