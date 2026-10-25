@@ -85,7 +85,7 @@ The combined score is the larger of the two on those scales.
 labelled alone; 22,505 messages. Against a Sonnet 5.5 reference on a stratified sample of 396 messages, agreement is
 94.2% (kappa 0.853 over three classes, 0.899 collusive against not). The pre-registered check was 40 messages
 hand-labelled by the author with a gate of 35 of 40; the author did not label them, and two independent blind
-Claude readers did instead (Fable 5.1 in the analysis session, and a Sonnet 4.5 agent given only the definitions
+Claude readers did instead (Fable 5.1 in the analysis session, and a Sonnet 5.5 agent given only the definitions
 and the file). The two readers agree with each other on 37 of 40 (kappa 0.87); the labeller agrees with them on 32
 and 33 of 40 over three classes, below the gate, and on 38 and 39 of 40 collusive against not (kappa 0.87, 0.93),
 which is the distinction the chat score uses. Every three-class miss is a message affirming an existing hold that
