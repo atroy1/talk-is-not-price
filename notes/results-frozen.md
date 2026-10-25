@@ -1,6 +1,6 @@
 # Frozen results
 
-Generated Sat Oct 24 2026, 09:30 PM from commit 151c611 by `analysis/freeze.py` after `make reproduce`. Nothing in the report body cites a number that is not here. Each table names its file.
+Generated Sat Oct 24 2026, 09:44 PM from commit aedc33b by `analysis/freeze.py` after `make reproduce`. Nothing in the report body cites a number that is not here. Each table names its file.
 
 ## 1. Catch rates at the certified false-alarm rate (`runs/derived/detect-results-explicit.csv`)
 
@@ -112,7 +112,7 @@ n = 396 messages; agreement 94.2%; kappa 0.853 (3-class), 0.899 (collusive vs no
 
 Hand labels by the author: not done; the 40-message sample was read blind by two Claude agents instead.
 
-Three-way check on the 40 (`runs/derived/handlabel-three-way.csv`; pass1 = Fable 5.1 in session, pass2 = a Sonnet agent with the definitions only): pass1 vs pass2 37/40 three-class, 39/40 collusive-or-not; labeller vs pass1 32/40 and 38/40; labeller vs pass2 33/40 and 39/40; unanimous 31/40 and 38/40. Every three-class miss is AGREE (reader) against FLOOR (labeller).
+Check on the 40 without a human (`analysis/handlabel_check.py`; pass1 = Claude Fable 5.1 in session, pass2 = a Sonnet 5.5 agent with the definitions only; consensus = pass1 with the three disagreements resolved on the full text, `notes/handlabel/reconciliation.csv`). Agreement, three-class and collusive-or-not: pass1 vs pass2 37.0/40 (kappa 0.87) and 39.0/40 (kappa 0.94); labeller vs pass1 32.0/40 (kappa 0.59) and 38.0/40 (kappa 0.87); labeller vs pass2 33.0/40 (kappa 0.63) and 39.0/40 (kappa 0.93); labeller vs consensus 34.0/40 (kappa 0.67) and 39.0/40 (kappa 0.93). The pre-registered gate was 35 of 40 three-class against the author's labels; the labeller is at 34 against the consensus and 39 of 40 on the distinction the chat score uses. Five of the six misses are AGREE (readers) against FLOOR (labeller); one (m23) is NEITHER against FLOOR at probability 0.68.
 
 ## 8. The keyword rule in place of the labeller (`runs/derived/keyword-rule.csv`, `analysis/keyword_rule.py`)
 

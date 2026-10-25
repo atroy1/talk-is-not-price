@@ -19,6 +19,8 @@ test:        ## synthetic tests for the scores, detector and labeller
 	.venv/bin/python -m pytest -q tests
 labels:      ## graded labels for every seller message (resumable); ARGS=--live adds finished new runs, ARGS=--check compares with the hand labels
 	.venv/bin/python -m analysis.labels $(ARGS)
+handlabel-check: ## the 40-message check: two blind Claude readers, the consensus, and the labeller (40 API calls)
+	.venv/bin/python -m analysis.handlabel_check
 reproduce:   ## every table and draft figure from the runs and the cached labels (no API calls): the freeze command
 	.venv/bin/python -m analysis.controls
 	.venv/bin/python -m analysis.compete_check explicit

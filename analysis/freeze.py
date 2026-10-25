@@ -118,16 +118,13 @@ def main():
         say(f"Hand labels (`runs/derived/handlabel-check.csv`): graded label agrees on {int((h.hand == h.graded).sum())} of {len(h)} (gate 35).\n")
     else:
         say("Hand labels by the author: not done; the 40-message sample was read blind by two Claude agents instead.\n")
-    tw = D / "handlabel-three-way.csv"
-    if tw.exists():
-        t = pd.read_csv(tw)
-        b = lambda c: t[c] != "NEITHER"
-        say(f"Three-way check on the 40 (`runs/derived/handlabel-three-way.csv`; pass1 = Fable 5.1 in session, pass2 = a Sonnet agent with the definitions only): "
-            f"pass1 vs pass2 {int((t.pass1 == t.pass2).sum())}/40 three-class, {int((b('pass1') == b('pass2')).sum())}/40 collusive-or-not; "
-            f"labeller vs pass1 {int((t.labeller == t.pass1).sum())}/40 and {int((b('labeller') == b('pass1')).sum())}/40; "
-            f"labeller vs pass2 {int((t.labeller == t.pass2).sum())}/40 and {int((b('labeller') == b('pass2')).sum())}/40; "
-            f"unanimous {int((t.pass1.eq(t.pass2) & t.pass2.eq(t.labeller)).sum())}/40 and {int(((b('pass1') == b('pass2')) & (b('pass2') == b('labeller'))).sum())}/40. "
-            "Every three-class miss is AGREE (reader) against FLOOR (labeller).\n")
+    cc = D / "handlabel-consensus-check.csv"
+    if cc.exists():
+        c = pd.read_csv(cc).set_index("pair")
+        say("Check on the 40 without a human (`analysis/handlabel_check.py`; pass1 = Claude Fable 5.1 in session, pass2 = a Sonnet 5.5 agent with the definitions only; "
+            "consensus = pass1 with the three disagreements resolved on the full text, `notes/handlabel/reconciliation.csv`). Agreement, three-class and collusive-or-not: "
+            + "; ".join(f"{k} {r.three_class}/40 (kappa {r.kappa3:.2f}) and {r.collusive_or_not}/40 (kappa {r.kappa2:.2f})" for k, r in c.iterrows())
+            + ". The pre-registered gate was 35 of 40 three-class against the author's labels; the labeller is at 34 against the consensus and 39 of 40 on the distinction the chat score uses. Five of the six misses are AGREE (readers) against FLOOR (labeller); one (m23) is NEITHER against FLOOR at probability 0.68.\n")
 
 
     # 8. keyword rule

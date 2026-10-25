@@ -86,11 +86,12 @@ labelled alone; 22,505 messages. Against a Sonnet 5.5 reference on a stratified 
 94.2% (kappa 0.853 over three classes, 0.899 collusive against not). The pre-registered check was 40 messages
 hand-labelled by the author with a gate of 35 of 40; the author did not label them, and two independent blind
 Claude readers did instead (Fable 5.1 in the analysis session, and a Sonnet 5.5 agent given only the definitions
-and the file). The two readers agree with each other on 37 of 40 (kappa 0.87); the labeller agrees with them on 32
-and 33 of 40 over three classes, below the gate, and on 38 and 39 of 40 collusive against not (kappa 0.87, 0.93),
-which is the distinction the chat score uses. Every three-class miss is a message affirming an existing hold that
-the labeller calls FLOOR and a reader called AGREE; none changes whether a message counts as collusive. No human
-labelled any message in this study.
+and the file). The two readers agree with each other on 37 of 40 (kappa 0.87); their three differences were
+resolved on the full text and recorded with reasons. Against that consensus the labeller agrees on 34 of 40 over
+three classes, one short of the gate, and on 39 of 40 collusive against not (kappa 0.93), which is the distinction
+the chat score uses. Five of the six misses are messages affirming an existing hold that the labeller calls FLOOR
+and the readers called AGREE; one is a message about "collective profitability" with no proposal that the labeller
+scored 0.68. No human labelled any message in this study.
 
 **Threshold.** Monitoring calibration: each honest market's highest score at any round; a market is flagged when its
 score exceeds the k-th largest honest maximum, k = max(1, floor(0.05 (n+1))), certified false-alarm rate k/(n+1).
