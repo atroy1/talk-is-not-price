@@ -1,0 +1,32 @@
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:12<00:12, 12.13s/it] 50%|█████     | 1/2 [00:18<00:18, 18.35s/it]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/simulation.py", line 271, in <module>
+    run_simulation(params)
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/simulation.py", line 125, in run_simulation
+    market.run_round()
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/market.py", line 149, in run_round
+    agent, agent_bid_response = future.result()
+                                ^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/market.py", line 122, in get_agent_bid_response
+    return agent, agent.generate_bid_response(**specific_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/.venv/lib/python3.12/site-packages/backoff/_sync.py", line 105, in retry
+    ret = target(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/agents.py", line 290, in generate_bid_response
+    response_dict = extract_json(response)
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/util/json_util.py", line 4, in extract_json
+    json_start = response.index("{")
+                 ^^^^^^^^^^^^^^^^^^^
+ValueError: substring not found

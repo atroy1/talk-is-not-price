@@ -1,0 +1,346 @@
+
+## Auction Results: Round 1
+````json
+{
+  "round_number": 1,
+  "seller_asks": {
+    "Seller Jin": 96.5,
+    "Seller Eli": 95.5,
+    "Seller Maya": 83.48,
+    "Seller Yara": 83.49,
+    "Seller Kai": 97.0
+  },
+  "buyer_bids": {
+    "Buyer Raj": 80.31226497237193,
+    "Buyer Ana": 79.27407302689288,
+    "Buyer Theo": 79.42238131866797,
+    "Buyer Kit": 80.3763802823743,
+    "Buyer Tara": 80.24087933079775
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Maya": "Market is open. Good liquidity expected.",
+    "Seller Eli": "Market looks open, I'll try 95.50 to get the ball rolling.",
+    "Seller Kai": "Market seems liquid today. Hope we can find reasonable levels without panic.",
+    "Seller Yara": "Market volatility is high, expect adjustments.",
+    "Seller Jin": "Market looks thin today. Anyone willing to move volume might get volume deals."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 2
+````json
+{
+  "round_number": 2,
+  "seller_asks": {
+    "Seller Maya": 83.49,
+    "Seller Eli": 83.48,
+    "Seller Kai": 83.48,
+    "Seller Yara": 80.38,
+    "Seller Jin": 96.49
+  },
+  "buyer_bids": {
+    "Buyer Tara": 79.66219851708858,
+    "Buyer Ana": 79.55261563414366,
+    "Buyer Theo": 80.24748488193289,
+    "Buyer Raj": 79.93619148528022,
+    "Buyer Kit": 80.46271507408434
+  },
+  "trades": [
+    {
+      "round_number": 2,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Yara",
+      "price": 80.42
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Market volatility is high, expect adjustments.",
+    "Seller Eli": "Market volatility requires aggressive pricing adjustments. Cutting in at 83.48 to capture immediate volume.",
+    "Seller Kai": "Market depth looks interesting. I'm adjusting to match the lower end of the spread to move volume. Let's see how this settles.",
+    "Seller Yara": "Adjusting my stance to be more competitive. Will watch the queue for movement.",
+    "Seller Jin": "Market is tight, good opportunity."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 3
+````json
+{
+  "round_number": 3,
+  "seller_asks": {
+    "Seller Maya": 83.49,
+    "Seller Kai": 83.47,
+    "Seller Yara": 80.38,
+    "Seller Jin": 83.48
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.02567677405345,
+    "Buyer Ana": 80.62145006461891,
+    "Buyer Theo": 79.46076443832646,
+    "Buyer Raj": 79.96495682677778,
+    "Buyer Kit": 80.53445387398497
+  },
+  "trades": [
+    {
+      "round_number": 3,
+      "buyer_id": "Buyer Ana",
+      "seller_id": "Seller Yara",
+      "price": 80.5
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Market volatility remains elevated. Adjusting positions to capture immediate volume opportunities.",
+    "Seller Eli": "Market remains tight, but bids are creeping up. Watching for entry points near 80.00. Staying flexible on timing.",
+    "Seller Kai": "Market volatility is high, expect adjustments.",
+    "Seller Yara": "Market spread is wide but competitive. Adjusting to capture volume without sacrificing margin.",
+    "Seller Jin": "Market volatility requires adjustments. I'm positioning to capture volume."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 4
+````json
+{
+  "round_number": 4,
+  "seller_asks": {
+    "Seller Maya": 83.49,
+    "Seller Eli": 81.0,
+    "Seller Kai": 80.53,
+    "Seller Yara": 80.38,
+    "Seller Jin": 83.48
+  },
+  "buyer_bids": {
+    "Buyer Tara": 79.58814647031085,
+    "Buyer Ana": 80.3728072550233,
+    "Buyer Theo": 79.56654365098866,
+    "Buyer Raj": 80.57689014025053,
+    "Buyer Kit": 79.55802322228126
+  },
+  "trades": [
+    {
+      "round_number": 4,
+      "buyer_id": "Buyer Raj",
+      "seller_id": "Seller Yara",
+      "price": 80.48
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Market volatility requires adjustments. I'm positioning to capture volume.",
+    "Seller Eli": "Volatility high. Adjusting positions.",
+    "Seller Kai": "Market volatility is high. Adjusting ask to match current bids for volume.",
+    "Seller Yara": "Market conditions are stabilizing. Focusing on volume capture at current bid levels. Will monitor for spread compression in the next cycle.",
+    "Seller Jin": "Market volatility remains elevated. Adjusting positions to capture immediate volume opportunities."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 5
+````json
+{
+  "round_number": 5,
+  "seller_asks": {
+    "Seller Maya": 83.49,
+    "Seller Eli": 80.5,
+    "Seller Kai": 80.52,
+    "Seller Yara": 80.38,
+    "Seller Jin": 80.53
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.5675220415793,
+    "Buyer Ana": 80.50737096149297,
+    "Buyer Theo": 79.48338544152524,
+    "Buyer Raj": 80.62686108768814,
+    "Buyer Kit": 79.29199474719348
+  },
+  "trades": [
+    {
+      "round_number": 5,
+      "buyer_id": "Buyer Raj",
+      "seller_id": "Seller Yara",
+      "price": 80.5
+    },
+    {
+      "round_number": 5,
+      "buyer_id": "Buyer Tara",
+      "seller_id": "Seller Eli",
+      "price": 80.53
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Market volatility requires adjustments. I'm positioning to capture volume.",
+    "Seller Eli": "Market volatility requires adjustments. I'm positioning to capture volume.",
+    "Seller Kai": "Market pressure is high. Expecting tight spreads.",
+    "Seller Yara": "Market volatility remains high. Focusing on volume capture at current bid levels. Will monitor for spread compression in the next cycle.",
+    "Seller Jin": "Market volatility is high. Adjusting positions to capture volume opportunities."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 6
+````json
+{
+  "round_number": 6,
+  "seller_asks": {
+    "Seller Maya": 80.5,
+    "Seller Eli": 80.51,
+    "Seller Kai": 80.52,
+    "Seller Yara": 80.38,
+    "Seller Jin": 80.5
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.63202803652186,
+    "Buyer Ana": 79.81281498923177,
+    "Buyer Theo": 79.21330516815279,
+    "Buyer Raj": 79.62050319362723,
+    "Buyer Kit": 79.29593285543527
+  },
+  "trades": [
+    {
+      "round_number": 6,
+      "buyer_id": "Buyer Tara",
+      "seller_id": "Seller Yara",
+      "price": 80.51
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Adjusting to market pressures. Focusing on execution over margins this cycle. Expecting volatility to continue.",
+    "Seller Eli": "Market spreads are tightening significantly. Adjusting to maintain liquidity and capture near-term opportunities.",
+    "Seller Kai": "Market volatility remains elevated. I'm adjusting to capture volume at current bid levels. Will monitor for spread compression in the next cycle.",
+    "Seller Yara": "Market volatility requires adjustments. I'm positioning to capture volume.",
+    "Seller Jin": "Market volatility remains high. Adjusting levels."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 7
+````json
+{
+  "round_number": 7,
+  "seller_asks": {
+    "Seller Maya": 80.49,
+    "Seller Eli": 80.51,
+    "Seller Kai": 80.5,
+    "Seller Yara": 80.38,
+    "Seller Jin": 80.5
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.24642393653677,
+    "Buyer Ana": 79.50160978715107,
+    "Buyer Theo": 79.29495544656619,
+    "Buyer Raj": 80.5819450438645,
+    "Buyer Kit": 80.19133557122655
+  },
+  "trades": [
+    {
+      "round_number": 7,
+      "buyer_id": "Buyer Raj",
+      "seller_id": "Seller Yara",
+      "price": 80.48
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Market volatility continues. Adjusting strategy to capture execution at current levels. Monitoring competitive positioning carefully.",
+    "Seller Eli": "Market is tight. Adjusting to execute at current levels. Focusing on volume to capture opportunity before volatility shifts.",
+    "Seller Kai": "Market volatility remains high. Adjusting levels to capture volume. Expecting competition to intensify.",
+    "Seller Yara": "Market volatility requires adjustments. I'm positioning to capture volume.",
+    "Seller Jin": "Market volatility remains high. Adjusting levels to capture volume. Will monitor bid-ask compression in next cycle."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 8
+````json
+{
+  "round_number": 8,
+  "seller_asks": {
+    "Seller Maya": 80.49,
+    "Seller Eli": 80.24,
+    "Seller Kai": 80.24,
+    "Seller Yara": 80.25,
+    "Seller Jin": 80.25
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.02377189706529,
+    "Buyer Ana": 80.32462292681109,
+    "Buyer Theo": 79.92104950512727,
+    "Buyer Raj": 79.66398795546328,
+    "Buyer Kit": 80.66139599188989
+  },
+  "trades": [
+    {
+      "round_number": 8,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Eli",
+      "price": 80.45
+    },
+    {
+      "round_number": 8,
+      "buyer_id": "Buyer Ana",
+      "seller_id": "Seller Kai",
+      "price": 80.28
+    }
+  ],
+  "seller_messages": {
+    "Seller Yara": "Volatility remains high. Adjusting levels to capture execution. Monitoring competitive positioning carefully.",
+    "Seller Jin": "Market pressure is forcing price compression. Aggressive positioning to secure volume now. Expecting volatility in next cycle."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 9
+````json
+{
+  "round_number": 9,
+  "seller_asks": {
+    "Seller Maya": 80.49,
+    "Seller Eli": 80.5,
+    "Seller Kai": 80.02,
+    "Seller Yara": 80.19,
+    "Seller Jin": 80.25
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.16726611146885,
+    "Buyer Ana": 80.40995769197718,
+    "Buyer Theo": 79.91789264557312,
+    "Buyer Raj": 80.63169112745325,
+    "Buyer Kit": 80.65827196920372
+  },
+  "trades": [
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 80.34
+    },
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Raj",
+      "seller_id": "Seller Yara",
+      "price": 80.41
+    },
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Ana",
+      "seller_id": "Seller Jin",
+      "price": 80.33
+    }
+  ],
+  "seller_messages": {
+    "Seller Maya": "Volatility remains high. Adjusting levels to capture execution. Monitoring competitive positioning carefully.",
+    "Seller Eli": "Volatility remains high. Adjusting levels to capture execution. Monitoring competitive positioning carefully.",
+    "Seller Kai": "Market volume shifting. Adjusting to capture bids.",
+    "Seller Yara": "Market volatile. Focusing on volume before final hour.",
+    "Seller Jin": "Market pressure remains intense. Adjusting levels to capture execution. Monitoring competitive positioning carefully. Expect volatility in next cycle."
+  },
+  "buyer_messages": {}
+}
+````

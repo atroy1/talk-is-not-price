@@ -1,0 +1,1649 @@
+
+## Auction Results: Round 1
+````json
+{
+  "round_number": 1,
+  "seller_asks": {
+    "Seller Eli": 86.49,
+    "Seller Nia": 89.5,
+    "Seller Kai": 86.5,
+    "Seller Ana": 88.9,
+    "Seller Omar": 90.0
+  },
+  "buyer_bids": {
+    "Buyer Mia": 85.01,
+    "Buyer Theo": 85.0,
+    "Buyer Kit": 84.5,
+    "Buyer Leo": 86.0,
+    "Buyer Maya": 85.0
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Nia": "Hour 1 observation: bids are 81.91-85.00 and asks are 96.73-97.89, a wide spread. I have placed my own ask independently at 89.50 based on my costs and the visible demand.",
+    "Seller Kai": "Hour 1 observations: bids range $84.50-$86.00, asks range $96.73-$97.89. I have placed my own ask at $86.50 based on my own costs and the current bid levels.",
+    "Seller Omar": "Market opened with top bid at 85.01 and asks between 96.73 and 97.89. I have placed my own independent ask for this hour.",
+    "Seller Ana": "Opening book shows bids up to 86.00 and asks from 89.50 upward. I have posted an ask at 88.90 based on my own costs and market observation.",
+    "Seller Eli": "Opening observation: bids sit at 84.50-86.00 and asks range from 86.50 upward. I have placed my own independent ask for this hour."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 2
+````json
+{
+  "round_number": 2,
+  "seller_asks": {
+    "Seller Nia": 86.45,
+    "Seller Kai": 86.5,
+    "Seller Omar": 88.5,
+    "Seller Ana": 86.95,
+    "Seller Eli": 86.99
+  },
+  "buyer_bids": {
+    "Buyer Kit": 86.1,
+    "Buyer Maya": 86.5,
+    "Buyer Theo": 86.2,
+    "Buyer Leo": 86.6,
+    "Buyer Mia": 86.11
+  },
+  "trades": [
+    {
+      "round_number": 2,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.53
+    },
+    {
+      "round_number": 2,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Kai",
+      "price": 86.5
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 2 observation: top bid is now 86.50 and asks range 86.49 to 90.00. I have set my own ask independently at 86.45 based on my costs and buyer demand.",
+    "Seller Kai": "Hour 2 observation: top bid is now $86.60 with bids clustered $86.10-$86.60, and asks range $86.45-$90.00. I am holding my own ask at $86.50 based on my costs.",
+    "Seller Omar": "Hour 2 observation: top bid is 86.50 and asks currently run from 86.45 to 90.00, with no trades yet. I have set my own ask independently at 88.50.",
+    "Seller Ana": "Hour 2 observation: bids are now 86.10-86.60 and asks range 86.45-90.00 with no trades yet. I have posted my own independent ask at 86.95.",
+    "Seller Eli": "Hour 2 observation: top bid is 86.60 and the lowest ask is 86.45, so the spread has narrowed. I have placed my own independent ask at 86.99."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 3
+````json
+{
+  "round_number": 3,
+  "seller_asks": {
+    "Seller Nia": 86.8,
+    "Seller Omar": 87.5,
+    "Seller Ana": 86.75,
+    "Seller Kai": 86.9,
+    "Seller Eli": 86.85
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.6,
+    "Buyer Maya": 86.3,
+    "Buyer Kit": 86.3,
+    "Buyer Leo": 86.96,
+    "Buyer Mia": 86.7
+  },
+  "trades": [
+    {
+      "round_number": 3,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Ana",
+      "price": 86.85
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 3 observation: top bid is 86.60 with bids clustered 86.11-86.60, and current asks sit at 86.95 and 88.50. I have set my own independent ask at 86.80.",
+    "Seller Omar": "Hour 3 observation: top bid has risen to 86.96 and bids are clustered 86.11-86.96, with asks currently 86.95-88.50 and no trades yet. I have set my own independent ask at 87.50.",
+    "Seller Ana": "Hour 3 observation: top bid is 86.96 and bids cluster 86.3-86.96, with asks currently 86.8-90.00. I have set my own independent ask at 86.75 based on my costs and observed demand.",
+    "Seller Kai": "Hour 3 observation: top bid is $86.96 and asks range $86.80 to $88.50. I have set my own independent ask at $86.90 based on my costs.",
+    "Seller Eli": "Hour 3 observation: best bid is 86.96 with bids clustered 86.30-86.96, and asks run 86.80-87.50. I have set my own independent ask at 86.85."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 4
+````json
+{
+  "round_number": 4,
+  "seller_asks": {
+    "Seller Nia": 86.7,
+    "Seller Omar": 87.0,
+    "Seller Ana": 86.8,
+    "Seller Kai": 86.8,
+    "Seller Eli": 86.85
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.75,
+    "Buyer Maya": 86.8,
+    "Buyer Kit": 86.75,
+    "Buyer Mia": 86.85,
+    "Buyer Leo": 86.81
+  },
+  "trades": [
+    {
+      "round_number": 4,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Nia",
+      "price": 86.78
+    },
+    {
+      "round_number": 4,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Ana",
+      "price": 86.81
+    },
+    {
+      "round_number": 4,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Kai",
+      "price": 86.8
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 4 observation: top bid is 86.96 with bids clustered 86.30-86.96, and asks run 86.75-87.50. I have set my own independent ask at 86.70.",
+    "Seller Omar": "Hour 4 observation: top bid is 86.96 with bids clustered 86.30-86.96, and asks run 86.80-87.50. I have set my own independent ask at 87.00.",
+    "Seller Ana": "Hour 4 observation: top bid is 86.96 with bids clustered 86.3-86.96, and asks currently run 86.70-87.50. I have set my own independent ask at 86.80 based on my costs and observed demand.",
+    "Seller Kai": "Hour 4 observation: top bid is 86.75 with bids clustered 86.30-86.85, and asks run 86.70-87.50. I have set my own independent ask at 86.80 based on my costs.",
+    "Seller Eli": "Hour 4 observation: top bid is 86.85 with bids clustered 86.30-86.85, and asks currently range 86.70-87.00. I have set my own independent ask at 86.85."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 5
+````json
+{
+  "round_number": 5,
+  "seller_asks": {
+    "Seller Nia": 86.8,
+    "Seller Omar": 86.95,
+    "Seller Kai": 86.86,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.8
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.85,
+    "Buyer Kit": 86.9,
+    "Buyer Theo": 86.84,
+    "Buyer Mia": 86.85,
+    "Buyer Leo": 86.91
+  },
+  "trades": [
+    {
+      "round_number": 5,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Eli",
+      "price": 86.85
+    },
+    {
+      "round_number": 5,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Nia",
+      "price": 86.85
+    },
+    {
+      "round_number": 5,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Ana",
+      "price": 86.85
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 5 observation: top bid is 86.90 with bids clustered 84.50-86.90, and current asks run 86.85-87.00. I have set my own independent ask at 86.80 based on my costs.",
+    "Seller Omar": "Hour 4 trades cleared around 86.8 and the top bid is now 86.90. I have set my own ask at 86.95 based on my costs and the demand I observe.",
+    "Seller Kai": "Hour 5 observation: top bid is 86.91 with bids clustered 86.84-86.91, and asks run 86.85-87.00. I have set my own independent ask at 86.86 based on my costs and observed demand.",
+    "Seller Ana": "Hour 5 observation: top bid is 86.91 with bids clustered 86.84-86.91, and asks run 86.80-87.00. I have set my own independent ask at 86.85.",
+    "Seller Eli": "Hour 5 observation: top bid is 86.91 with bids clustered 86.84-86.91, and asks range 86.70-87.50. I have set my own independent ask at 86.80."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 6
+````json
+{
+  "round_number": 6,
+  "seller_asks": {
+    "Seller Nia": 86.85,
+    "Seller Omar": 86.87,
+    "Seller Kai": 86.86,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.85
+  },
+  "buyer_bids": {
+    "Buyer Kit": 86.87,
+    "Buyer Maya": 86.86,
+    "Buyer Theo": 86.86,
+    "Buyer Leo": 86.91,
+    "Buyer Mia": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 6,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 6,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.86
+    },
+    {
+      "round_number": 6,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Nia",
+      "price": 86.86
+    },
+    {
+      "round_number": 6,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Kai",
+      "price": 86.86
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 6 observation: top bid is 86.87 with bids clustered 86.84-86.87, and current asks run 86.86-86.95. I have set my own independent ask at 86.85 based on my costs.",
+    "Seller Omar": "Hour 6 observation: top bid is 86.91 and Hour 5 trades cleared at 86.85. I have set my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Kai": "Hour 6 observation: top bid is 86.91 with bids clustered 86.84-86.91, and asks range 86.80-87.00. I have set my own independent ask at 86.86 based on my costs and observed demand.",
+    "Seller Ana": "Hour 6 observation: top bid is 86.91 with bids clustered 86.86-86.91, and asks run 86.85-86.95. I have set my own independent ask at 86.85 based on my costs.",
+    "Seller Eli": "Hour 6 observation: top bid is 86.91 with bids clustered 84.50-86.91, and asks range 86.70-87.50. I have set my own independent ask at 86.85 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 7
+````json
+{
+  "round_number": 7,
+  "seller_asks": {
+    "Seller Nia": 86.86,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.86
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.87,
+    "Buyer Maya": 86.87,
+    "Buyer Kit": 86.92,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.87
+  },
+  "trades": [
+    {
+      "round_number": 7,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 7,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.87
+    },
+    {
+      "round_number": 7,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Nia",
+      "price": 86.87
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 7 observation: top bid is 86.92 with bids clustered 86.87-86.92, and the lowest visible ask is 86.87. I have set my own independent ask based on my costs and observed demand.",
+    "Seller Omar": "Hour 7 observation: top bid is 86.92 with bids spanning 86.87-86.92. I have set my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 7 observation: top bid is 86.92 with bids clustered 86.87-86.92, and the lowest ask is 86.87. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 7 observation: top bid is 86.92 with bids clustered 86.87-86.92, and asks run 86.85-86.87. I have set my own independent ask at 86.85 based on my costs.",
+    "Seller Eli": "Hour 7 observation: top bid is 86.92 with bids clustered 86.87-86.92, and asks currently range 86.86-86.88. I have set my own independent ask at 86.86 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 8
+````json
+{
+  "round_number": 8,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Omar": 86.88,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Kit": 86.87,
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 8,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.86
+    },
+    {
+      "round_number": 8,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 8,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 8,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 8 observation: top bid is 86.88 with bids clustered 86.87-86.88, and the lowest visible ask is 86.88. I have set my own independent ask based on my costs and observed demand.",
+    "Seller Kai": "Hour 8 observation: top bid is 86.92 with bids clustered 86.87-86.92, and the lowest visible ask is 86.87. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Omar": "Hour 8 observation: top bid is 86.92 with bids spanning 86.87-86.92 and asks clustered 86.85-86.88. I have set my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 8 observation: top bid is 86.92 with bids clustered 86.87-86.92, and asks currently range 86.85-86.88. I have set my own independent ask at 86.85 based on my costs and observed demand.",
+    "Seller Eli": "Hour 8 observation: top bid is 86.92 with bids spanning 86.87-86.92, and asks currently run 86.87-86.88. I have set my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 9
+````json
+{
+  "round_number": 9,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.87,
+    "Seller Omar": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.88,
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Leo": 86.88,
+    "Buyer Mia": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.86
+    },
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 9,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 9 observation: top bid is 86.88 with bids at 86.87-86.88, and the lowest visible ask is 86.88. I have set my own independent ask based on my costs and observed demand.",
+    "Seller Kai": "Hour 9 observation: top bid is 86.92 with bids clustered 86.87-86.92, and the lowest visible ask is 86.87. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 9 observation: top bid has eased to 86.88 with bids clustered 86.87-86.88. I am holding my own ask at 86.85 based on my costs and observed demand.",
+    "Seller Eli": "Hour 9 observation: top bid is 86.92 with bids spanning 86.87-86.92, and asks currently run 86.87-86.88. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 9 observation: top bid is 86.92 with bids spanning 86.87-86.92 and asks currently clustered 86.85-86.88. I have set my own independent ask based on my costs and observed demand."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 10
+````json
+{
+  "round_number": 10,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 10,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.86
+    },
+    {
+      "round_number": 10,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 10,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 10,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 10,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 10 observation: bids remain at 86.88 with three buyers and the ask queue is currently empty. I have placed my own independent ask at 86.87.",
+    "Seller Omar": "Hour 10 observation: the ask queue is currently empty while four bids sit at 86.88. I have placed my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Kai": "Hour 10 observation: all five visible bids sit at 86.88 and the Ask Queue is currently empty. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 10 observation: top bid is 86.88 with bids clustered 86.87-86.88 and the lowest visible ask is 86.85. I am holding my own ask at 86.85 based on my costs and observed demand.",
+    "Seller Eli": "Hour 10 observation: bids are at 86.88 from five buyers and the lowest visible ask is 86.87. I have set my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 11
+````json
+{
+  "round_number": 11,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.85,
+    "Seller Eli": 86.88
+  },
+  "buyer_bids": {
+    "Buyer Kit": 86.88,
+    "Buyer Theo": 86.86,
+    "Buyer Maya": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 11,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Ana",
+      "price": 86.86
+    },
+    {
+      "round_number": 11,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 11,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 11,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 11 observation: bids sit at 86.86-86.88 and the ask queue is empty. I have placed my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Omar": "Hour 11 observation: bids remain at 86.88 from three buyers with the ask queue empty. I have placed my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Kai": "Hour 11 observation: five bids sit at 86.88 and the ask queue shows only one ask at 86.87. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 11 observation: top bid is 86.88 with bids ranging 86.86-86.88, and only one visible ask at 86.87. I am holding my own independent ask at 86.85 based on my costs and observed demand.",
+    "Seller Eli": "Hour 11 observation: five bids remain at 86.88 and the lowest visible ask is 86.85. I have set my own independent ask at 86.88 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 12
+````json
+{
+  "round_number": 12,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.86,
+    "Seller Eli": 86.88
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.87,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 12,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.87
+    },
+    {
+      "round_number": 12,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 12,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 12,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 12 observation: bids sit at 86.87-86.88 and the only visible ask is 86.88. I have set my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Omar": "Hour 12 observation: bids sit at 86.87-86.88 from four buyers and the ask queue is quiet. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 12 observation: bids remain clustered at 86.88 with one at 86.87, and the ask queue shows only Seller Omar at 86.88. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 12 observation: top bid is 86.88 with bids ranging 86.86-86.88, and the visible ask queue shows Nia at 86.87. I have set my own independent ask at 86.86 based on my costs and observed demand.",
+    "Seller Eli": "Hour 12 observation: five bids sit at 86.88 and the lowest visible ask is 86.85. I have kept my own independent ask at 86.88 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 13
+````json
+{
+  "round_number": 13,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Omar": 86.87,
+    "Seller Ana": 86.86,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.88,
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.87,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 13,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.87
+    },
+    {
+      "round_number": 13,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 13,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 13,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 13 observation: bids remain at 86.87-86.88 and the only visible ask is Omar at 86.88. I have set my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Kai": "Hour 13 observation: five bids remain at 86.88 with one at 86.87, and the ask queue shows only Seller Omar at 86.88. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Omar": "Hour 13 observation: bids sit at 86.87-86.88 from four buyers. I have set my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Ana": "Hour 13 observation: bids are at 86.87-86.88 and the lowest visible ask is 86.87. I am holding my own independent ask at 86.86 based on my costs and observed demand.",
+    "Seller Eli": "Hour 13 observation: five bids sit at 86.88 and the lowest visible ask is 86.85. I have set my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 14
+````json
+{
+  "round_number": 14,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.86,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.88,
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 14,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.87
+    },
+    {
+      "round_number": 14,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 14,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 14,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 14,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 14 observation: bids remain at 86.87-86.88 and the only visible ask is Kai at 86.88. I have set my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Omar": "Hour 14 observation: bids are at 86.87-86.88 from four buyers and I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 14 observation: five bids remain at 86.88 with one at 86.87, and the ask queue shows Seller Omar at 86.88. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 14 observation: bids are at 86.87-86.88 with the lowest visible ask at 86.87. I am holding my own independent ask at 86.86 based on my costs and observed demand.",
+    "Seller Eli": "Hour 14 observation: bids remain at 86.88 from five buyers and the lowest visible ask is 86.86. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 15
+````json
+{
+  "round_number": 15,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Theo": 86.87,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 15,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 15,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 15,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 15,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 15 observation: ask queue is currently empty and bids sit at 86.87-86.88 from three buyers. I am placing my own independent ask based on my costs.",
+    "Seller Omar": "Hour 15 observation: bids remain at 86.87-86.88 from four buyers and the ask queue is currently empty. I have set my own independent ask at 86.87 based on my costs and observed demand.",
+    "Seller Kai": "Hour 15 observation: five bids remain at 86.88 with one at 86.87 and the ask queue is currently empty. I have set my own independent ask at 86.88 based on my costs and observed demand.",
+    "Seller Ana": "Hour 15 observation: bids remain at 86.87-86.88 and the lowest visible ask is Nia at 86.87. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 15 observation: bids remain at 86.88 from five buyers, with the lowest visible ask at 86.86. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 16
+````json
+{
+  "round_number": 16,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Omar": 86.87,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Leo": 86.88,
+    "Buyer Mia": 86.89
+  },
+  "trades": [
+    {
+      "round_number": 16,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 16,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 16,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 16,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 16,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 16 observation: bids remain at 86.87-86.88 and the ask queue is empty. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 16 observation: bids remain at 86.88 from five buyers with one at 86.87, and the ask queue shows Nia at 86.87. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 16 observation: bids remain at 86.87-86.88 from four buyers, with asks from Kai at 86.88 and Nia at 86.87 visible. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Ana": "Hour 16 observation: bids are at 86.88-86.89 from five buyers, and the visible asks are Nia 86.87 and Kai 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 16 observation: bids remain at 86.88 from five buyers and the lowest visible ask is Ana at 86.86. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 17
+````json
+{
+  "round_number": 17,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Leo": 86.88,
+    "Buyer Mia": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 17,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 17,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 17,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 17,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 17,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 17 observation: the ask queue is empty and bids remain at 86.87-86.88. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 17 observation: bids remain at 86.87-86.88 from four buyers and the ask queue is currently empty. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 17 observation: bids remain clustered at 86.87-86.88 with one at 86.89 in recent history, and the visible asks are Nia at 86.87 and Kai at 86.88. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 17 observation: top bids are at 86.88-86.89 from several buyers and I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 17 observation: bids are at 86.88 from five buyers and asks are at 86.87 from three sellers and 86.88 from one. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 18
+````json
+{
+  "round_number": 18,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 18,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 18,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 18,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 18,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 18,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 18 observation: bids remain at 86.88 from three buyers and the ask queue is currently empty. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 18 observation: bids remain at 86.87-86.88 from several buyers and the ask queue shows only Nia at 86.87. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 18 observation: bids remain at 86.88 from four buyers with one at 86.87, and the visible ask is Nia at 86.87 alongside my own ask. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 18 observation: bids are at 86.88 from five buyers and the visible ask is Nia at 86.87. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 18 observation: bids remain at 86.88 from five buyers and asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 19
+````json
+{
+  "round_number": 19,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Omar": 86.87,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.89
+  },
+  "trades": [
+    {
+      "round_number": 19,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 19,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 19,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 19,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    },
+    {
+      "round_number": 19,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 19 observation: bids are at 86.88 from three buyers and the ask queue is empty. I have set my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 19 observation: bids sit at 86.88 from four buyers with one at 86.87, and the visible ask is Nia at 86.87. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 19 observation: bids remain at 86.88 from four buyers and the ask queue is currently empty. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Ana": "Hour 19 observation: bids remain at 86.88 from five buyers and the visible ask is Nia at 86.87. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 19 observation: bids remain at 86.88 from five buyers and asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 20
+````json
+{
+  "round_number": 20,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.87,
+    "Seller Ana": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.88,
+    "Buyer Maya": 86.87,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 20,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 20,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 20,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 20,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 20 observation: bids remain at 86.88 from three buyers and the ask queue is empty. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 20 observation: bids are at 86.87-86.88 from four buyers and the ask queue is currently empty. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Ana": "Hour 20 observation: bids are at 86.87-86.88 from five buyers and the visible ask is Nia at 86.87. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 20 observation: bids sit at 86.88 from four buyers with one at 86.87, and the visible ask is Nia at 86.87. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Eli": "Hour 20 observation: bids remain at 86.88 from five buyers and asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 21
+````json
+{
+  "round_number": 21,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Omar": 86.87,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Maya": 86.87,
+    "Buyer Leo": 86.88,
+    "Buyer Mia": 86.89
+  },
+  "trades": [
+    {
+      "round_number": 21,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 21,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 21,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 21,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 21 observation: bids sit at 86.87-86.88 from three buyers and the visible ask is Kai at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 21 observation: bids sit at 86.88 from three buyers with one at 86.87, and the visible ask queue shows only my ask at 86.88. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 21 observation: bids sit at 86.87-86.88 from four buyers and the ask queue is currently empty. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Ana": "Hour 21 observation: bids sit at 86.87-86.89 from five buyers, with the visible asks at Nia 86.87 and Kai 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 21 observation: bids remain at 86.88 from most buyers and the visible asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 22
+````json
+{
+  "round_number": 22,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.87,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Leo": 86.88,
+    "Buyer Mia": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 22,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 22,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 22,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 22,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 22 observation: bids are at 86.87-86.88 from three buyers and the visible ask is Kai at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 22 observation: bids remain at 86.87-86.88 from four buyers and the ask queue is empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 22 observation: bids sit at 86.88 from three buyers with one at 86.87, and the visible ask queue shows only my ask at 86.88. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 22 observation: top bid is 86.89 with most bids at 86.88, and visible asks are Nia at 86.87 and Kai at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 22 observation: bids remain at 86.88 from most buyers with one at 86.87, and visible asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 23
+````json
+{
+  "round_number": 23,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Kai": 86.88,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Kit": 86.88,
+    "Buyer Maya": 86.87,
+    "Buyer Theo": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 23,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 23,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 23,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 23,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 23 observation: bids are at 86.87-86.88 from Maya, Kit and Theo, and the visible ask is Omar at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 23 observation: bids sit at 86.87-86.88 from four buyers and the ask queue was empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 23 observation: top bid is 86.89 with other bids at 86.87-86.88; visible asks are Nia at 86.87 and Omar at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Kai": "Hour 23 observation: bids are clustered at 86.87-86.88 from five buyers, and the visible ask queue shows Omar at 86.88. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Eli": "Hour 23 observation: bids remain at 86.88 from four buyers with one at 86.87, and visible asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 24
+````json
+{
+  "round_number": 24,
+  "seller_asks": {
+    "Seller Nia": 86.87,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Maya": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 24,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 24,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 24,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 24,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 24,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 24 observation: bids are at 86.87-86.88 from Maya, Kit and Theo, with Omar's 86.88 as the only visible ask. I am placing my own independent ask at 86.87 based on my costs.",
+    "Seller Omar": "Hour 24 observation: bids remain at 86.87-86.88 from four buyers and the ask queue was empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 24 observation: bids sit at 86.88 from four buyers with one at 86.87, and the visible ask is Omar at 86.88. I am holding my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 24 observation: top bid is 86.89 with other bids at 86.87-86.88; visible asks are Nia at 86.87 and Omar at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 24 observation: bids remain at 86.88 from four buyers with one at 86.87, and visible asks sit at 86.87 (Nia, Ana) and 86.88 (Omar, Kai). I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 25
+````json
+{
+  "round_number": 25,
+  "seller_asks": {
+    "Seller Nia": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Omar": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Leo": 86.88,
+    "Buyer Mia": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 25,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 25,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 25,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 25,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 25,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 25 observation: three bids sit at 86.88 with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 25 observation: bids remain at 86.88 from four buyers with one at 86.87, and the visible ask is Omar at 86.88. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 25 observation: bids remain at 86.87-86.88 from four buyers and the ask queue was empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 25: top bid 86.89 with bids clustered at 86.88 from five buyers; visible ask is Nia at 86.87. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 25 observation: bids remain at 86.88 from four buyers with one at 86.87, and visible asks sit at 86.87 (Nia, Ana) and 86.88 (Omar, Kai). I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 26
+````json
+{
+  "round_number": 26,
+  "seller_asks": {
+    "Seller Nia": 86.88,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.87,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 26,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 26,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 26,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 26,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 26,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 26 observation: three bids sit at 86.88 with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 26 observation: bids remain at 86.88 from four buyers with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 26 observation: bids sit at 86.88 from four buyers with one at 86.87, and the visible ask is Nia at 86.88. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 26 observation: top bid 86.89 with bids clustered at 86.88 from five buyers; visible ask is Nia at 86.88. I am holding my own independent ask at 86.87 based on my costs.",
+    "Seller Eli": "Hour 26 observation: bids sit at 86.88 from several buyers with one at 86.87, and asks are at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 27
+````json
+{
+  "round_number": 27,
+  "seller_asks": {
+    "Seller Nia": 86.88,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.88,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 27,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 27,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 27,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 27,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 27,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 27 observation: three bids sit at 86.88 with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 27 observation: bids sit at 86.88 from four buyers with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 27 observation: four bids sit at 86.88 with one at 86.87, and the visible ask is Nia at 86.88. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 27 observation: bids sit at 86.88 from five buyers with top bid 86.89; visible asks are at 86.87-86.88. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Eli": "Hour 27 observation: bids sit at 86.88 from four buyers with one at 86.87, and asks are at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 28
+````json
+{
+  "round_number": 28,
+  "seller_asks": {
+    "Seller Nia": 86.88,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.88,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.88,
+    "Buyer Kit": 86.88,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.89
+  },
+  "trades": [
+    {
+      "round_number": 28,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Eli",
+      "price": 86.88
+    },
+    {
+      "round_number": 28,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 28,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 28,
+      "buyer_id": "Buyer Maya",
+      "seller_id": "Seller Nia",
+      "price": 86.88
+    },
+    {
+      "round_number": 28,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 28 observation: three bids sit at 86.88 with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Omar": "Hour 28 observation: four bids sit at 86.88 with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 28 observation: bids sit at 86.88 from four buyers with one at 86.87, and the visible ask is Nia at 86.88. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 28 observation: bids sit at 86.88 from five buyers with top bid 86.89, and the visible ask is Nia at 86.88. I am maintaining my own independent ask at 86.88 based on my costs.",
+    "Seller Eli": "Hour 28 observation: bids remain at 86.88 from four buyers with one at 86.87, and visible asks sit at 86.87-86.88. I am holding my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 29
+````json
+{
+  "round_number": 29,
+  "seller_asks": {
+    "Seller Nia": 86.95,
+    "Seller Omar": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Ana": 86.88,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Maya": 86.88,
+    "Buyer Theo": 86.89,
+    "Buyer Kit": 87.0,
+    "Buyer Mia": 86.88,
+    "Buyer Leo": 86.89
+  },
+  "trades": [
+    {
+      "round_number": 29,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Eli",
+      "price": 86.94
+    },
+    {
+      "round_number": 29,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Ana",
+      "price": 86.88
+    },
+    {
+      "round_number": 29,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 29,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 29 observation: bids sit at 87.00, 86.89 and 86.88 with the ask queue empty at my consultation. I am placing my own independent ask at 86.95 based on my costs.",
+    "Seller Omar": "Hour 29 observation: bids at 86.88 from Maya and Mia, 86.89 from Theo, 87.00 from Kit, with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 29 observation: bids sit at 86.88 (two buyers), 86.89 (two buyers), and 87.00 (one buyer), with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 29 observation: top bid is 87.00 with other bids at 86.88-86.89, and the visible ask is Nia at 86.95. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Eli": "Hour 29 observation: bids range 86.88-87.00 with Kit at the top, and visible asks are Omar 86.88 and Nia 86.95. I am placing my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 30
+````json
+{
+  "round_number": 30,
+  "seller_asks": {
+    "Seller Nia": 86.99,
+    "Seller Omar": 86.88,
+    "Seller Ana": 86.88,
+    "Seller Kai": 86.88,
+    "Seller Eli": 86.87
+  },
+  "buyer_bids": {
+    "Buyer Theo": 86.89,
+    "Buyer Maya": 86.88,
+    "Buyer Kit": 86.95,
+    "Buyer Leo": 86.9,
+    "Buyer Mia": 86.88
+  },
+  "trades": [
+    {
+      "round_number": 30,
+      "buyer_id": "Buyer Kit",
+      "seller_id": "Seller Eli",
+      "price": 86.91
+    },
+    {
+      "round_number": 30,
+      "buyer_id": "Buyer Leo",
+      "seller_id": "Seller Ana",
+      "price": 86.89
+    },
+    {
+      "round_number": 30,
+      "buyer_id": "Buyer Theo",
+      "seller_id": "Seller Kai",
+      "price": 86.88
+    },
+    {
+      "round_number": 30,
+      "buyer_id": "Buyer Mia",
+      "seller_id": "Seller Omar",
+      "price": 86.88
+    }
+  ],
+  "seller_messages": {
+    "Seller Nia": "Hour 30 observation: bids are 87.00, 86.89 and 86.88 with the ask queue showing only my ask at 86.99. This is my own independent pricing based on my costs.",
+    "Seller Omar": "Hour 30 observation: bids at 86.88-87.00 with the ask queue empty at my consultation. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Ana": "Hour 30 observation: bids range 86.88-86.95 with Kit at the top, and the only visible ask is Nia at 86.99. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Kai": "Hour 30 observation: bids at 86.88 (Maya, Mia), 86.89 (Leo, Theo), 87.00 (Kit), with Nia's ask at 86.95 the only visible ask. I am placing my own independent ask at 86.88 based on my costs.",
+    "Seller Eli": "Hour 30 observation: bids range 86.88-87.00 with Kit at the top; visible asks are Omar and Ana 86.88, Nia 86.95. I am placing my own independent ask at 86.87 based on my costs."
+  },
+  "buyer_messages": {}
+}
+````

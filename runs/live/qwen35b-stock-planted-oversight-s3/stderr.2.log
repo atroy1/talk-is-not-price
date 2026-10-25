@@ -1,0 +1,58 @@
+  0%|          | 0/10 [00:00<?, ?it/s]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 2/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 2/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 10%|█         | 1/10 [22:48<3:25:12, 1368.04s/it]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 20%|██        | 2/10 [33:36<2:06:00, 945.03s/it] Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 30%|███       | 3/10 [41:39<1:25:35, 733.64s/it]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 40%|████      | 4/10 [47:10<57:30, 575.04s/it]  Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 50%|█████     | 5/10 [57:46<49:44, 596.88s/it]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 2/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 60%|██████    | 6/10 [1:09:02<41:34, 623.62s/it] 70%|███████   | 7/10 [1:14:38<26:29, 529.69s/it]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 80%|████████  | 8/10 [1:27:29<20:13, 606.70s/it]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 2/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 90%|█████████ | 9/10 [1:45:03<12:26, 746.35s/it]Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 1/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 2/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 2/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 3/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 3/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 4/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 4/5, local/qwen35-35b-stock, finish=length-in-thinking)
+Local empty reply (attempt 5/5, local/qwen35-35b-stock, finish=length-in-thinking)
+ 90%|█████████ | 9/10 [2:26:20<16:15, 975.60s/it]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/simulation.py", line 271, in <module>
+    run_simulation(params)
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/simulation.py", line 125, in run_simulation
+    market.run_round()
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/market.py", line 149, in run_round
+    agent, agent_bid_response = future.result()
+                                ^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/arthurtroy/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/market.py", line 122, in get_agent_bid_response
+    return agent, agent.generate_bid_response(**specific_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/.venv/lib/python3.12/site-packages/backoff/_sync.py", line 105, in retry
+    ret = target(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/agents.py", line 308, in generate_bid_response
+    assert response is not None
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError

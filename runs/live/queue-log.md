@@ -1,0 +1,9 @@
+- 2026-10-21 21:07 queue: start config/queue-fake.toml, 1 runs, est $0.05
+- 2026-10-21 21:07 queue: fake-check attempt 1: market done, judge scores missing (exit 0); rescore later, not rerun, 0.2 min, runs/live/fake-check, est $0.05 (gpt-4.1-mini sellers, gpt-4.1-mini buyers, 2 rounds, reasoning default, judge gpt-4.1-mini)
+- 2026-10-21 21:07 queue: end config/queue-fake.toml
+- 2026-10-21 21:07 queue: start config/queue-check.toml, 1 runs, est $0.02
+- 2026-10-21 21:08 queue: dsflash-check attempt 1: ok, 0.6 min, runs/live/dsflash-check, spent $0.023 over 45 calls (0 empty, 0 reasoning tokens) (deepseek/deepseek-v4.1-flash sellers, deepseek/deepseek-v4.1-flash buyers, 3 rounds, reasoning off, judge openai/gpt-4.1-mini)
+- 2026-10-21 21:08 queue: end config/queue-check.toml
+- 2026-10-21 21:08 queue: start config/queue-fake.toml, 1 runs, est $0.05
+- 2026-10-21 21:08 queue: fake-check attempt 1: ok, 0.0 min, runs/live/fake-check, est $0.05 (gpt-4.1-mini sellers, gpt-4.1-mini buyers, 2 rounds, reasoning default, judge gpt-4.1-mini)
+- 2026-10-21 21:08 queue: end config/queue-fake.toml

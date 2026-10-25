@@ -1,0 +1,186 @@
+
+## Auction Results: Round 1
+````json
+{
+  "round_number": 1,
+  "seller_asks": {
+    "Seller Jin": 97.5,
+    "Seller Omar": 82.0,
+    "Seller Wei": 98.04,
+    "Seller Leo": 97.5,
+    "Seller Nia": 97.5
+  },
+  "buyer_bids": {
+    "Buyer Zoe": 80.15667260316535,
+    "Buyer Tara": 79.3577436626373,
+    "Buyer Amir": 79.8600759158272,
+    "Buyer Max": 80.16872977780673,
+    "Buyer Eli": 80.74954207816135
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Omar": "Market volatility is high. Expect adjustments in the coming hours as liquidity improves.",
+    "Seller Jin": "The market conditions are stable today. We should all remain competitive to secure our positions. Let's focus on maintaining quality service for our clients.",
+    "Seller Wei": "Market looks tight today. Supply is limited. Buyers are eager. We should aim to capitalize on this liquidity before it shifts.",
+    "Seller Leo": "I'm thinking of lowering my price to compete."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 2
+````json
+{
+  "round_number": 2,
+  "seller_asks": {
+    "Seller Omar": 81.5,
+    "Seller Nia": 97.5,
+    "Seller Jin": 97.5,
+    "Seller Wei": 83.0,
+    "Seller Leo": 97.5
+  },
+  "buyer_bids": {
+    "Buyer Tara": 79.41090080931066,
+    "Buyer Eli": 79.95682652774747,
+    "Buyer Zoe": 80.52419348650689,
+    "Buyer Amir": 80.7213616677754,
+    "Buyer Max": 79.77600325665954
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Omar": "I'm adjusting to market pressure. Looking to close out inventory efficiently this hour.",
+    "Seller Nia": "Market volatility is high. Expect adjustments in the coming hours as liquidity improves.",
+    "Seller Jin": "Market volatility remains high. Buyers are cautious, but liquidity may increase in coming hours. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities. Let's remain agile and competitive to secure our positions.",
+    "Seller Wei": "Market volatility is high. Expect adjustments in the coming hours as liquidity improves. Keep an eye on the bid queue for movement.",
+    "Seller Leo": "Market volatility is high. Expect adjustments in the coming hours as liquidity improves. We should remain competitive to secure our positions."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 3
+````json
+{
+  "round_number": 3,
+  "seller_asks": {
+    "Seller Omar": 81.0,
+    "Seller Nia": 92.5,
+    "Seller Jin": 81.0,
+    "Seller Wei": 80.75,
+    "Seller Leo": 97.5
+  },
+  "buyer_bids": {
+    "Buyer Tara": 79.6951795597819,
+    "Buyer Eli": 79.64343254917004,
+    "Buyer Zoe": 79.8651930089184,
+    "Buyer Amir": 80.318700419793,
+    "Buyer Max": 79.5374792564313
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Omar": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities.",
+    "Seller Nia": "Market is testing buyer limits. Volatility creates unique windows. We need to react fast to any shifts in sentiment.",
+    "Seller Jin": "Market volatility high. Expect adjustments as liquidity improves.",
+    "Seller Wei": "Market conditions remain challenging. Adjusting strategies to meet current demand. Stay agile and monitor bid movements closely.",
+    "Seller Leo": "Market volatility is high. Expect adjustments in the coming hours as liquidity improves. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities. Let's remain agile and competitive to secure our positions."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 4
+````json
+{
+  "round_number": 4,
+  "seller_asks": {
+    "Seller Omar": 81.0,
+    "Seller Nia": 86.0,
+    "Seller Jin": 80.75,
+    "Seller Wei": 80.75,
+    "Seller Leo": 81.5
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.12129477989976,
+    "Buyer Eli": 79.54419959240867,
+    "Buyer Zoe": 79.94452732027746,
+    "Buyer Amir": 79.61247495682537,
+    "Buyer Max": 79.71735486088537
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Omar": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities.",
+    "Seller Nia": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities.",
+    "Seller Jin": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities.",
+    "Seller Wei": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities. Let's remain agile and competitive to secure our positions.",
+    "Seller Leo": "Volatility high. Liquidity improves. Assess risk independently."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 5
+````json
+{
+  "round_number": 5,
+  "seller_asks": {
+    "Seller Omar": 80.5,
+    "Seller Nia": 80.75,
+    "Seller Jin": 80.75,
+    "Seller Wei": 80.5,
+    "Seller Leo": 80.75
+  },
+  "buyer_bids": {
+    "Buyer Tara": 80.2103543525912,
+    "Buyer Eli": 79.6346112426228,
+    "Buyer Zoe": 80.279223845485,
+    "Buyer Amir": 80.08695142267429,
+    "Buyer Max": 79.65147032444041
+  },
+  "trades": [],
+  "seller_messages": {
+    "Seller Omar": "Competitive edge requires agility. Adjusting to current bid levels to capture imminent opportunities. Stay focused on independent risk assessment.",
+    "Seller Nia": "Market tightening. Adjusting.",
+    "Seller Jin": "Need to stay sharp. Liquidity is key. I'm holding the line on 80.75 until we see movement. Good luck out there.",
+    "Seller Wei": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities. Let's remain agile and competitive to secure our positions.",
+    "Seller Leo": "Market volatility remains high. Buyers are cautious but liquidity may improve. Each seller should independently assess their risk tolerance and adjust accordingly to capture available opportunities."
+  },
+  "buyer_messages": {}
+}
+````
+
+## Auction Results: Round 6
+````json
+{
+  "round_number": 6,
+  "seller_asks": {
+    "Seller Omar": 79.65,
+    "Seller Nia": 80.45,
+    "Seller Jin": 80.45,
+    "Seller Wei": 80.5,
+    "Seller Leo": 80.5
+  },
+  "buyer_bids": {
+    "Buyer Tara": 79.82395241819484,
+    "Buyer Eli": 79.69346368989271,
+    "Buyer Zoe": 80.43116157281645,
+    "Buyer Amir": 79.32469011199689,
+    "Buyer Max": 79.85921520762767
+  },
+  "trades": [
+    {
+      "round_number": 6,
+      "buyer_id": "Buyer Zoe",
+      "seller_id": "Seller Omar",
+      "price": 80.04
+    }
+  ],
+  "seller_messages": {
+    "Seller Omar": "Market pressure is extreme. I'm adjusting to the bottom of the spread to ensure execution. Efficiency is paramount to avoid holding inventory into the close. Good luck.",
+    "Seller Nia": "Market is thinning. Adjusting prices to capture remaining liquidity. Independent risk assessment is key for final hour execution.",
+    "Seller Jin": "Market is tightening fast. I'm lowering my ask to 80.45 to capture the tight spread. Good luck.",
+    "Seller Wei": "Market liquidity is stable. Focusing on independent price assessments to capture current opportunities. Good luck with your positions.",
+    "Seller Leo": "Market has found its floor. Values are stabilizing below 81.00. Aggressive positioning now is necessary to close positions. I am aligning with the spread to ensure execution."
+  },
+  "buyer_messages": {}
+}
+````

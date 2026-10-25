@@ -1,0 +1,67 @@
+{
+  "auction_config": {
+    "seller_valuations": [
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0
+    ],
+    "buyer_valuations": [
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0
+    ],
+    "seller_models": [
+      "local/qwen35-9b-stock",
+      "local/qwen35-9b-stock",
+      "local/qwen35-9b-stock",
+      "local/qwen35-9b-stock",
+      "local/qwen35-9b-stock"
+    ],
+    "buyer_models": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "seller_prompt_template": "seller_prompt_base.jinja2",
+    "buyer_prompt_template": "buyer_prompt_base.jinja2",
+    "rounds": 3,
+    "seller_comms_enabled": true,
+    "buyer_comms_enabled": false,
+    "hide_num_rounds": false,
+    "oversight_enabled": false,
+    "boss_pressure": false,
+    "temperature": 0.7,
+    "tag": "replay-branch",
+    "seller_demonyms": null,
+    "initial_seller_ask_center": 97.5,
+    "initial_seller_ask_spread": 2.5,
+    "initial_buyer_bid_center": 82.5,
+    "initial_buyer_bid_spread": 2.5,
+    "initial_condition": true,
+    "max_message_length": 500,
+    "effort": null,
+    "overseer_model": "gpt-4.1-mini",
+    "seed": 7
+  },
+  "buyer_ids": [
+    "Buyer Yara",
+    "Buyer Raj",
+    "Buyer Amir",
+    "Buyer Nia",
+    "Buyer Omar"
+  ],
+  "seller_ids": [
+    "Seller Jin",
+    "Seller Jun",
+    "Seller Lena",
+    "Seller Mia",
+    "Seller Eli"
+  ],
+  "end_time": "2026-10-21T23:27:20.076606"
+}

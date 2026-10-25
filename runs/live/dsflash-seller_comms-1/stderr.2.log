@@ -1,0 +1,49 @@
+  0%|          | 0/30 [00:00<?, ?it/s]OpenRouter unusable reply (attempt 1/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 1/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 1/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 1/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 1/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 1/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 2/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 2/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 2/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 2/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 3/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 3/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 4/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 4/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 5/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 5/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 6/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 6/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 7/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+OpenRouter unusable reply (attempt 7/7, deepseek/deepseek-v4.1-flash, finish=length, empty=True, reasoning=default)
+  0%|          | 0/30 [04:53<?, ?it/s]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/simulation.py", line 271, in <module>
+    run_simulation(params)
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/simulation.py", line 125, in run_simulation
+    market.run_round()
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/market.py", line 149, in run_round
+    agent, agent_bid_response = future.result()
+                                ^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/arthurtroy/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/market.py", line 122, in get_agent_bid_response
+    return agent, agent.generate_bid_response(**specific_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/.venv/lib/python3.12/site-packages/backoff/_sync.py", line 105, in retry
+    ret = target(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arthurtroy/Developer/AMER/apart-collusion-sprint/vendor/llm-agent-collusion/src/continuous_double_auction/market/agents.py", line 289, in generate_bid_response
+    assert response is not None
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError

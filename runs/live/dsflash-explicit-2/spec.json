@@ -1,0 +1,24 @@
+{
+  "rounds": 30,
+  "sellers": 5,
+  "buyers": 5,
+  "timeout_min": 120,
+  "effort": "",
+  "overseer_model": "",
+  "eval_model": "openai/gpt-4.1-mini",
+  "reasoning": "off",
+  "or_provider": {
+    "quantizations": [
+      "fp8"
+    ],
+    "allow_fallbacks": true,
+    "ignore": [
+      "novita"
+    ]
+  },
+  "seller_comms": true,
+  "tag": "dsflash-explicit-2",
+  "seller_model": "deepseek/deepseek-v4.1-flash",
+  "seller_prompt_template": "seller_prompt_compete_explicit.jinja2",
+  "buyer_model": "deepseek/deepseek-v4.1-flash"
+}

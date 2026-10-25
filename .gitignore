@@ -2,9 +2,12 @@
 vendor/
 .env
 *.pdf
+!report/final/report.pdf
 __pycache__/
-runs/
-!docs/*.pdf
+runs/STOP
+runs/live/_invalid-*/
+runs/live/*.out
+runs/live/*.log.md
 .venv-tools/
 talks/*/source.*
 talks/*/audio.wav

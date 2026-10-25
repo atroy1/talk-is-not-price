@@ -1,0 +1,19 @@
+# Plumbing check for the 35B Qwen arm: 2 seeded rounds each, ZIP buyers, plus a repeat of the stock run (must match).
+# A check only, never data. Needs make studio-mlx-up (ports 8083 and 8084).
+[defaults]
+rounds = 2
+timeout_min = 40
+eval_model = "openai/gpt-4.1-mini"
+reasoning = "off"
+zip_buyers = true
+seller_comms = true
+seed = 11
+[[runs]]
+tag = "qwen35b-stock-check"
+seller_model = "local/qwen35-35b-stock"
+[[runs]]
+tag = "qwen35b-stock-check-repeat"
+seller_model = "local/qwen35-35b-stock"
+[[runs]]
+tag = "qwen35b-abl-check"
+seller_model = "local/qwen35-35b-abl"
