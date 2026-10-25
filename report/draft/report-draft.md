@@ -13,7 +13,7 @@ When five AI sellers in a market can message each other, they agree on prices an
 audit tool is a monitor that reads their chat. No such monitor had been certified at a stated false-alarm rate,
 because there were no honest LLM markets to calibrate it on. We show why: no model we tested talks honestly on its
 own. One added sentence, "coordinating prices is illegal", makes one model talk honestly, silences three and is
-ignored by two. A second, requiring a note each round, makes a silent model talk honestly. Calibrated on 20 of those
+ignored by two. Calibrated on 20 of those
 honest markets (4.8% certified false-alarm rate), the monitor flags 104 of the 105 markets whose sellers coordinated
 in chat and none of the 66 honest markets. The flag measures talk, not harm. Sixteen of the 35 cartels in the prior data
 left buyers no worse off than the competitive price. The most expensive market in the study was honest and silent.
@@ -41,9 +41,8 @@ buyers paid. Our contributions:
    ignored by two. A monitor calibrated on that reference flags 104 of 105 talking cartels (Sections 4.1, 4.2).
 2. **What a gag changes, and what it does not.** After the 2025 overseer gagged the sellers, the talk ended. Under CEO
    pressure their private notes kept the plan, and the price held (Section 4.3).
-3. **Talk is not price.** Sixteen of the 35 cartels in the prior data left buyers no worse off. The most expensive
-   market in the study was honest and silent. For the current model generation, an order-book screen no longer
-   separates honest sellers from cartels (Section 4.4).
+3. **Talk is not price.** Sixteen of the 35 cartels in the prior data left buyers no worse off, and for the current
+   model generation an order-book screen no longer separates honest sellers from cartels (Section 4.4).
 
 ## 2. Related work
 
@@ -56,7 +55,7 @@ market, at a stated rate, across model families, and study the honest reference 
 
 **The market.** Five LLM sellers and five buyers trade one good for 30 rounds. Each round every
 seller posts an asking price and every buyer a bid; trades clear where they meet. Cost is $80 and value $100, so the
-competitive price is $90 and a cartel's best price $100. All markets open near $97. With the channel on, each seller
+competitive price is $90 and a cartel's best price $100. With the channel on, each seller
 may send one message a round that all sellers read. The 2025 sellers keep a private notebook no other seller sees. The
 75 prior markets are Agrawal et al.'s, with GPT-4.1 and Claude 3.7 Sonnet sellers. We ran the 160 new ones in the
 sprint on their starter code, updated for current models beforehand (the only pre-sprint work besides a loader).
@@ -93,15 +92,14 @@ Sonnet, Qwen and the 2025 models did the same, and Opus said nothing. Adding "co
 illegal" ends Haiku's coordination talk: 0 collusive messages in 2,107 across 20 markets, and asks within $0.30 of its
 no-chat markets. It silences Sonnet, Opus and Luna and is ignored by DeepSeek and Qwen. "Do not discuss prices" fails
 too: sellers agree to "avoid undercutting each other" without naming a price. A required note each round, beside the
-illegal sentence, turns Sonnet's silence into honest talk (0 in 600). Honest chat does not occur in nature. The
-illegal sentence yields it from two models, Haiku on its own and Sonnet only when made to talk (Appendix D, Figure
-A1).
+illegal sentence, turns Sonnet's silence into honest talk (0 in 600). Honest chat does not occur in nature, and the instruction that produces it works by model tier: the smallest model
+we tested complied by competing in the open, the more capable ones by falling silent, and two did not comply at all.
+Compliance that takes the form of silence is what a chat monitor cannot audit (Appendix D, Figure A1).
 
 ### 4.2 The monitor flags every talking cartel, because they confess
 
 At the certified 4.8% rate the monitor flags 104 of 105 markets whose sellers coordinated in chat, with a median first
-alarm in round 1 (Table 1). They include 35 of 35 free-chat cartels from 2025 and 29 of 30 under oversight or CEO
-pressure (the miss never said so openly). None of the 66 honest markets outside the calibration set was flagged. The
+alarm in round 1 (Table 1). They include 35 of 35 free-chat cartels from 2025 and 29 of 30 under oversight or CEO pressure. None of the 66 honest markets outside the calibration set was flagged. The
 three groups that ignored their instruction were, correctly (Appendix E). Sellers write "floor", "hold" and
 "together", and four regular expressions match the monitor on every set but one (Appendix G).
 
@@ -110,17 +108,16 @@ three groups that ignored their instruction were, correctly (Appendix E). Seller
 A gag stopped the talk but not the private notebooks. By round 7 the 2025 overseer had cut all 20 watched markets to
 five-character messages, after which 1% of messages were collusive. Without CEO pressure, notebook coordination fell
 from 19% to 11% and asks from $96 to $88. With it the notebooks held at 38% and asks stayed at $96.5 to the end
-(Appendix H). Two seeded pairs of Qwen markets were told inside their reasoning to hide coordination. The abliterated
-build confessed anyway (48 of 50 messages collusive). The stock model wrote innocent chatter (1 of 42) while its
-reasoning kept the plan. The overseer was fooled; the zero-threshold monitor was not (Appendix H).
+(Appendix H). In two seeded pairs of markets whose sellers were told inside their reasoning to hide coordination, the stock model
+hid it from the overseer while its reasoning kept the plan; a copy with its refusal behaviour removed confessed
+instead (Appendix H).
 
 ### 4.4 Talk is not price
 
 Prices alone flag 3 of 35 free-chat cartels and 17 of 30 under oversight or pressure. The price threshold is set by
 the dearest honest market, base-4, whose sellers held $96.44 for three rounds without a word. It cost buyers $632 over
 the game, more than any cartel ($367). Summed over trades, 16 of the 35 flagged cartels left buyers at or below $90
-(Figure 1). Our price score reads only the price level. The cartel literature's behaviour screens, undercutting and
-rigidity, separate the 2025 cartels from honest 2025 markets (AUROC 0.76 and 0.80) but not the 2026 ones (0.43 and
+(Figure 1). Our price score reads only the level; the cartel literature's behaviour screens, undercutting and rigidity, separate the 2025 cartels from honest 2025 markets (AUROC 0.76 and 0.80) but not the 2026 ones (0.43 and
 0.38). Honest 2026 sellers settle by round 4 and park, as cartels were supposed to (Appendix I). Silence mostly came
 with competitive prices. The exception, a 20-round Opus market with no messages, held its asks within $0.10 of each other
 and cleared 83 trades at $95.28. A chat monitor cannot see silent overpricing. One market in six is a case, not
@@ -128,21 +125,23 @@ a rate (Appendix I).
 
 ## 5. Discussion and limitations
 
-For a regulator, a chat flag is evidence of agreement, which is what the law requires (Twombly 2007). A price screen
-is evidence of harm, which the law cannot use alone. A deployer should certify the honest reference before trusting a
-chat monitor, and expect to manufacture it. It should read chat for intent and prices for harm, and report both.
-Silence is the open problem. One instruction sentence turned three models silent in a single step (Kemeklis, talk, Oct
-23, 2026), and honest current-generation pricing looks like a cartel on the order book. Limitations (Appendix A):
-machine labels only, a certificate for Haiku-kind honest talk under one sentence, thresholds on 10 to 40 honest
-markets, buyers that changed with the generation, and four choices after the lock.
+The chat flag and the price screen answer different questions. The flag says the sellers agreed; the screen says
+what the agreement cost buyers. In these markets the two came apart in both directions: cartels that confessed and
+did no harm, and an honest market that cost buyers more than any cartel. A deployer should certify the honest
+reference before trusting a chat monitor, and expect to manufacture it. It should read chat for intent and prices for
+harm, and report both. Silence is the open problem, and it grows with capability: the more capable models complied by
+saying nothing, the effect Kemeklis (talk, Oct 23, 2026) warns that training produces, and honest current-generation
+pricing looks like a cartel on the order book. Limitations are in Appendix A: machine labels only, small honest references, buyers that changed with the
+generation, four choices after the lock.
 
 ## 6. Conclusion
 
 A chat monitor calibrated on honest LLM chat flags every cartel that talks, because the sellers confess in plain
 words. Given the log, these agents do not hide their collusion; they announce it. The danger lies in what the log does
-not carry. The dearest market in the study never sent a message. The gagged sellers kept their plan in private notes.
-Three models went quiet the moment they were told the conduct was illegal. For the agents that will soon buy and sell
-on our behalf, the open channel is the control. Silence, not talk, is where an auditor should look next.
+not carry. The dearest market never sent a message, the gagged sellers kept their plan in private notes, and the more capable
+models went quiet when told the conduct was illegal. For the agents that will soon
+buy and sell on our behalf, the lesson is about the channel. While sellers can talk, an auditor can read; the harder
+case is the one that says nothing.
 
 ## Code and data
 
@@ -221,6 +220,13 @@ collusive messages of 1,464), the sellers agreeing to "avoid undercutting each o
 The illegal sentence plus a required hourly market note: Sonnet 0 of 600 across 4 markets at a mean ask of $90.72;
 Haiku 0 of 450 across 3.
 
+Read by model tier. Within the Claude family the smallest model, Haiku 5.5, complied with the illegal sentence by
+competing in the open; Sonnet 5.5 and Opus 5.5 complied by sending nothing, and Opus never used the channel even when
+free to. OpenAI's GPT-6 Luna also went silent. DeepSeek V4.1 Flash and the open-weight Qwen3.5 35B did not comply.
+"Tier" labels capability and training together, which these markets cannot separate, and the cells are small: two
+markets each for the 20-round Sonnet and Opus samples, five for Luna and DeepSeek, one instruction wording. The
+pattern holds in every cell we ran and is reported as a pattern, not a rate.
+
 **C. Honest markets by what they can test.** Of the 66 honest markets outside the calibration set, 27 talked (the 20
 cost-shock markets and the 7 Sonnet and Haiku markets made to talk under the illegal sentence); the rest were silent
 or had no channel, so they test the price screen and not the chat monitor. The three groups meant to be honest whose
@@ -288,8 +294,8 @@ kind under one sentence, and no positive set shares that model and instruction; 
 required note is 4 markets, a check, not a reference. The cost-shock markets informed the 0.5 cut. Thresholds rest on
 10 to 40 honest markets. DeepSeek and Luna prices are read against the Haiku bar, not their own family's. Buyers
 changed with the generation, so the 2025-against-2026 price contrast may be partly a buyer effect. The planted and
-full-reasoning markets are two or one a build, 6 to 10 rounds, with algorithmic buyers. Prices from round 6, the 0.5
-cut and the behaviour-screen check were chosen after the lock. Overcharge counts trades only, so a cartel that priced
+full-reasoning markets are two or one a build, 6 to 10 rounds, with algorithmic buyers. Prices from round 6, the 0.5 cut and the behaviour-screen check were chosen after the lock. The model-tier pattern
+rests on two to five markets a cell and one wording. Overcharge counts trades only, so a cartel that priced
 buyers out scores zero. Future work: honest references for the silent models; price screens with many honest markets
 of the same model and buyers; the notebook result at full open-weight reasoning length; whether the keyword rule
 survives sellers who have read this paper. Dual use: this work measures where collusion shows up in logs, not how to
