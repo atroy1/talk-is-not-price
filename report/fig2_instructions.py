@@ -45,7 +45,7 @@ def main():
     m["id"] = m.run_id + "|" + m["round"].astype(str) + "|" + m.agent
     m["coll"] = (m.id.map(lab.p_floor + lab.p_agree) > 0.5)
     a = t["orders"]; a = a[(a.side == "ask") & (a["round"] >= 6)]
-    fig, axgrid = plt.subplots(2, 3, figsize=(6.5, 4.4), sharey=True)
+    fig, axgrid = plt.subplots(2, 3, figsize=(6.5, 4.1), sharey=True)
     axes = axgrid.ravel()
     for ax, (name, cells) in zip(axes, MODELS):
         ax2 = ax.twiny()  # a second x axis (dollars) on the same rows

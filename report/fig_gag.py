@@ -25,7 +25,7 @@ CONDS = [("oversight", "#0072B2", "overseer only (10 markets)"), ("boss_pressure
 def main():
     d = pd.read_csv(ROOT / "runs/derived/gag-timeline.csv")
     d = d[(d.rel >= -4) & (d.rel <= 20)]
-    fig, axes = plt.subplots(1, 3, figsize=(6.5, 2.2))
+    fig, axes = plt.subplots(1, 3, figsize=(6.5, 2.0))
     for ax, (col, lab, fmt) in zip(axes, [("msg_coll", "messages labelled collusive", "{:.0%}"), ("notebook", "private notebooks that coordinate", "{:.0%}"),
                                            ("ask", "mean ask, dollars", "${:.0f}")]):
         for cond, color, name in CONDS:

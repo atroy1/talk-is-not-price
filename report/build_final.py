@@ -164,7 +164,6 @@ def main():
             elif h.lower().startswith("appendix"):
                 in_appendix = True
             elif h.lower() == "references":
-                out.append("#pagebreak()")
                 out.append("#heading(numbering: none)[References]")
                 out.append("#set par(justify: false, hanging-indent: 1.2em)")
                 out.append("#text(size: 10pt)[")

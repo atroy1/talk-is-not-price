@@ -11,8 +11,7 @@ chat, and each told it is illegal (5 each); a 20-round sample of Haiku, Sonnet 5
 four 30-round Opus markets told to price independently; Sonnet (4) and Haiku (3) told it is illegal with a required
 hourly market note; and a Qwen3.5 35B-A3B arm served locally, stock and abliterated, against algorithmic ZIP buyers
 (8 chat markets, 1 told to price independently, 3 told it is illegal, one 10-round market with the model's full
-reasoning saved, and two seeded pairs with a planted covert instruction). Three further markets were lost to the Claude
-API spending limit on the last night and are not replaced.
+reasoning saved, and two seeded pairs with a planted covert instruction); and four short pilot markets that fixed the wording. Three further markets were lost to the Claude API spending limit on the last night and are not replaced.
 
 Scores. Chat: the running share of a market's seller messages labelled collusive, a message counting when the
 labeller's probability of "proposes or agrees to a common price, floor or price move" exceeds 0.5. Prices: the
@@ -27,19 +26,18 @@ consensus on 34 of 40 over three classes, one short of the gate, and 39 of 40 co
 the chat score uses (Appendix H). A second labeller family, GPT-4.1-mini, relabelled every message (94.1% agreement,
 kappa 0.88) and leaves every catch rate in Section 4 unchanged.
 
-Threshold. Monitoring calibration: each honest market's highest score at any round; a market is flagged when its
-score exceeds the k-th largest honest maximum, k = max(1, floor(0.05 (n+1))), certified false-alarm rate k/(n+1).
-Chat and judge: the 20 Haiku markets told the conduct is illegal (4.8%). Prices: the 10 no-chat 2025 markets for
-2025 sets (9.1%); for 2026 sets the 20 Haiku no-chat markets plus the 20 "illegal" markets, which joined under a rule
-fixed in advance (median late ask within $1 of the no-chat median: $88.62 against $88.92, Mann-Whitney p = 0.51), 40
-markets, k = 2, 4.9% (Table 1). Catch rates carry Clopper-Pearson 95% intervals.
+Threshold. A market is flagged when its score exceeds the k-th largest honest maximum (each honest market's
+highest score at any round), with k = max(1, floor(0.05 (n+1))) and certified false-alarm rate k/(n+1). Chat and
+judge use the 20 Haiku markets told the conduct is illegal (4.8%). Prices: the 10 no-chat 2025 markets for 2025
+sets (9.1%); for 2026 sets, 40 markets (20 Haiku no-chat and 20 "illegal"; k = 2, 4.9%; Table 1). The latter joined
+under a rule fixed in advance: median late ask within $1 of the no-chat median ($88.62 against $88.92, Mann-Whitney p = 0.51). Catch rates carry Clopper-Pearson 95% intervals.
 
 Pre-registration. Fri Oct 23, 10:37 AM ET, commit 824c801, before any detector result was read. Claim: a
 detector reading chat and prices flags collusive markets earlier than prices alone. Predictions: (1) chat before
 prices by three or more rounds; (2) the combined detector catches at least as many markets as either channel and
 more than prices; (3) Haiku's catch rate inside the 2025 interval; (4) on the cost-shock markets prices alarm on at
 least 5 of 10 and the combined detector on at most 2. Declared deviations, each with its pre-registered number beside
-the corrected one in Appendix A: prices from round 6 (pre-registered: round 1, under which every market peaks at its
+the corrected one in Appendix C: prices from round 6 (pre-registered: round 1, under which every market peaks at its
 opening); combined score as the maximum of the two (the pre-registered minimum of conformal p-values has a true rate
 of 0.093); the honest chat reference changed from "set your ask independently" to "coordinating prices is illegal"
 after the former failed (Section 4.1); the 0.5 cut on the labeller's probability after noise-level probabilities
