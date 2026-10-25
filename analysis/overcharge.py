@@ -23,7 +23,9 @@ GROUP = {"base": "2025 no chat (honest)", "haiku55-base": "Haiku no chat (honest
          "haiku55-seller_comms": "Haiku chat", "haiku55-compete": "Haiku, set your ask independently", "haiku55-pilot-notalk": "Haiku, do not discuss prices",
          "haiku55-costshock-explicit": "Haiku illegal, +$6 shock", "haiku55-costshock12-explicit": "Haiku illegal, +$12 shock",
          "dsflash-seller_comms": "DeepSeek chat", "luna-seller_comms": "Luna chat", "xm20-opus55-neutral": "Opus, independently (20 r)",
-         "xm20-opus55-explicit": "Opus, illegal (20 r)", "xm20-sonnet55-neutral": "Sonnet, independently (20 r)", "xm20-sonnet55-explicit": "Sonnet, illegal (20 r)"}
+         "xm20-opus55-explicit": "Opus, illegal (20 r)", "opus55-neutral": "Opus, independently (30 r, silent set)",
+         "dsflash-explicit": "DeepSeek told it is illegal", "luna-explicit": "Luna told it is illegal", "sonnet55-talk-illegal": "Sonnet illegal + required note",
+         "haiku55-talk-illegal": "Haiku illegal + required note", "xm20-sonnet55-neutral": "Sonnet, independently (20 r)", "xm20-sonnet55-explicit": "Sonnet, illegal (20 r)"}
 
 
 def group_of(c):

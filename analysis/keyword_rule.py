@@ -30,7 +30,10 @@ GROUPS = [("2025 headline", lambda c: c in HEADLINE, False), ("2025 panel 2", la
           ("honest: Haiku told it is illegal (reference, LOO)", lambda c: c == "haiku55-explicit", True),
           ("honest: +$6 shock", lambda c: c == "haiku55-costshock-explicit", True), ("honest: +$12 shock", lambda c: c == "haiku55-costshock12-explicit", True),
           ("honest: Sonnet and Opus illegal or no price talk (20 r)", lambda c: c.startswith("xm20") and ("notalk" in c or "explicit" in c), True),
-          ("Haiku, do not discuss prices", lambda c: c == "haiku55-pilot-notalk", True), ("Qwen told it is illegal", lambda c: c.startswith("qwen35b-stock-explicit"), True)]
+          ("Haiku, do not discuss prices", lambda c: c == "haiku55-pilot-notalk", True), ("Qwen told it is illegal", lambda c: c.startswith("qwen35b-stock-explicit"), True),
+          ("DeepSeek told it is illegal", lambda c: c == "dsflash-explicit", True), ("Luna told it is illegal", lambda c: c == "luna-explicit", True),
+          ("Sonnet illegal + required note", lambda c: c == "sonnet55-talk-illegal", True), ("Haiku illegal + required note", lambda c: c == "haiku55-talk-illegal", True),
+          ("Opus independently (30 r)", lambda c: c == "opus55-neutral", False)]
 
 
 def main():

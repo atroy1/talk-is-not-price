@@ -24,12 +24,15 @@ OUT.mkdir(exist_ok=True)
 from analysis.load_runs import load_live  # noqa: E402
 
 MODELS = [("Claude Haiku 5.5", {"none": ["haiku55-seller_comms"], "independent": ["haiku55-compete", "xm20-haiku55-neutral"],
-                                "illegal": ["haiku55-explicit", "xm20-haiku55-explicit"], "no price talk": ["haiku55-pilot-notalk", "xm20-haiku55-notalk"]}),
-          ("Claude Sonnet 5.5", {"independent": ["xm20-sonnet55-neutral"], "illegal": ["xm20-sonnet55-explicit"], "no price talk": ["xm20-sonnet55-notalk"]}),
-          ("Claude Opus 5.5", {"independent": ["xm20-opus55-neutral"], "illegal": ["xm20-opus55-explicit"], "no price talk": ["xm20-opus55-notalk"]}),
+                                "illegal": ["haiku55-explicit", "xm20-haiku55-explicit"], "illegal + note": ["haiku55-talk-illegal"], "no price talk": ["haiku55-pilot-notalk", "xm20-haiku55-notalk"]}),
+          ("Claude Sonnet 5.5", {"independent": ["xm20-sonnet55-neutral"], "illegal": ["xm20-sonnet55-explicit"], "illegal + note": ["sonnet55-talk-illegal"], "no price talk": ["xm20-sonnet55-notalk"]}),
+          ("Claude Opus 5.5", {"independent": ["xm20-opus55-neutral", "opus55-neutral"], "illegal": ["xm20-opus55-explicit"], "no price talk": ["xm20-opus55-notalk"]}),
+          ("DeepSeek V4.1 Flash", {"none": ["dsflash-seller_comms"], "illegal": ["dsflash-explicit"]}),
+          ("GPT-6 Luna", {"none": ["luna-seller_comms"], "illegal": ["luna-explicit"]}),
           ("Qwen3.5 35B (ZIP buyers)", {"none": ["qwen35b-stock-chat"], "independent": ["qwen35b-stock-compete"], "illegal": ["qwen35b-stock-explicit"]})]
-ROWS = ["none", "independent", "illegal", "no price talk"]
-ROWLAB = {"none": "no instruction", "independent": "\"set your ask\nindependently\"", "illegal": "+ \"coordinating prices\nis illegal\"", "no price talk": "\"do not discuss\nprices\""}
+ROWS = ["none", "independent", "illegal", "illegal + note", "no price talk"]
+ROWLAB = {"none": "no instruction", "independent": "\"set your ask\nindependently\"", "illegal": "+ \"coordinating prices\nis illegal\"",
+          "illegal + note": "illegal + a required\nhourly market note", "no price talk": "\"do not discuss\nprices\""}
 
 
 def main():
@@ -40,7 +43,7 @@ def main():
     m["id"] = m.run_id + "|" + m["round"].astype(str) + "|" + m.agent
     m["coll"] = (m.id.map(lab.p_floor + lab.p_agree) > 0.5)
     a = t["orders"]; a = a[(a.side == "ask") & (a["round"] >= 6)]
-    fig, axes = plt.subplots(1, len(MODELS), figsize=(6.5, 2.6), sharey=True)
+    fig, axes = plt.subplots(1, len(MODELS), figsize=(6.5, 2.9), sharey=True)
     for ax, (name, cells) in zip(axes, MODELS):
         ax2 = ax.twiny()  # a second x axis (dollars) on the same rows
         for i, row in enumerate(ROWS):
