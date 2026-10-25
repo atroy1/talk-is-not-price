@@ -34,7 +34,7 @@ To rerun the labelling or new markets you need keys in `.env` (never committed):
   (`vendor/llm-agent-collusion`, their licence applies). Before the sprint we updated the starter for current models
   and wrote a loader; the detector, its calibration, all new markets and all analysis were done during the sprint
   (`notes/PRIOR-WORK.md`).
-- The 136 new markets are under `runs/live/<tag>/` with their configs (`config/*.toml`) and per-call usage logs.
+- The 160 new markets are under `runs/live/<tag>/` with their configs (`config/*.toml`) and per-call usage logs.
 - Labels: `runs/derived/labels.csv` (DeepSeek V4.1 Flash, first-token probabilities), `labels-alt.csv` (GPT-4.1-mini,
   the second labeller family), `labels-reference.csv` (Claude Sonnet 5.5 on 396 messages), the blind 40-message
   readings under `notes/handlabel/`.

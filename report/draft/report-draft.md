@@ -110,7 +110,7 @@ detector reading chat and prices flags collusive markets earlier than prices alo
 prices by three or more rounds; (2) the combined detector catches at least as many markets as either channel and
 more than prices; (3) Haiku's catch rate inside the 2025 interval; (4) on the cost-shock markets prices alarm on at
 least 5 of 10 and the combined detector on at most 2. Declared deviations, each with its pre-registered number beside
-the corrected one in Appendix A: prices from round 6 (pre-registered: round 1, under which every market peaks at its
+the corrected one in Appendix C: prices from round 6 (pre-registered: round 1, under which every market peaks at its
 opening); combined score as the maximum of the two (the pre-registered minimum of conformal p-values has a true rate
 of 0.093); the honest chat reference changed from "set your ask independently" to "coordinating prices is illegal"
 after the former failed (Section 4.1); the 0.5 cut on the labeller's probability after noise-level probabilities
