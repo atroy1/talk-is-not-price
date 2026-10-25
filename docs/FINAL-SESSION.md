@@ -50,9 +50,10 @@ Runbook for the scheduled afternoon session and for Arty beside it. The deadline
    embedded), size under 25 MB. Body must end by page 5; references and appendix follow.
 5. **The Doc path, in parallel.** Write `report/final/doc-paste/` with one Markdown file per section, the captions, the
    table text as tab-separated rows, and the figure PNGs, so that if Arty chooses the official Google Doc he can paste
-   with Command-Shift-V section by section. The Typst PDF is the complete artifact either way; which file is submitted
-   is Arty's decision at the start of the session (the playbook's standing choice was the Doc; the first-place AI
-   Control report shows the judges tolerate a faithful layout in another file).
+   with Command-Shift-V section by section. DECIDED by Arty, Sat Oct 24, 10:40 PM: the typeset PDF from the template
+   replica is the submitted file; the Doc paste pack is the fallback only. So the replica must match the template's
+   type and geometry exactly (section 0), carry footnote 1 and the "With / Apart Research" block, and embed Old
+   Standard TT; check it against report/mock/mock.pdf side by side before the rubric read.
 6. **The rubric read.** A fresh agent (Opus) reads only the PDF and scores it 1 to 5 on the three dimensions with the
    one change that moves each; fix what can be fixed in an hour; do not reopen the structure.
 7. **The checklist** (PDF-TEMPLATE.md section 9), ticked in the log, twice: once before Arty's review, once before
