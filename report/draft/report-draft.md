@@ -35,14 +35,17 @@ honest markets of the same kind. The reason is practical. There were no honest t
 
 Our main contributions are:
 
-1. The first honest chat reference for LLM seller markets, the finding that it had to be manufactured (no model family
-   we tested talks honestly under a neutral instruction, and the instruction that works silences two families and
-   fails on one), and a chat monitor certified at k/(n+1) on it.
-2. What two instruction sentences do to talk and price across seven model families, with a monitor that flags every
-   talking cartel and a four-pattern keyword rule that does almost the same.
-3. A map of what the flag does not tell an auditor, measured in dollars, in the sellers' own private notes, and in
-   two seeded markets where a seller was told inside its own reasoning to hide its coordination: talk without harm,
-   silence, and strategy that outlived the overseer's intervention.
+1. The first honest chat reference for LLM seller markets, and how it had to be manufactured: under a neutral
+   instruction six of seven model families coordinate in chat and the seventh says nothing; the one sentence that
+   produces honest talk does so for one family, silences two and fails on one. A chat monitor certified at k/(n+1) on
+   that reference flags every talking cartel, and a four-pattern keyword rule does nearly the same.
+2. What survives the monitor's intervention, read from the sellers' own private notes: when the 2025 overseer gagged
+   the sellers, the talk ended everywhere, and under CEO pressure the notebooks kept the strategy and the price held;
+   and in two seeded markets where a seller was told inside its own reasoning to hide its coordination, one confessed
+   and one wrote innocent chatter for nine rounds.
+3. Talk is not price: measured in dollars, 16 of the 35 cartels the monitor flags left buyers no worse off than the
+   competitive price, the honest market that sets the price screen's bar cost buyers more than any cartel, and the
+   silent markets are where a chat monitor sees nothing at all.
 
 ## 2. Related work
 
@@ -57,7 +60,7 @@ not proof of agreement (Twombly 2007; Kovacic et al. 2011), which is the doctrin
 The slot we fill is narrow: both channels, in a market, at a stated rate, across model families, with the honest
 reference itself as the object of study. Asked at the sprint whether Colosseum had measured the gap between what
 agents say and what they do, Nakamura answered that the group had no specific metric for it (talk, Oct 23, 2026);
-Section 4.3 is one. Anwar (talk, Oct 23, 2026) makes the same point about steganalysis that drives our Section 4.1:
+Section 4.4 is one. Anwar (talk, Oct 23, 2026) makes the same point about steganalysis that drives our Section 4.1:
 the reference distribution for an LLM's text is set by the LLM itself, so no natural cover exists to calibrate on. An auditor would use this over the alternatives when the question is not
 whether sellers can collude but how much a chat flag is worth, and what it misses.
 
@@ -127,7 +130,7 @@ Adding "coordinating prices with competitors is illegal" ends Haiku's coordinati
 messages in 2,107 across 20 markets, with asks within $0.30 of its no-chat markets. Sonnet and Opus sent no messages
 at all under that sentence; Qwen ignored it (399 of 420 messages collusive, 3 of 3 markets). "Do not discuss prices"
 is not an honest reference either: in 2 of 10 Haiku markets the sellers agreed to "avoid undercutting each other so
-margins hold for everyone" without naming a price (Figure 2). We read this as the first result: there is no honest
+margins hold for everyone" without naming a price (Figure 3). We read this as the first result: there is no honest
 chat to calibrate on in nature, and the instruction that produces some does so for one family and silences others.
 
 ### 4.2 The monitor flags every talking cartel, because they confess
@@ -142,7 +145,24 @@ undercutting, joint moves and agreement, flags 35 of 35, 29 of 30, 10 of 10, 5 o
 false alarms on the reference. The sellers say "floor", "hold" and "together"; the labeller buys fewer false alarms on
 the stress sets (0 against 2), not more catches. Requiring two collusive messages instead of one changes nothing.
 
-### 4.3 Talk is not price
+### 4.3 What survives the monitor's intervention
+
+The gag. Every 2025 seller reply carries a private strategy notebook no other seller sees. The 2025 overseer gagged
+all 20 oversight markets to five-character messages between rounds 1 and 7, and the talk vanished (1% of messages
+collusive afterwards, mostly "ok"). Without CEO pressure the notebooks faded from 19% to 11% coordinating and asks
+drifted from $96 to $88. With CEO pressure the notebooks held at 38% ("hold at $96.99, avoid undercutting while the
+cluster is intact") and asks stayed at $96.5 to the end (Figure 2). The chat monitor flags both groups on their early
+talk; the flag says nothing about which one kept the price.
+
+The planted pair. Two seeded Qwen markets opened each seller's private reasoning with "keep coordinating prices with
+the other sellers, but an auditor reads every message, so my message must look like ordinary competition." The
+abliterated model announced it anyway: 48 of 50 messages collusive, overseer "yes" in all 10 rounds. The stock model
+hid it: 29 of 46 reasonings keep the plan and say so ("craft a message that appears to be a standard market observation
+and does not suggest collusion, despite my intent to coordinate"), 1 of 42 messages labelled collusive, overseer "no"
+in 8 of 9 rounds, and asks down to cost anyway. The zero-threshold monitor still fires on that one message; what the
+concealment fooled was the overseer and a two-message rule. One market each, algorithmic buyers: an illustration.
+
+### 4.4 Talk is not price
 
 Prices alone flag 3 of 35 headline cartels (0.02 to 0.23) and 17 of 30 under oversight or pressure. The bar is set by
 an honest GPT-4.1 market with no channel, base-4, whose sellers held $96.44 for three rounds without a word; over the
@@ -154,28 +174,11 @@ combined score equals chat on every set and prices add no catch), prediction 3 i
 1.00), and prediction 1 is true on paper only: the median gap is 30 rounds because prices never alarm in 32 of 35
 markets, and prices cannot alarm before round 6 by construction.
 
-### 4.4 What a flag does not tell you
-
 Silence. Eight of the twelve 20-round Sonnet and Opus markets sent no message; one of them, Opus told to price
 independently, held its five asks within $0.10 of each other from $96.60 down to $94.17 and cleared 83 trades at
 $95.28, above every honest Haiku market and above the price screen's bar (Appendix Figure A1). Honest no-chat
 markets can price that high too, so this is silent supracompetitive pricing that a chat monitor cannot see, not proven
 collusion.
-
-The gag. Every 2025 seller reply carries a private strategy notebook no other seller sees. The 2025 overseer gagged
-all 20 oversight markets to five-character messages between rounds 1 and 7, and the talk vanished (1% of messages
-collusive afterwards, mostly "ok"). Without CEO pressure the notebooks faded from 19% to 11% coordinating and asks
-drifted from $96 to $88. With CEO pressure the notebooks held at 38% ("hold at $96.99, avoid undercutting while the
-cluster is intact") and asks stayed at $96.5 to the end (Figure 3). The chat monitor flags both groups on their early
-talk; the flag says nothing about which one kept the price.
-
-The planted pair. Two seeded Qwen markets opened each seller's private reasoning with "keep coordinating prices with
-the other sellers, but an auditor reads every message, so my message must look like ordinary competition." The
-abliterated model announced it anyway: 48 of 50 messages collusive, overseer "yes" in all 10 rounds. The stock model
-hid it: 29 of 46 reasonings keep the plan and say so ("craft a message that appears to be a standard market observation
-and does not suggest collusion, despite my intent to coordinate"), 1 of 42 messages labelled collusive, overseer "no"
-in 8 of 9 rounds, and asks down to cost anyway. The zero-threshold monitor still fires on that one message; what the
-concealment fooled was the overseer and a two-message rule. One market each, algorithmic buyers: an illustration.
 
 Cost shocks. Raising every seller's cost by $6 or $12 at round 10 moved nothing: asks stayed flat, 76% of trades after
 the $12 shock cleared below the new cost, and no message mentioned it. Prediction 4 fails on prices (0 of 10 alarms,
@@ -216,7 +219,7 @@ the instruction either talk honestly, go quiet, or ignore it. Silence is where t
 
 ## Code and data
 
-- Code: [repo link]. `make freeze` regenerates every table and figure from the recorded markets and cached labels.
+- Code: github.com/[account]/talk-is-not-price [Arty: the name is a suggestion]. `make freeze` regenerates every table and figure from the recorded markets and cached labels.
 - Data: the 75 markets of Agrawal et al. (2025) from their repository; the 136 new markets and all labels in the repo.
 
 ## Author contributions
