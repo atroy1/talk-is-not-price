@@ -58,7 +58,7 @@ def main():
     d = pd.DataFrame({"cond": runs, "x": oc.reindex(runs.index), "y": share.reindex(runs.index).fillna(0.0),
                       "n": nmsg.reindex(runs.index).fillna(0).astype(int), "chat": chat_on.reindex(runs.index).fillna(False)})
     d = d.dropna(subset=["x"])
-    fig, ax = plt.subplots(figsize=(6.5, 2.45))  # printed at the full text width, so 1:1
+    fig, ax = plt.subplots(figsize=(6.5, 2.3))  # printed at the full text width, so 1:1
     for label, color, test, honest in FAMILIES:
         f = d[d.cond.map(lambda c: bool(test(str(c))))]
         if f.empty:
