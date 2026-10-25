@@ -39,7 +39,7 @@ def main():
         else:
             ax.set_ylim(86, 98); ax.axhline(90, color="#bbbbbb", linewidth=0.5)
     axes[0].text(0.3, 0.9, "gag", fontsize=6.5, color="#666666", transform=axes[0].get_xaxis_transform(), ha="left")
-    axes[2].legend(fontsize=6, loc="lower left")  # the right panel's lower left is empty; the left panel's lines cross every corner
+    axes[1].legend(fontsize=6, loc="upper right")  # the middle panel's upper right is empty; the other panels' lines cross every corner
     if not FINAL:
         fig.text(0.99, 0.99, "DRAFT", ha="right", va="top", fontsize=7, color="#b00020")
     fig.tight_layout()
