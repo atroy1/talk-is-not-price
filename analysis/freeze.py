@@ -227,6 +227,12 @@ def main():
             say(f"| {c} | {d.run_id.nunique()} | {b.msg_coll.mean():.0%} | {b.notebook.mean():.0%} | ${b.ask.mean():.2f} | {a.msg_coll.mean():.0%} | {a.notebook.mean():.0%} | ${a.ask.mean():.2f} | ${late.ask.mean():.2f} |")
         say("")
 
+    # 16 (placed before spend so the spend section stays last): behaviour statistics by generation
+    bs = D / "behaviour-screen.md"
+    if bs.exists():
+        say("## 16. Behaviour statistics of the order book by seller generation, post hoc (`runs/derived/behaviour-screen.md`, `analysis/behaviour_screen.py`)\n")
+        say(bs.read_text())
+
     # 15. spend
     try:
         from tools import checkin
