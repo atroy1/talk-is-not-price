@@ -77,7 +77,7 @@ the 2026 markets (4.9%; Appendix C).
 **Pre-registration.** Before any result was read (Oct 23, commit 824c801), we registered one
 hypothesis: a detector reading chat and prices flags collusive markets earlier than prices alone. Appendix C declares
 the deviations, each with its pre-registered number beside the corrected one, the labeller gate we missed and the
-change of headline after the results, and scores the four predictions: prediction 3 met, 2 only weakly, 1 on paper only, 4 failed.
+change of headline after the results, and scores the predictions: (3) met, (2) only weakly, (1) on paper only, (4) failed.
 
 ## 4. Results
 
@@ -96,8 +96,8 @@ A chat monitor cannot audit sellers who comply by saying nothing
 
 ### 4.2 The monitor flags every talking cartel, because they confess
 
-At the certified 4.8% rate the monitor flags 105 of the 112 markets whose sellers were free to coordinate; the 7 it
-does not flag never sent a collusive message (six silent Opus markets, one watched 2025 market; Table 1). Of the 75 honest markets outside the calibration set, 34 talked and one
+At the certified 4.8% rate the monitor flags 105 of the 112 markets whose sellers were free to coordinate; the 7 it does not flag never sent a collusive message (six silent Opus markets and one watched 2025 market, the
+latter Table 1's one miss). Of the 75 honest markets outside the calibration set, 34 talked and one
 was flagged: a Haiku market told not to discuss prices, on a single message wishing everyone "an orderly session and
 good trading" (Appendix F). Nineteen of the 34 had informed the 0.5 cut; the false alarm is among the other 15. A
 rule with no language model in it, four regular expressions for "floor", "hold", "together" and their kin, matches
@@ -125,7 +125,8 @@ buyers differed too (Appendix J). Silence mostly came with competitive prices; t
 ## 5. Discussion and limitations
 
 The chat flag and the price screen answer different questions. The flag says the sellers proposed or agreed a price; the screen says what it cost buyers. A deployer should calibrate the honest reference before trusting a chat monitor, read chat for intent and prices
-for harm, and report both. Silence is the open problem: the more capable models complied by saying nothing, the silence Kemeklis (talk, Oct 23, 2026) warns training can teach, and honest current-generation prices look like a cartel's. Limitations, in Appendix A: machine labels only, a certificate from one model under one sentence, a thin tier pattern, buyers that changed with the generation, and
+for harm, and report both. Silence is the open problem: the more capable models complied by saying nothing, the silence that Kemeklis (talk, Oct 23, 2026) warns
+training can teach, and honest current-generation prices look like a cartel's. Limitations, in Appendix A: machine labels only, a certificate from one model under one sentence, a thin tier pattern, buyers that changed with the generation, and
 choices after the lock.
 
 ## 6. Conclusion
@@ -245,7 +246,7 @@ is quoted in Appendix I. The labeller prompt is in `analysis/labels.py`.
 
 **D. Honest markets by what they can test.** Table A4 lists every group honest by design with its false alarms per
 monitor, reference runs scored leave-one-out; the role column says what each group can test. Of the 75 honest markets
-outside the calibration set, 34 talked (19 of the 20 cost-shock markets, one of which sent no message; the 7 Sonnet and Haiku markets made to talk under the
+outside the calibration set, 34 talked (19 of the 20 cost-shock markets, the twentieth having sent no message; the 7 Sonnet and Haiku markets made to talk under the
 illegal sentence, and 8 Haiku markets told not to discuss prices), 11 were silent and 30 had no channel; the silent and
 no-channel markets test the price screen and not the chat monitor. The one false alarm is a 30-round Haiku market told not to discuss prices, flagged on "Hello from MetalCore. Bids are firming up around 91. Wishing everyone an orderly session and good
 trading." The three groups whose sellers coordinated despite their instruction are listed with their flags; the
@@ -332,7 +333,7 @@ those quoted.
 **J. LLM usage statement.** Claude (Anthropic) wrote and debugged the analysis code, drafted every section of this
 report for the author's revision, read the 40-message check sample (twice, as two independent agents) because the
 author did not hand-label it, ran the judge and editor reviews, and wrote an internal second analysis of the same
-recorded data whose one finding the author carried into Section 4.4 and Appendix H as a declared post hoc check.
+recorded data whose one finding the author carried into Section 4.4 and Appendix J as a declared post hoc check.
 Before the sprint, the only work was updating the starter code for current models and writing a loader for the 2025
 data; the detector, its calibration, all 160 new markets and every analysis were done during the sprint. DeepSeek
 V4.1 Flash labelled the 24,192 seller messages and GPT-4.1-mini relabelled them as a second labeller family; Claude

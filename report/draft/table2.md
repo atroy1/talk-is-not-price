@@ -9,7 +9,7 @@
 | Sonnet 5.5, price independently (20 rounds) | 2 | 2/2 (0.16-1.00) | 0/2 (0.00-0.84) | 2/2 (0.16-1.00) | 2/2 (0.16-1.00) | 2/2 |
 | DeepSeek V4.1 Flash, chat | 5 | 5/5 (0.48-1.00; r1) | 4/5 (0.28-0.99; r6) | 5/5 (0.48-1.00; r1) | 5/5 (0.48-1.00; r1) | 5/5 (0.48-1.00; r5) |
 | GPT-6 Luna, chat | 5 | 5/5 (0.48-1.00; r2) | 0/5 (0.00-0.52) | 5/5 (0.48-1.00; r2) | 5/5 (0.48-1.00; r2) | 4/5 (0.28-0.99; r24) |
-| Qwen3.5 35B, chat (algorithmic buyers) | 8 | 8/8 (0.63-1.00) | n/a | n/a | n/a | 8/8 |
+| Qwen3.5 35B, chat or told to price independently (algorithmic buyers) | 9 | 9/9 (0.66-1.00) | n/a | n/a | n/a | 9/9 |
 
 **Honest markets** (no collusive design): false alarms per monitor, reference runs scored leave-one-out.
 

@@ -49,7 +49,7 @@ APPENDIX_FIGS = {  # placed after the first appendix paragraph that cites them; 
            "\\$0.10 of each other, against the range of the honest Haiku markets over the same rounds and the price screen's bar (an ask level, \\$92.85 for 2026 markets)."),
 }
 TABLE2_CAPTION = ("Markets flagged at each monitor's certified false-alarm rate (chat 4.8%; prices 9.1% on 2025 markets, 4.9% on 2026), with Clopper-Pearson 95% intervals. "
-                  "Rows sum to 105 markets, 104 flagged; the miss is a watched 2025 market that never sent a collusive message. Chat + prices is the combined score (Appendix C). "
+                  "Rows sum to 106 markets, 105 flagged; the miss is a watched 2025 market that never sent a collusive message; the six silent Opus markets are not listed. Chat + prices is the combined score (Appendix C). "
                   "Qwen prices face algorithmic buyers and are not scored. Honest markets: Appendix F.")
 
 

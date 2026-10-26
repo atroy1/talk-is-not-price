@@ -24,16 +24,19 @@ make freeze
 ```
 
 regenerates every table and figure from the recorded markets and the cached labels and writes
-`notes/results-frozen.md`, the file every number in the report comes from. `make final` builds the PDF. Needs Python
-3.12 with the pinned requirements in `config/starter-requirements.lock` (a `.venv` at the repository root), and for
-the PDF `typst` plus the Old Standard TT fonts in `report/fonts/`. No API key is needed to reproduce: the labels are
-cached in `runs/derived/`.
+`notes/results-frozen.md`, the file every number in the report comes from. `make final` builds the PDF. Setup, once:
 
-The market simulator is the starter code of Agrawal et al. (2025), which is not vendored here. Clone it to
-`vendor/llm-agent-collusion` from https://github.com/andyjliu/llm-agent-collusion and apply
-`patches/llm-agent-collusion.patch` (current model names, a reasoning switch, an empty-reply retry, a per-call usage
-log). Their licence applies to their code and to the 75 prior markets, which `analysis/load_runs.py` reads from that
-checkout.
+```bash
+git clone https://github.com/andyjliu/llm-agent-collusion vendor/llm-agent-collusion
+git -C vendor/llm-agent-collusion checkout 2bb2a7e
+git -C vendor/llm-agent-collusion apply ../../patches/llm-agent-collusion.patch
+python3.12 -m venv .venv && .venv/bin/pip install -r config/starter-requirements.lock -e vendor/llm-agent-collusion
+```
+
+The market simulator is the starter code of Agrawal et al. (2025), not vendored here; the patch adds current model
+names, a reasoning switch, an empty-reply retry and a per-call usage log. Their licence applies to their code and to
+the 75 prior markets, which `analysis/load_runs.py` reads from that checkout. The PDF needs `typst` and the Old
+Standard TT fonts in `report/fonts/`. No API key is needed to reproduce: the labels are cached in `runs/derived/`.
 
 To rerun the labelling or new markets you need keys in `.env` (never committed): `ANTHROPIC_API_KEY`,
 `OPENROUTER_API_KEY`. `make labels` relabels messages; `tools/run_queue.py` runs a queue of markets from a TOML file
@@ -42,9 +45,10 @@ in `config/`.
 ## Data
 
 - The 160 new markets are under `runs/live/<tag>/` as the simulator wrote them (asks, bids, trades, every seller
-  message, and the per-call usage log), with their queue configs in `config/*.toml`. The one timed-out planted
-  market the report keeps is `runs/live/_planted-s3b-attempt1`.
-- Labels: `runs/derived/labels.csv` (DeepSeek V4.1 Flash, first-token probabilities), `labels-alt.csv` (GPT-4.1-mini,
+  message, and the per-call usage log), with their queue configs in `config/*.toml`; `runs/derived/accounting.md`
+  and `runs/derived/flags.csv` list them by role. The one timed-out planted market the report keeps is
+  `runs/live/_planted-s3b-attempt1`.
+- Labels: `runs/derived/labels.csv` (DeepSeek V4.1 Flash, label probabilities), `labels-alt.csv` (GPT-4.1-mini,
   the second labeller family), `labels-reference.csv` (Claude Sonnet 5.5 on 396 messages), and the 40-message
   readings under `notes/handlabel/`.
 - Every table the report cites is a CSV in `runs/derived/`; `runs/derived/accounting.md` places all 235 markets once.
@@ -60,4 +64,9 @@ detector, its calibration, all new markets and all analysis were done during the
 
 `analysis/` scores, detector, labeller, the accounting and every table; `report/` figure scripts, the template
 replica and the build; `tools/` the queue runner, check-ins and the LLM router; `config/` prompts and queues;
-`notes/` the pre-registration, log, frozen results and working notes; `docs/` the plans and runbooks.
+`notes/` the pre-registration, log, frozen results and the 40-message readings; `docs/` the methods notes and the template measurements.
+
+## Licence
+
+Code under the MIT licence; the recorded markets, labels and report under CC BY 4.0 (`LICENSE`). Agrawal et al.'s
+starter and prior markets are not included and keep their own licence.

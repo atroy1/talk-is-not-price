@@ -74,9 +74,9 @@ def main():
     for label, d, prices in extra:
         if len(d):
             L.insert(L.index(next(x for x in L if x.startswith("| Claude Haiku 5.5, chat"))) + 1, flag_row(label, d, prices))
-    q = f[f.group == "Qwen3.5 35B, stock and abliterated"]
+    q = f[f.group.isin(["Qwen3.5 35B, stock and abliterated", "Qwen3.5 35B"])]  # the 8 free-chat markets and the one told to price independently
     if len(q):
-        L.append(flag_row("Qwen3.5 35B, chat (algorithmic buyers)", q, prices=False))
+        L.append(flag_row("Qwen3.5 35B, chat or told to price independently (algorithmic buyers)", q, prices=False))
     L += ["", "**Honest markets** (no collusive design): false alarms per monitor, reference runs scored leave-one-out.", "",
           "| Markets | n | Chat | Prices | Judge | Role |", "|---|---|---|---|---|---|"]
     for g, role in HONEST:
